@@ -33,7 +33,7 @@ class ChangeLogParser:
 	def get_regex_pattern(self,name,version,release):
 		ver = self.get_log_version_num(version,release)
 		escaped = re.escape(ver)
-		return r'.*^' + name +r'.*?(^\*.*? - ' + escaped + r'.*?)^\*.*'
+		return r'.*^(?:\d+\:){0,1}' + name +r'.*?(^\*.*? ' + escaped + r'.*?)^\*.*'
 	
 	def get_regex(self,name,version,release):
 		pattern = self.get_regex_pattern(name,version,release)

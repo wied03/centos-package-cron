@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# coding: latin-1
 
 import unittest
 import sys
@@ -36,27 +37,7 @@ class ChangeLogParserTestCase(unittest.TestCase):
 		result = parser.get_log_version_num('4.2.45','5.el7_0.4')
 		
 		# assert
-		self.assertEquals(result,'4.2.45-5.4')
-		
-	def testGet_log_version_num_centos_7(self):
-		# arrange
-		parser = package_fetcher.ChangeLogParser()
-
-		# act
-		result = parser.get_log_version_num('24.8.0','1.el7.centos')
-
-		# assert
-		self.assertEquals(result,'24.8.0-1.el7.centos')
-	
-	def testGetRegexPattern(self):
-		# arrange
-		parser = package_fetcher.ChangeLogParser()
-		
-		# act
-		result = parser.get_regex_pattern('bash','4.2.45','5.el7_0.4')
-		
-		# assert
-		self.assertEquals(result, r'.*^bash.*?(^\*.*? - 4\.2\.45\-5\.4.*?)^\*.*')
+		self.assertEquals(result,'4.2.45-5.4')	
 		
 	def testParseStandardRhel(self):
 		# arrange
@@ -80,11 +61,17 @@ class ChangeLogParserTestCase(unittest.TestCase):
 		output = open('changelog_raw_output_example2.txt').read()
 
 		# act
-		results = parser.parse(output,'xulrunner','24.8.0','1.el7.centos')
+		results = parser.parse(output,'openssl','1.0.1e','34.el7_0.4')
 
 		# assert
-		expected_output = """* Wed Sep  3 07:00:00 2014 CentOS Sources <bugs@centos.org> - 24.8.0-1.el7.centos
-- Change default prefs to CentOS
+		expected_output = """* Fri Aug  8 07:00:00 2014 Tomáš Mráz <tmraz@redhat.com> 1.0.1e-34.4
+- fix CVE-2014-3505 - doublefree in DTLS packet processing
+- fix CVE-2014-3506 - avoid memory exhaustion in DTLS
+- fix CVE-2014-3507 - avoid memory leak in DTLS
+- fix CVE-2014-3508 - fix OID handling to avoid information leak
+- fix CVE-2014-3509 - fix race condition when parsing server hello
+- fix CVE-2014-3510 - fix DoS in anonymous (EC)DH handling in DTLS
+- fix CVE-2014-3511 - disallow protocol downgrade via fragmentation
 
 """
 		self.assertEquals(results,expected_output)
@@ -190,12 +177,12 @@ class PackageFetcherTestCase(unittest.TestCase):
 		# assert
 		self.assertNotEquals(result, None)
 		
-	def testGetPackageChangeLogRealXulRunner(self):
+	def testGetPackageChangeLogRealOpenssl(self):
 		# arrange
 		fetcher = package_fetcher.PackageFetcher(package_fetcher.ChangeLogParser(),mockable_execute.MockableExecute())
 
 		# act
-		result = fetcher.get_package_changelog('xulrunner', '24.8.0', '1.el7.centos')
+		result = fetcher.get_package_changelog('openssl', '1.0.1e', '34.el7_0.4')
 
 		# assert
 		self.assertNotEquals(result, None)
