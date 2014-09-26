@@ -1,4 +1,4 @@
-#import xml.dom.minidom
+import urllib2
 from xml.etree import ElementTree as et
 
 class ErrataType:
@@ -42,20 +42,31 @@ class ErrataParser:
 			print "Do not understand mapping for severity %s" % (theSeverity)
 			raise
 	
-	def parseSingleItem(self,node):		
-		the_type = self.getType(node.attrib['type'])
-		severity = self.getSeverity(node.attrib.get('severity'))
-		architectures = map(lambda x: x.text, node.findall('os_arch'))
-		releases = map(lambda x: x.text, node.findall('os_release'))
-		packages = map(lambda x: x.text, node.findall('packages'))
-		return ErrataItem(node.tag, the_type, severity, architectures, releases, packages)
+	def parseSingleItem(self,node):
+		try:
+			if node.tag == 'meta':
+				return None
+			the_type = self.getType(node.attrib['type'])
+			severity = self.getSeverity(node.attrib.get('severity'))
+			architectures = map(lambda x: x.text, node.findall('os_arch'))
+			releases = map(lambda x: x.text, node.findall('os_release'))
+			packages = map(lambda x: x.text, node.findall('packages'))
+			return ErrataItem(node.tag, the_type, severity, architectures, releases, packages)
+		except:
+			print "Problem while parsing node %s" % (node)
+			raise
 	
 	def parse(self,xml_str):
 		dom = et.fromstring(xml_str)
 		assert dom.tag == 'opt', "Expecting doc root to be opt but was %s" % (doc.localName)
-		return map(lambda x: self.parseSingleItem(x), dom)		
+		result = map(lambda x: self.parseSingleItem(x), dom)
+		result = list(filter(lambda x: x != None, result))
+		return result
 
 class ErrataFetcher:
 	def get_errata(self):
-		raise 'implement this'
+		response = urllib2.urlopen('http://cefs.steve-meier.de/errata.latest.xml')
+		xml = response.read()
+		parser = ErrataParser()
+		return parser.parse(xml)
 	
