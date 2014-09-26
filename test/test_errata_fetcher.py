@@ -4,6 +4,7 @@ import unittest
 import sys
 sys.path.append('../lib')
 import errata_fetcher
+from errata_fetcher import ErrataType
 
 class ErrataParserTest(unittest.TestCase):
 	def testParseSingleRelease(self):
@@ -29,7 +30,7 @@ class ErrataParserTest(unittest.TestCase):
 		first_advisory = result[0]
 		assert isinstance(first_advisory, errata_fetcher.ErrataItem)
 		assert first_advisory.advisory_id == 'CEBA-2005--169'
-		self.assertEquals(first_advisory.type, errata_fetcher.ErrataType.BugFixAdvisory)
+		self.assertEquals(first_advisory.type, ErrataType.BugFixAdvisory)
 		self.assertEquals(first_advisory.severity, None)
 		self.assertEquals(first_advisory.architectures, ['i386', 'x86_64'])
 		self.assertEquals(first_advisory.releases, ['4'])
@@ -58,7 +59,7 @@ class ErrataParserTest(unittest.TestCase):
 		first_advisory = result[0]
 		assert isinstance(first_advisory, errata_fetcher.ErrataItem)
 		assert first_advisory.advisory_id == 'CEBA-2005--169'
-		self.assertEquals(first_advisory.type, errata_fetcher.ErrataType.BugFixAdvisory)
+		self.assertEquals(first_advisory.type, ErrataType.BugFixAdvisory)
 		self.assertEquals(first_advisory.severity, errata_fetcher.ErrataSeverity.Important)
 		self.assertEquals(first_advisory.architectures, ['i386', 'x86_64'])
 		self.assertEquals(first_advisory.releases, ['4'])
@@ -66,19 +67,22 @@ class ErrataParserTest(unittest.TestCase):
 		
 	def testParseAllErrataTypes(self):
 		# arrange
+		possible_values = ['Bug Fix Advisory','Security Advisory','Product Enhancement Advisory']
+		parser = errata_fetcher.ErrataParser()
 		
-		# act
+		# act + assert
+		for string in possible_values:
+			self.assertNotEquals(parser.getType(string), None)		
 		
-		# assert
-		raise 'finish test'
-		
-	def testParseMultipleReleases(self):
+	def testParseAllErrataSeverities(self):
 		# arrange
+		possible_values = ['Important', 'Moderate', 'Low', 'Critical']
+		parser = errata_fetcher.ErrataParser()
 		
-		# act
-		
-		# assert
-		raise 'finish test'
+		# act + assert
+		for string in possible_values:
+			self.assertNotEquals(parser.getSeverity(string), None)
+	
 	
 if __name__ == "__main__":
             unittest.main()

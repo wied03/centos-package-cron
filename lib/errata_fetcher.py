@@ -2,10 +2,10 @@
 from xml.etree import ElementTree as et
 
 class ErrataType:
-	BugFixAdvisory = range(1)
+	BugFixAdvisory,SecurityAdvisory,ProductEnhancementAdvisory = range(3)
 	
 class ErrataSeverity:
-	Important = range(1)
+	Important, Moderate, Low, Critical = range(4)
 
 class ErrataItem:
 	def __init__(self,advisory_id,type,severity,architectures,releases,packages):
@@ -18,9 +18,9 @@ class ErrataItem:
 
 class ErrataParser:
 	def getType(self,theType):
-		mapping = {
-		'Bug Fix Advisory': ErrataType.BugFixAdvisory
-		}
+		mapping = {'Bug Fix Advisory': ErrataType.BugFixAdvisory, 
+		'Security Advisory':ErrataType.SecurityAdvisory, 
+		'Product Enhancement Advisory':ErrataType.ProductEnhancementAdvisory}
 		try:
 			return mapping[theType]
 		except KeyError:
@@ -31,7 +31,10 @@ class ErrataParser:
 		if theSeverity == None:
 			return None
 		mapping = {
-		'Important': ErrataSeverity.Important
+		'Important': ErrataSeverity.Important,
+		'Moderate': ErrataSeverity.Moderate,
+		'Low': ErrataSeverity.Low,
+		'Critical': ErrataSeverity.Critical
 		}
 		try:
 			return mapping[theSeverity]
