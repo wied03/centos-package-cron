@@ -7,7 +7,37 @@ import package_fetcher
 from mock import Mock
 
 class ChangeLogParserTestCase(unittest.TestCase):
-	def testParse(self):
+	def testGet_log_version_num_rhel_7(self):
+		# arrange
+		parser = package_fetcher.ChangeLogParser()
+		
+		# act
+		result = parser.get_log_version_num('4.2.45','5.el7_0.4')
+		
+		# assert
+		self.assertEquals(result,'4.2.45-5.4')
+		
+	def testGet_log_version_num_centos_7(self):
+		# arrange
+		parser = package_fetcher.ChangeLogParser()
+
+		# act
+		result = parser.get_log_version_num('24.8.0','1.el7.centos')
+
+		# assert
+		self.assertEquals(result,'24.8.0-1.el7.centos')
+	
+	def testGetRegexPattern(self):
+		# arrange
+		parser = package_fetcher.ChangeLogParser()
+		
+		# act
+		result = parser.get_regex_pattern('bash','4.2.45','5.el7_0.4')
+		
+		# assert
+		self.assertEquals(result, r'.*^bash.*?(^\*.*? - 4\.2\.45\-5\.4.*?)^\*.*')
+		
+	def testParseStandardRhel(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
 		output = open('changelog_raw_output.txt').read()
@@ -23,6 +53,20 @@ class ChangeLogParserTestCase(unittest.TestCase):
 """
 		self.assertEquals(results,expected_output)
 		
+	def testParseCentos(self):
+		# arrange
+		parser = package_fetcher.ChangeLogParser()
+		output = open('changelog_raw_output_example2.txt').read()
+
+		# act
+		results = parser.parse(output,'xulrunner','24.8.0-1','1.el7.centos')
+
+		# assert
+		expected_output = """* Wed Sep  3 07:00:00 2014 CentOS Sources <bugs@centos.org> - 24.8.0-1.el7.centos
+		- Change default prefs to CentOS
+"""
+		self.assertEquals(results,expected_output)
+		
 	def testNotFound(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
@@ -31,8 +75,8 @@ class ChangeLogParserTestCase(unittest.TestCase):
 		# act
 		try:
 			parser.parse(output,'bash','4.4','5.el7_0.4')
-		except:
-			if sys.exc_info()[0] == 'Unable to find this':
+		except Exception as e:
+			if str(e) == 'Unable to parse changelog for package bash':
 				pass
 			else:
 				raise

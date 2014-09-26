@@ -1,0 +1,210 @@
+Loaded plugins: changelog, fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: mirror.steadfast.net
+ * epel: mirror.csclub.uwaterloo.ca
+ * extras: mirror.umd.edu
+ * updates: centos.hostingxtreme.com
+
+Listing all changelogs
+
+==================== Available Packages ====================
+xulrunner-24.8.0-1.el7.centos.i686       updates
+* Wed Sep  3 07:00:00 2014 CentOS Sources <bugs@centos.org> - 24.8.0-1.el7.centos
+- Change default prefs to CentOS
+
+* Thu Aug 28 07:00:00 2014 Martin Stransky <stransky@redhat.com> - 24.8.0-1
+- Update to 24.8.0 ESR
+
+* Fri Jul 18 07:00:00 2014 Martin Stransky <stransky@redhat.com> - 24.7.0-1
+- Update to 24.7.0 ESR
+
+* Wed Jun  4 07:00:00 2014 Jan Horak <jhorak@redhat.com> - 24.6.0-1
+- Update to 24.6.0 ESR
+
+* Wed Apr 23 07:00:00 2014 Martin Stransky <stransky@redhat.com> - 24.5.0-1
+- Update to 24.5.0 ESR
+
+* Thu Mar 27 07:00:00 2014 Martin Stransky <stransky@redhat.com> - 24.4.0-1
+- Update to 24.4.0 ESR
+
+* Wed Feb  5 06:00:00 2014 Jan Horak <jhorak@redhat.com> - 24.3.0-1
+- Update to 24.3.0 ESR
+
+* Fri Jan 24 06:00:00 2014 Daniel Mach <dmach@redhat.com> - 24.2.0-3
+- Mass rebuild 2014-01-24
+
+* Fri Dec 27 06:00:00 2013 Daniel Mach <dmach@redhat.com> - 24.2.0-2
+- Mass rebuild 2013-12-27
+
+* Mon Dec  9 06:00:00 2013 Martin Stransky <stransky@redhat.com> - 24.2.0-1
+- Update to 24.2.0 ESR
+
+* Fri Nov 22 06:00:00 2013 Martin Stransky <stransky@redhat.com> - 24.1.0-2
+- Relaxed the nspr dependency
+
+* Wed Nov  6 06:00:00 2013 Martin Stransky <stransky@redhat.com> - 24.1.0-1
+- Update to 24.1.0 ESR
+
+* Wed Oct 23 07:00:00 2013 Martin Stransky <stransky@redhat.com> - 24.0-1
+- Update to 24.0 ESR
+
+* Thu Sep 12 07:00:00 2013 Jan Horak <jhorak@redhat.com> - 17.0.9-1
+- Update to 17.0.9 ESR
+
+* Wed Sep  4 07:00:00 2013 Jan Horak <jhorak@redhat.com> - 17.0.8-5
+- Fixed mozbz#633001 - Cannot open ipv6 address with self-signed certificate
+
+* Tue Sep  3 07:00:00 2013 Martin Stransky <stransky@redhat.com> - 17.0.8-4
+- Fixed rhbz#818636 - Firefox allows install of addons,
+  disregarding xpinstall.enabled flag set as false.
+
+* Tue Aug  6 07:00:00 2013 Martin Stransky <stransky@redhat.com> - 17.0.8-3
+- Update to 17.0.8 ESR Build 2
+
+* Thu Aug  1 07:00:00 2013 Martin Stransky <stransky@redhat.com> - 17.0.8-2
+- Added fix for rhbz#990921 - firefox does not build with 
+  required nss/nspr
+
+* Wed Jul 31 07:00:00 2013 Martin Stransky <stransky@redhat.com> - 17.0.8-1
+- Update to 17.0.8 ESR
+
+* Thu Jun 20 07:00:00 2013 Jan Horak <jhorak@redhat.com> - 17.0.7-1
+- Update to 17.0.7 ESR
+
+* Tue Jun 18 07:00:00 2013 Jan Horak <jhorak@redhat.com> - 17.0.6-2
+- Fixed launch script, rhbz#974006
+- Fixed problems with addon installation, rhbz#973720
+
+* Fri May 17 07:00:00 2013 Jan Horak <jhorak@redhat.com> - 17.0.6-1
+- Update to 17.0.6 ESR
+
+* Tue Apr  2 07:00:00 2013 Jan Horak <jhorak@redhat.com> - 17.0.5-1
+- Update to 17.0.5 ESR
+
+* Wed Mar 13 07:00:00 2013 Martin Stransky <stransky@redhat.com> - 17.0.4-1
+- Update to 17.0.4 ESR
+- Added fix for mozbz#239254 - [Linux] Support disk cache on a local path
+- Use an official firefox tarball
+
+* Tue Jan 15 06:00:00 2013 Martin Stransky <stransky@redhat.com> - 17.0.2-3
+- Added fix for NM regression (mozbz#791626)
+
+* Fri Jan 11 06:00:00 2013 Martin Stransky <stransky@redhat.com> - 17.0.2-2
+- Added fix for rhbz#816234 - NFS fix
+
+* Thu Jan 10 06:00:00 2013 Jan Horak <jhorak@redhat.com> - 17.0.2-1
+- Update to 17.0.2 ESR
+
+* Thu Dec 20 06:00:00 2012 Jan Horak <jhorak@redhat.com> - 17.0.1-1
+- Update to 17.0.1 ESR
+
+* Mon Nov 19 06:00:00 2012 Martin Stransky <stransky@redhat.com> 17.0-1
+- Update to 17.0 ESR
+
+* Thu Nov  8 06:00:00 2012 Martin Stransky <stransky@redhat.com> 17.0-0.6.b5
+- Update to 17 Beta 5
+- Updated fix for rhbz#872752 - embeded crash
+
+* Tue Nov  6 06:00:00 2012 Martin Stransky <stransky@redhat.com> 17.0-0.5.b4
+- Added fix for rhbz#872752 - embeded crash
+
+* Thu Nov  1 07:00:00 2012 Martin Stransky <stransky@redhat.com> 17.0-0.4.b4
+- Update to 17 Beta 4
+
+* Wed Oct 24 07:00:00 2012 Martin Stransky <stransky@redhat.com> 17.0-0.3.b3
+- Update to 17 Beta 3
+- Updated ppc(64) patch (mozbz#746112)
+
+* Wed Oct 24 07:00:00 2012 Martin Stransky <stransky@redhat.com> 17.0-0.2.b2
+- Built with system nspr/nss
+
+* Fri Oct 19 07:00:00 2012 Martin Stransky <stransky@redhat.com> 17.0-0.1.b2
+- Update to 17 Beta 2
+
+* Wed Oct 10 07:00:00 2012 Martin Stransky <stransky@redhat.com> 17.0-0.1.b1
+- Update to 17 Beta 1
+
+* Sat Aug 25 07:00:00 2012 Jan Horak <jhorak@redhat.com> - 10.0.7-1
+- Update to 10.0.7 ESR
+
+* Thu Aug 16 07:00:00 2012 Martin Stransky <stransky@redhat.com> 10.0.6-2
+- Added fix for rhbz#770276 - Firefox segfaults, should
+  have a font dependency
+
+* Sat Jul 14 07:00:00 2012 Martin Stransky <stransky@redhat.com> 10.0.6-1
+- Update to 10.0.6 ESR
+
+* Tue Jun 26 07:00:00 2012 Martin Stransky <stransky@redhat.com> 10.0.5-3
+- Added fix for rhbz#808136 (mozbz#762301)
+
+* Tue Jun 12 07:00:00 2012 Martin Stransky <stransky@redhat.com> 10.0.5-2
+- Enabled WebM (rhbz#798880)
+
+* Fri Jun  1 07:00:00 2012 Martin Stransky <stransky@redhat.com> 10.0.5-1
+- Update to 10.0.5 ESR
+
+* Tue May 29 07:00:00 2012 Martin Stransky <stransky@redhat.com> 10.0.4-2
+- Added patch for mozbz#703633
+
+* Sat Apr 21 07:00:00 2012 Martin Stransky <stransky@redhat.com> 10.0.4-1
+- Update to 10.0.4 ESR
+
+* Wed Apr 18 07:00:00 2012 Martin Stransky <stransky@redhat.com> 10.0.3-3
+- Fixed mozbz#746112 - ppc(64) freeze
+
+* Mon Apr  2 07:00:00 2012 Kai Engert <kaie@redhat.com> 10.0.3-2
+- Fixed mozbz#681937
+
+* Mon Mar  5 06:00:00 2012 Martin Stransky <stransky@redhat.com> 10.0.3-1
+- Update to 10.0.3 ESR
+
+* Thu Feb 16 06:00:00 2012 Jan Horak <jhorak@redhat.com> - 10.0.1-2
+- Fixed mozbz#727401
+
+* Thu Feb  9 06:00:00 2012 Jan Horak <jhorak@redhat.com> - 10.0.1-1
+- Update to 10.0.1 ESR
+
+* Tue Feb  7 06:00:00 2012 Martin Stransky <stransky@redhat.com> 10.0-5
+- Update to 10.0 ESR
+
+* Sun Jan 29 06:00:00 2012 Martin Stransky <stransky@redhat.com> 10.0-4
+- Update to 10.0
+
+* Thu Jan 19 06:00:00 2012 Martin Stransky <stransky@redhat.com> 10.0-0.3.b5
+- Update to 10.0 beta 5
+
+* Wed Jan 18 06:00:00 2012 Martin Stransky <stransky@redhat.com> 10.0-0.2.b4
+- Update to 10.0 beta 4
+
+* Thu Jan 12 06:00:00 2012 Jan Horak <jhorak@redhat.com> - 10.0-0.1.b3
+- Update to 10.0 beta 3
+
+* Tue Jan  3 06:00:00 2012 Jan Horak <jhorak@redhat.com> - 9.0.1-1
+- Update to 9.0.1
+
+* Mon Nov 21 06:00:00 2011 Martin Stransky <stransky@redhat.com> 8.0-6
+- Updated to 8.0
+
+* Fri Oct 14 07:00:00 2011 Martin Stransky <stransky@redhat.com> 8.0-5
+- Updated to 8.0 Beta 3
+
+* Tue Oct 11 07:00:00 2011 Martin Stransky <stransky@redhat.com> 8.0-4
+- Added gtkmozembed patch
+
+* Fri Oct  7 07:00:00 2011 Martin Stransky <stransky@redhat.com> 8.0-3
+- Updated to 8.0 Beta 2
+
+* Mon Oct  3 07:00:00 2011 Martin Stransky <stransky@redhat.com> 8.0-2
+- Updated to 8.0 Beta 1
+
+* Mon Sep 26 07:00:00 2011 Martin Stransky <stransky@redhat.com> 7.0-7
+- Updated to 7.0
+
+* Mon Sep 19 07:00:00 2011 Jan Horak <jhorak@redhat.com> - 7.0-6.b6
+- Updated to 7.0 Beta 6
+- Added fix for mozbz#674522: s390x javascript freeze fix
+
+* Wed Sep 14 07:00:00 2011 Martin Stransky <stransky@redhat.com> 7.0-2.b5
+- Updated to 7.0 Beta 5
+
+changelog stats. 2 pkgs, 1 source pkg, 63 changelogs
