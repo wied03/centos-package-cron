@@ -1,0 +1,147 @@
+#!/usr/bin/python
+
+import unittest
+import sys
+sys.path.append('../lib')
+import package_checker
+import package_fetcher
+import errata_fetcher
+from errata_fetcher import ErrataType
+from errata_fetcher import ErrataSeverity
+from mock import Mock
+
+class PackageCheckerTest(unittest.TestCase):
+	def testFindAdvisoriesOnInstalledPackagesNotInstalled(self):
+		# arrange		
+		errata = Mock()
+		errata.get_errata = Mock(return_value=[
+		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], ['xen-libs-3.0.3-135.el5_8.2.x86_64.rpm'])
+		])
+		pkg = Mock()
+		pkg.fetch_installed_packages = Mock(return_value=[
+		package_fetcher.Package('bash','1.0', '4.el7'),
+		package_fetcher.Package('openssl','2.0', '4.el7')
+		])
+		os_fetcher = Mock()
+		os_fetcher.get_top_level_version = Mock(return_value='7')
+		checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
+		
+		# act
+		result = checker.findAdvisoriesOnInstalledPackages()
+		
+		# assert
+		self.assertEquals(result, [])
+		raise 'finish test'
+
+	def testFindAdvisoriesOnInstalledPackagesInstalledButCurrentAlready(self):
+		# arrange
+		errata = Mock()
+		errata.get_errata = Mock(return_value=[
+		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], ['xen-libs-3.0.3-135.el5_8.2.x86_64.rpm'])
+		])
+		pkg = Mock()
+		pkg.fetch_installed_packages = Mock(return_value=[
+		package_fetcher.Package('xen-libs','3.0.3', '135.el5_8.2'),
+		package_fetcher.Package('openssl','2.0', '4.el7')
+		])
+		os_fetcher = Mock()
+		os_fetcher.get_top_level_version = Mock(return_value='7')
+		checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
+
+		# act
+		result = checker.findAdvisoriesOnInstalledPackages()
+
+		# assert
+		self.assertEquals(result, [])
+		raise 'finish test'
+	
+	def testFindAdvisoriesOnInstalledPackagesInstalledButNewerVersion(self):
+		# arrange
+		errata = Mock()
+		errata.get_errata = Mock(return_value=[
+		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], ['xen-libs-3.0.3-135.el5_8.2.x86_64.rpm'])
+		])
+		pkg = Mock()
+		pkg.fetch_installed_packages = Mock(return_value=[
+		package_fetcher.Package('xen-libs','3.0.4', '135.el5_8.2'),
+		package_fetcher.Package('openssl','2.0', '4.el7')
+		])
+		os_fetcher = Mock()
+		os_fetcher.get_top_level_version = Mock(return_value='7')
+		checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
+
+		# act
+		result = checker.findAdvisoriesOnInstalledPackages()
+
+		# assert
+		self.assertEquals(result, [])
+		raise 'finish test'
+
+	def testFindAdvisoriesOnInstalledPackagesInstalledButNewerRelease(self):
+		# arrange
+		errata = Mock()
+		errata.get_errata = Mock(return_value=[
+		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], ['xen-libs-3.0.3-135.el5_8.2.x86_64.rpm'])
+		])
+		pkg = Mock()
+		pkg.fetch_installed_packages = Mock(return_value=[
+		package_fetcher.Package('xen-libs','3.0.3', '135.el5_8.3'),
+		package_fetcher.Package('openssl','2.0', '4.el7')
+		])
+		os_fetcher = Mock()
+		os_fetcher.get_top_level_version = Mock(return_value='7')
+		checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
+
+		# act
+		result = checker.findAdvisoriesOnInstalledPackages()
+
+		# assert
+		self.assertEquals(result, [])
+		raise 'finish test'
+		
+	def testFindAdvisoriesOnInstalledPackagesInstalledAndNeedsUpdatingButWrongCentOsVersion(self):
+		# arrange
+		errata = Mock()
+		errata.get_errata = Mock(return_value=[
+		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], ['xen-libs-3.0.3-135.el5_8.2.x86_64.rpm'])
+		])
+		pkg = Mock()
+		pkg.fetch_installed_packages = Mock(return_value=[
+		package_fetcher.Package('xen-libs','3.0.3', '135.el5_8.1'),
+		package_fetcher.Package('openssl','2.0', '4.el7')
+		])
+		os_fetcher = Mock()
+		os_fetcher.get_top_level_version = Mock(return_value='6')
+		checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
+
+		# act
+		result = checker.findAdvisoriesOnInstalledPackages()
+
+		# assert
+		self.assertEquals(result, [])
+		
+	def testFindAdvisoriesOnInstalledPackagesInstalledAndNeedsUpdating(self):
+		# arrange
+		errata = Mock()
+		errata.get_errata = Mock(return_value=[
+		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], ['xen-libs-3.0.3-135.el5_8.2.x86_64.rpm'])
+		])
+		pkg = Mock()
+		pkg.fetch_installed_packages = Mock(return_value=[
+		package_fetcher.Package('xen-libs','3.0.3', '135.el5_8.1'),
+		package_fetcher.Package('openssl','2.0', '4.el7')
+		])
+		os_fetcher = Mock()
+		os_fetcher.get_top_level_version = Mock(return_value='7')
+		checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
+
+		# act
+		result = checker.findAdvisoriesOnInstalledPackages()
+
+		# assert
+		self.assertEquals(result,['foo'])
+		raise 'finish test'
+		
+	
+if __name__ == "__main__":
+            unittest.main()
