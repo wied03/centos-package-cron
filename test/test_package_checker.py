@@ -74,7 +74,6 @@ class PackageCheckerTest(unittest.TestCase):
 
 		# assert
 		self.assertEquals(result, [])
-		raise 'finish test'
 
 	def testFindAdvisoriesOnInstalledPackagesInstalledButNewerRelease(self):
 		# arrange

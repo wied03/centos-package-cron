@@ -5,7 +5,7 @@ class PackageChecker:
 		self.os_fetcher = os_fetcher
 	
 	def match_advisory_against_installed(self,advisory_package,current_installed):
-		return any(advisory_package['name'] == inst.name for inst in current_installed)
+		return any(advisory_package['name'] == inst.name and advisory_package['version'] == inst.version for inst in current_installed)
 	
 	def findAdvisoriesOnInstalledPackages(self):
 		os_version = self.os_fetcher.get_top_level_version()
