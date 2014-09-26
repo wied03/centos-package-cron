@@ -52,7 +52,6 @@ class PackageCheckerTest(unittest.TestCase):
 
 		# assert
 		self.assertEquals(result, [])
-		raise 'finish test'
 	
 	def testFindAdvisoriesOnInstalledPackagesInstalledButNewerVersion(self):
 		# arrange
@@ -116,7 +115,6 @@ class PackageCheckerTest(unittest.TestCase):
 
 		# assert
 		self.assertEquals(result, [])
-		raise 'finish test'
 		
 	def testFindAdvisoriesOnInstalledPackagesInstalledAndNeedsUpdatingButWrongCentOsVersion(self):
 		# arrange
@@ -142,9 +140,8 @@ class PackageCheckerTest(unittest.TestCase):
 	def testFindAdvisoriesOnInstalledPackagesInstalledAndNeedsUpdating(self):
 		# arrange
 		errata = Mock()
-		errata.get_errata = Mock(return_value=[
-		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}])
-		])
+		advisory = errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}])
+		errata.get_errata = Mock(return_value=[advisory])
 		pkg = Mock()
 		pkg.fetch_installed_packages = Mock(return_value=[
 		package_fetcher.Package('xen-libs','3.0.3', '135.el5_8.1', 'x86_64'),
@@ -158,9 +155,8 @@ class PackageCheckerTest(unittest.TestCase):
 		result = checker.findAdvisoriesOnInstalledPackages()
 
 		# assert
-		self.assertEquals(result,['foo'])
-		raise 'finish test'
-		
+		self.assertEquals(len(result),1)
+		self.assertEquals(result[0],advisory)		
 	
 if __name__ == "__main__":
             unittest.main()
