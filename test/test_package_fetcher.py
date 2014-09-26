@@ -23,7 +23,26 @@ class PackageFetcherTestCase(unittest.TestCase):
 		assert first_package.version != None
 		print "1st package release is %s" % (first_package.release)
 		assert first_package.release != None
-		self.assertEquals(first_package.arch, 'x86_64')		
+		self.assertEquals(first_package.arch, 'x86_64')
+		
+	def testFetch_package_updates(self):
+		# arrange
+		fetcher = package_fetcher.PackageFetcher()
+		
+		# act
+		result = fetcher.get_package_updates()
+		
+		# assert
+		self.assertGreater(len(result),0)
+		first_package = result[0]
+		assert isinstance(first_package, package_fetcher.Package)
+		print "1st package name is %s" % (first_package.name)
+		self.assertNotEquals(first_package.name, None)
+		print "1st package version is %s" % (first_package.version)
+		self.assertNotEquals(first_package.version, None)
+		print "1st package release is %s" % (first_package.release)
+		self.assertNotEquals(first_package.release, None)
+		self.assertNotEquals(first_package.arch, None)
 		
 if __name__ == "__main__":
             unittest.main()

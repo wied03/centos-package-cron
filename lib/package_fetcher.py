@@ -14,9 +14,17 @@ class Package:
 		return self.__str__()
 
 class PackageFetcher:
-	def fetch_installed_packages(self):
-		yb = yum.YumBase()
-		yb.setCacheDir()
-		packages = yb.rpmdb.returnPackages()
+	def __init__(self):
+		self.yb = yum.YumBase()
+		self.yb.setCacheDir()
+	
+	def fetch_installed_packages(self):		
+		packages = self.yb.rpmdb.returnPackages()
 		result = map(lambda x: Package(x.name,x.version,x.release, x.arch), packages)
 		return result
+
+	def get_package_updates(self):
+		raw_updates = self.yb.update()
+		result = map(lambda x: Package(x.name,x.version,x.release, x.arch), raw_updates)
+		return result
+		

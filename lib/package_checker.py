@@ -15,5 +15,5 @@ class PackageChecker:
 		current_installed = self.package_fetcher.fetch_installed_packages()
 		pkg_match = lambda adv_pkgs: any(self.match_advisory_against_installed(adv_pkg,current_installed) for adv_pkg in adv_pkgs)
 		top_level_match = lambda adv: os_version in adv.releases and pkg_match(adv.packages)
-		return list(filter(top_level_match,advisories))		
+		return list(filter(top_level_match,advisories))
 	
