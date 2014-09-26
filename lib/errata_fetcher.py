@@ -3,6 +3,9 @@ from xml.etree import ElementTree as et
 
 class ErrataType:
 	BugFixAdvisory = range(1)
+	
+class ErrataSeverity:
+	Important = range(1)
 
 class ErrataItem:
 	def __init__(self,advisory_id,type,severity,architectures,releases,packages):
@@ -21,12 +24,24 @@ class ErrataParser:
 		try:
 			return mapping[theType]
 		except KeyError:
-			print "Do not understand mapping type %s" % (theType)
+			print "Do not understand mapping for type %s" % (theType)
+			raise
+			
+	def getSeverity(self, theSeverity):
+		if theSeverity == None:
+			return None
+		mapping = {
+		'Important': ErrataSeverity.Important
+		}
+		try:
+			return mapping[theSeverity]
+		except KeyError:
+			print "Do not understand mapping for severity %s" % (theSeverity)
 			raise
 	
 	def parseSingleItem(self,node):		
 		the_type = self.getType(node.attrib['type'])
-		severity = node.attrib.get('severity')
+		severity = self.getSeverity(node.attrib.get('severity'))
 		architectures = map(lambda x: x.text, node.findall('os_arch'))
 		releases = map(lambda x: x.text, node.findall('os_release'))
 		packages = map(lambda x: x.text, node.findall('packages'))
