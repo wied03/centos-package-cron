@@ -3,10 +3,11 @@ import sys
 import yum
 
 class Package:
-	def __init__(self,name,version,release):
+	def __init__(self,name,version,release,arch):
 		self.name = name
 		self.version = version
 		self.release = release
+		self.arch = arch
 	def __str__(self):
 		return "Package %s-%s-%s" % (self.name, self.version, self.release)
 	def __repr__(self):
@@ -17,5 +18,5 @@ class PackageFetcher:
 		yb = yum.YumBase()
 		yb.setCacheDir()
 		packages = yb.rpmdb.returnPackages()
-		result = map(lambda x: Package(x.name,x.version,x.release), packages)
+		result = map(lambda x: Package(x.name,x.version,x.release, x.arch), packages)
 		return result

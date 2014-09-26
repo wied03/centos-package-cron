@@ -34,7 +34,17 @@ class ErrataParserTest(unittest.TestCase):
 		self.assertEquals(first_advisory.severity, None)
 		self.assertEquals(first_advisory.architectures, ['i386', 'x86_64'])
 		self.assertEquals(first_advisory.releases, ['4'])
-		self.assertEquals(first_advisory.packages, ['up2date-gnome-4.4.5.6-2.centos4.i386.rpm', 'up2date-4.4.5.6-2.centos4.x86_64.rpm'])
+		expected_packages = [
+		{'name': 'up2date-gnome',
+		'version': '4.4.5.6',
+		'release': '2.centos4',
+		'arch':'i386'},
+		{'name': 'up2date',
+		'version': '4.4.5.6',
+		'release': '2.centos4',
+		'arch':'x86_64'}		
+		]
+		self.assertEquals(first_advisory.packages, expected_packages)
 		
 	def testParseIgnoresMeta(self):
 		# arrange
@@ -92,7 +102,17 @@ class ErrataParserTest(unittest.TestCase):
 		self.assertEquals(first_advisory.severity, errata_fetcher.ErrataSeverity.Important)
 		self.assertEquals(first_advisory.architectures, ['i386', 'x86_64'])
 		self.assertEquals(first_advisory.releases, ['4'])
-		self.assertEquals(first_advisory.packages, ['up2date-gnome-4.4.5.6-2.centos4.i386.rpm', 'up2date-4.4.5.6-2.centos4.x86_64.rpm'])
+		expected_packages = [
+		{'name': 'up2date-gnome',
+		'version': '4.4.5.6',
+		'release': '2.centos4',
+		'arch':'i386'},
+		{'name': 'up2date',
+		'version': '4.4.5.6',
+		'release': '2.centos4',
+		'arch':'x86_64'}		
+		]
+		self.assertEquals(first_advisory.packages, expected_packages)
 		
 	def testParseAllErrataTypes(self):
 		# arrange

@@ -23,6 +23,7 @@ class PackageFetcherTestCase(unittest.TestCase):
 		assert first_package.version != None
 		print "1st package release is %s" % (first_package.release)
 		assert first_package.release != None
+		self.assertEquals(first_package.arch, 'x86_64')		
 		
 if __name__ == "__main__":
             unittest.main()

@@ -1,5 +1,6 @@
 import urllib2
 from xml.etree import ElementTree as et
+from rpmUtils.miscutils import splitFilename
 
 class ErrataType:
 	BugFixAdvisory,SecurityAdvisory,ProductEnhancementAdvisory = range(3)
@@ -41,6 +42,15 @@ class ErrataParser:
 		except KeyError:
 			print "Do not understand mapping for severity %s" % (theSeverity)
 			raise
+			
+	def parsePackage(self,filename):
+		(n, v, r, e, a) = splitFilename(filename)
+		return {
+		'name':n,
+		'version':v,
+		'release':r,
+		'arch':a
+		}
 	
 	def parseSingleItem(self,node):
 		try:
@@ -50,7 +60,7 @@ class ErrataParser:
 			severity = self.getSeverity(node.attrib.get('severity'))
 			architectures = map(lambda x: x.text, node.findall('os_arch'))
 			releases = map(lambda x: x.text, node.findall('os_release'))
-			packages = map(lambda x: x.text, node.findall('packages'))
+			packages = map(lambda x: self.parsePackage(x.text), node.findall('packages'))
 			return ErrataItem(node.tag, the_type, severity, architectures, releases, packages)
 		except:
 			print "Problem while parsing node %s" % (node)
