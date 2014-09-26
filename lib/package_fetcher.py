@@ -2,6 +2,7 @@ import os
 import sys
 import yum
 import re
+import mockable_execute
 
 class Package:
 	def __init__(self,name,version,release,arch):
@@ -37,10 +38,11 @@ class ChangeLogParser:
 		return match.group(1)
 
 class PackageFetcher:
-	def __init__(self,changelog_parser):
+	def __init__(self,changelog_parser,executor):
 		self.changelog_parser = changelog_parser
 		self.yb = yum.YumBase()
 		self.yb.setCacheDir()
+		self.executor = executor
 	
 	def fetch_installed_packages(self):		
 		packages = self.yb.rpmdb.returnPackages()
@@ -53,6 +55,6 @@ class PackageFetcher:
 		return result
 		
 	def get_package_changelog(self,name,version,release):
-		# yum changelog updates bash-4.2.45-5.el7_0.4.x86_64
-		raise 'write it'
+		output = self.executor.run_command(['/usr/bin/yum','changelog','updates',name])
+		return self.changelog_parser.parse(output,name,version,release)
 		

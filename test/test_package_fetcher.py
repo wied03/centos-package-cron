@@ -5,6 +5,7 @@ import sys
 sys.path.append('../lib')
 import package_fetcher
 from mock import Mock
+import mockable_execute
 
 class ChangeLogParserTestCase(unittest.TestCase):
 	def testGet_log_version_num_rhel_7(self):
@@ -88,7 +89,8 @@ class PackageFetcherTestCase(unittest.TestCase):
 	def testfetch_installed_packages(self):
 		# arrange
 		ch_log_parser = Mock()
-		fetcher = package_fetcher.PackageFetcher(ch_log_parser)
+		executor = Mock()
+		fetcher = package_fetcher.PackageFetcher(ch_log_parser,executor)
 		
 		# act
 		result = fetcher.fetch_installed_packages()
@@ -108,7 +110,8 @@ class PackageFetcherTestCase(unittest.TestCase):
 	def testFetch_package_updates(self):
 		# arrange
 		ch_log_parser = Mock()
-		fetcher = package_fetcher.PackageFetcher(ch_log_parser)
+		executor = Mock()
+		fetcher = package_fetcher.PackageFetcher(ch_log_parser,executor)
 		
 		# act
 		result = fetcher.get_package_updates()
@@ -125,13 +128,29 @@ class PackageFetcherTestCase(unittest.TestCase):
 		self.assertNotEquals(first_package.release, None)
 		self.assertNotEquals(first_package.arch, None)
 		
-	def testGetPackageChangeLog(self):
+	def testGetPackageChangeLogMock(self):
 		# arrange
+		ch_log_parser = Mock()
+		ch_log_parser.parse = Mock(return_value='the changelog info')
+		executor = Mock()
+		executor.run_command = Mock(return_value='the raw output')
+		fetcher = package_fetcher.PackageFetcher(ch_log_parser,executor)
 		
 		# act
+		result = fetcher.get_package_changelog('bash', '1.2', '33')
 		
 		# assert
-		raise 'write test'
+		self.assertEquals(result, 'the changelog info')
+		
+	def testGetPackageChangeLogReal(self):
+		# arrange
+		fetcher = package_fetcher.PackageFetcher(package_fetcher.ChangeLogParser(),mockable_execute.MockableExecute())
+
+		# act
+		result = fetcher.get_package_changelog('bash', '4.2.45', '5.el7_0.4')
+
+		# assert
+		self.assertNotEquals(result, None)
 		
 if __name__ == "__main__":
             unittest.main()
