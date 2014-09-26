@@ -41,9 +41,9 @@ class ChangeLogParser:
 	
 	def parse(self,output,name,version,release):
 		regex = self.get_regex(name,version,release)				
-		match = regex.match(output)
+		match = regex.match(output)		
 		if match == None:
-			raise Exception("Unable to parse changelog for package %s version %s release %s" % (name,version,release))
+			return "Unable to parse changelog for package %s version %s release %s" % (name,version,release)
 		return match.group(1)
 
 class PackageFetcher:

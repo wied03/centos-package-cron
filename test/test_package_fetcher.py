@@ -100,15 +100,10 @@ class ChangeLogParserTestCase(unittest.TestCase):
 		output = open('changelog_raw_output.txt').read()
 		
 		# act
-		try:
-			parser.parse(output,'bash','4.4','5.el7_0.4')
-		except Exception as e:
-			if str(e) == 'Unable to parse changelog for package bash version 4.4 release 5.el7_0.4':
-				pass
-			else:
-				raise
-		else:
-			fail("Expected exception")		
+		result = parser.parse(output,'bash','4.4','5.el7_0.4')
+		
+		# assert
+		self.assertEquals(result,'Unable to parse changelog for package bash version 4.4 release 5.el7_0.4')
 
 class PackageFetcherTestCase(unittest.TestCase):
 	def testfetch_installed_packages(self):
