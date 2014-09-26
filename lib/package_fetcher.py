@@ -16,10 +16,19 @@ class Package:
 		return self.__str__()
 		
 class ChangeLogParser:
-	def get_log_version_num(self,version,release):
-		match = re.match(r'^.*(\d+)\.el\S+\.(\d+)$', release)
-		base = version + '-'
-		return base + match.group(1) + '.' + match.group(2) if match else base + release
+	def get_log_version_num_with_release_suffix(self,version,release):
+		match = re.match(r'^.*?(\S+)\.el\S+\.(\d+)$', release)
+		return version + '-' + match.group(1) + '.' + match.group(2) if match else None
+	
+	def get_log_version_num_without_release_suffix(self,version,release):
+		match = re.match(r'^.*?(\S+)\.el\S+$', release)
+		return version + '-' + match.group(1)  if match else None
+	
+	def get_log_version_num(self,version,release):	
+		regexed_march = self.get_log_version_num_with_release_suffix(version,release)
+		if regexed_march == None:
+			regexed_march = self.get_log_version_num_without_release_suffix(version,release)
+		return regexed_march if regexed_march else version + '-' + release
 					
 	def get_regex_pattern(self,name,version,release):
 		ver = self.get_log_version_num(version,release)
@@ -34,7 +43,7 @@ class ChangeLogParser:
 		regex = self.get_regex(name,version,release)				
 		match = regex.match(output)
 		if match == None:
-			raise Exception("Unable to parse changelog for package %s" % (name))
+			raise Exception("Unable to parse changelog for package %s version %s release %s" % (name,version,release))
 		return match.group(1)
 
 class PackageFetcher:

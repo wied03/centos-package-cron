@@ -8,6 +8,26 @@ from mock import Mock
 import mockable_execute
 
 class ChangeLogParserTestCase(unittest.TestCase):
+	def testGet_log_version_num_suffix(self):
+		# arrange
+		parser = package_fetcher.ChangeLogParser()
+		
+		# act
+		result = parser.get_log_version_num('1.0.1e','34.el7_0.4')
+		
+		# assert
+		self.assertEquals(result,'1.0.1e-34.4')
+	
+	def testGet_log_version_num_no_suffix(self):
+		# arrange
+		parser = package_fetcher.ChangeLogParser()
+		
+		# act
+		result = parser.get_log_version_num('2014.1.98','70.0.el7_0')
+		
+		# assert
+		self.assertEquals(result,'2014.1.98-70.0')
+	
 	def testGet_log_version_num_rhel_7(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
@@ -69,6 +89,24 @@ class ChangeLogParserTestCase(unittest.TestCase):
 """
 		self.assertEquals(results,expected_output)
 		
+	def testParseAnotherVersionString(self):
+		# arrange
+		parser = package_fetcher.ChangeLogParser()
+		output = open('changelog_raw_output_example3.txt').read()
+		
+		# act
+		results = parser.parse(output,'ca-certificates','2014.1.98','70.0.el7_0')
+		
+		# assert
+		expected_output = """* Thu Sep 11 07:00:00 2014 Kai Engert <kaie@redhat.com> - 2014.1.98-70.0
+- update to CKBI 1.98 from NSS 3.16.1
+- building on RHEL 7 no longer requires java-openjdk
+- added more detailed instructions for release numbers on RHEL branches,
+  to avoid problems when rebasing on both z- and y-stream branches.
+
+"""
+		self.assertEquals(results,expected_output)
+		
 	def testNotFound(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
@@ -78,7 +116,7 @@ class ChangeLogParserTestCase(unittest.TestCase):
 		try:
 			parser.parse(output,'bash','4.4','5.el7_0.4')
 		except Exception as e:
-			if str(e) == 'Unable to parse changelog for package bash':
+			if str(e) == 'Unable to parse changelog for package bash version 4.4 release 5.el7_0.4':
 				pass
 			else:
 				raise
@@ -142,12 +180,22 @@ class PackageFetcherTestCase(unittest.TestCase):
 		# assert
 		self.assertEquals(result, 'the changelog info')
 		
-	def testGetPackageChangeLogReal(self):
+	def testGetPackageChangeLogRealBash(self):
 		# arrange
 		fetcher = package_fetcher.PackageFetcher(package_fetcher.ChangeLogParser(),mockable_execute.MockableExecute())
 
 		# act
 		result = fetcher.get_package_changelog('bash', '4.2.45', '5.el7_0.4')
+
+		# assert
+		self.assertNotEquals(result, None)
+		
+	def testGetPackageChangeLogRealXulRunner(self):
+		# arrange
+		fetcher = package_fetcher.PackageFetcher(package_fetcher.ChangeLogParser(),mockable_execute.MockableExecute())
+
+		# act
+		result = fetcher.get_package_changelog('xulrunner', '24.8.0', '1.el7.centos')
 
 		# assert
 		self.assertNotEquals(result, None)
