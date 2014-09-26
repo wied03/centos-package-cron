@@ -59,11 +59,12 @@ class ChangeLogParserTestCase(unittest.TestCase):
 		output = open('changelog_raw_output_example2.txt').read()
 
 		# act
-		results = parser.parse(output,'xulrunner','24.8.0-1','1.el7.centos')
+		results = parser.parse(output,'xulrunner','24.8.0','1.el7.centos')
 
 		# assert
 		expected_output = """* Wed Sep  3 07:00:00 2014 CentOS Sources <bugs@centos.org> - 24.8.0-1.el7.centos
-		- Change default prefs to CentOS
+- Change default prefs to CentOS
+
 """
 		self.assertEquals(results,expected_output)
 		
