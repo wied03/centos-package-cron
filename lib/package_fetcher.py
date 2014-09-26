@@ -7,6 +7,10 @@ class Package:
 		self.name = name
 		self.version = version
 		self.release = release
+	def __str__(self):
+		return "Package %s-%s-%s" % (self.name, self.version, self.release)
+	def __repr__(self):
+		return self.__str__()
 
 class PackageFetcher:
 	def fetch_installed_packages(self):
