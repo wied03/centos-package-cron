@@ -10,6 +10,26 @@ from centos_package_cron.errata_fetcher import ErrataSeverity
 from mock import Mock
 
 class PackageCheckerTest(unittest.TestCase):
+	def testSameVersionOfAnotherPackageInstalled(self):
+		# arrange
+		errata = Mock()
+		errata.get_errata = Mock(return_value=[		
+		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['i686','x86_64'], ['7'], [{'name': 'libcacard-tools','version':'1.5.3', 'release':'60.el7_0.5', 'arch':'x86_64'}])
+		])
+		pkg = Mock()
+		pkg.fetch_installed_packages = Mock(return_value=[
+				package_fetcher.Package('libgcrypt', '1.5.3', '4.el7', 'x86_64')
+		])
+		os_fetcher = Mock()
+		os_fetcher.get_top_level_version = Mock(return_value='7')
+		checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
+		
+		# act
+		result = checker.findAdvisoriesOnInstalledPackages()
+		
+		# assert
+		assert result == []
+	
 	def testFindAdvisoriesOnInstalledPackagesNotInstalled(self):
 		# arrange		
 		errata = Mock()
