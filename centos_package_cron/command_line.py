@@ -5,7 +5,8 @@ import os_version_fetcher
 import mockable_execute
 
 def main():
-	pkg_fetcher = package_fetcher.PackageFetcher(package_fetcher.ChangeLogParser(),mockable_execute.MockableExecute())
+	executor = mockable_execute.MockableExecute()
+	pkg_fetcher = package_fetcher.PackageFetcher(package_fetcher.ChangeLogParser(),executor)
 	checker = package_checker.PackageChecker(errata_fetcher.ErrataFetcher(),pkg_fetcher,os_version_fetcher.OsVersionFetcher())
 
 	send_email = False
@@ -30,7 +31,7 @@ def main():
 			changelog_entry = next(cl for cl in changelogs if cl['name'] == update.name)			
 			email_content += "Updated package %s version %s release %s, change log:\n%s\n\n" % (update.name, update.version, update.release, changelog_entry['changelog'])
 		
-		print "Sending email with contents %s" % (email_content)
+		executor.run_command(['/usr/bin/mail', '-s theSubject', '-r joefrom@rcn.com', 'vagrant'], email_content)
 
 if __name__ == "__main__" :
     main()
