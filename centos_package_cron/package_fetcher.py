@@ -24,29 +24,26 @@ class ChangeLogParser:
 		match = re.match(r'^.*?(\S+)\.el\S+$', release)
 		return version + '-' + match.group(1)  if match else None
 	
-	def get_log_version_num(self,version,release):	
-		regexed_march = self.get_log_version_num_with_release_suffix(version,release)
-		if regexed_march == None:
-			regexed_march = self.get_log_version_num_without_release_suffix(version,release)
-		return regexed_march if regexed_march else version + '-' + release
+	def get_log_version_nums(self,version,release): 
+		versions = [self.get_log_version_num_with_release_suffix(version,release),
+		self.get_log_version_num_without_release_suffix(version,release),
+		version + '-' + release]
+		return list(filter(lambda v: v != None,versions))
 					
-	def get_regex_pattern(self,name,version,release):
-		ver = self.get_log_version_num(version,release)
-		escaped = re.escape(ver)
+	def get_regex_patterns(self,name,version,release):
+		versions = self.get_log_version_nums(version,release)
 		escaped_package_name = re.escape(name)
-		return r'.*^(?:\d+\:){0,1}' + escaped_package_name +r'.*?(^\*.*? ' + escaped + r'.*?)^\*.*'
+		pattern_former = lambda v: r'.*^(?:\d+\:){0,1}' + escaped_package_name +r'.*?(^\*.*? ' + re.escape(v) + r'.*?)^\*.*'		
+		patterns = map(pattern_former,versions)
+		return patterns
 	
-	def get_regex(self,name,version,release):
-		pattern = self.get_regex_pattern(name,version,release)
-		try:
-			return re.compile(pattern,re.MULTILINE | re.DOTALL)
-		except:
-			print "problem putting together regex from pattern %s" % (pattern)
-			raise
+	def get_regexes(self,name,version,release):
+		return map(lambda pat: re.compile(pat,re.MULTILINE | re.DOTALL), self.get_regex_patterns(name,version,release))		
 	
 	def parse(self,output,name,version,release):
-		regex = self.get_regex(name,version,release)				
-		match = regex.match(output)		
+		regexes = self.get_regexes(name,version,release)
+		matches = map(lambda r: r.match(output), regexes)
+		match = next((match for match in matches if match != None), None)	
 		if match == None:
 			return "Unable to parse changelog for package %s version %s release %s" % (name,version,release)
 		return match.group(1)

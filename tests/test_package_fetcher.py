@@ -8,45 +8,45 @@ from mock import Mock
 from centos_package_cron import mockable_execute
 
 class ChangeLogParserTestCase(unittest.TestCase):
-	def testGet_log_version_num_selinux(self):
+	def testGet_log_version_nums_selinux(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
 		
 		# act
-		result = parser.get_log_version_num('3.12.1','153.el7_0.11')
+		result = parser.get_log_version_nums('3.12.1','153.el7_0.11')
 		
 		# assert
-		assert result == '3.12.1-153.el7_0.11'
+		assert result == ['3.12.1-153.11', '3.12.1-153', '3.12.1-153.el7_0.11']
 	
-	def testGet_log_version_num_suffix(self):
+	def testGet_log_version_nums_suffix(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
 		
 		# act
-		result = parser.get_log_version_num('1.0.1e','34.el7_0.4')
+		result = parser.get_log_version_nums('1.0.1e','34.el7_0.4')
 		
 		# assert
-		self.assertEquals(result,'1.0.1e-34.4')
+		assert result == ['1.0.1e-34.4', '1.0.1e-34', '1.0.1e-34.el7_0.4']
 	
-	def testGet_log_version_num_no_suffix(self):
+	def testGet_log_version_nums_no_suffix(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
 		
 		# act
-		result = parser.get_log_version_num('2014.1.98','70.0.el7_0')
+		result = parser.get_log_version_nums('2014.1.98','70.0.el7_0')
 		
 		# assert
-		self.assertEquals(result,'2014.1.98-70.0')
+		assert result == ['2014.1.98-70.0', '2014.1.98-70.0.el7_0']
 	
-	def testGet_log_version_num_rhel_7(self):
+	def testGet_log_version_nums_rhel_7(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
 		
 		# act
-		result = parser.get_log_version_num('4.2.45','5.el7_0.4')
+		result = parser.get_log_version_nums('4.2.45','5.el7_0.4')
 		
 		# assert
-		self.assertEquals(result,'4.2.45-5.4')
+		assert result ==  ['4.2.45-5.4', '4.2.45-5', '4.2.45-5.el7_0.4']
 		
 	def testParseStandardRhel(self):
 		# arrange
@@ -73,9 +73,10 @@ class ChangeLogParserTestCase(unittest.TestCase):
 		results = parser.parse(output,'selinux-policy-targeted', '3.12.1', '153.el7_0.11')
 		
 		# assert
-		expected_output = """* Thu Sep 25 07:00:00 2014 Ondrej Oprala <ooprala@redhat.com> - 4.2.45-5.4
-- CVE-2014-7169
-  Resolves: #1146324
+		expected_output = """* Fri Aug 22 07:00:00 2014 Miroslav Grepl <mgrepl@redhat.com> 3.12.1-153.el7_0.11
+- Back port OpenStack fixes
+- Allow mdadm to connect to own socket created by mdadm running as kernel_t
+Resolves:#1132828
 
 """
 		self.assertEquals(results,expected_output)
