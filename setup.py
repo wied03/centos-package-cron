@@ -9,4 +9,5 @@ setup(name='centos-package-cron',
       author_email='support@bswtechconsulting.com',
       url='https://github.com/wied03/centos-package-cron',
       packages=['centos-package-cron'],
+      test_suite="tests",
      )
