@@ -8,6 +8,16 @@ from mock import Mock
 from centos_package_cron import mockable_execute
 
 class ChangeLogParserTestCase(unittest.TestCase):
+	def testGet_log_version_num_selinux(self):
+		# arrange
+		parser = package_fetcher.ChangeLogParser()
+		
+		# act
+		result = parser.get_log_version_num('3.12.1','153.el7_0.11')
+		
+		# assert
+		assert result == '3.12.1-153.el7_0.11'
+	
 	def testGet_log_version_num_suffix(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
@@ -36,18 +46,15 @@ class ChangeLogParserTestCase(unittest.TestCase):
 		result = parser.get_log_version_num('4.2.45','5.el7_0.4')
 		
 		# assert
-		self.assertEquals(result,'4.2.45-5.4')	
-		
-	@classmethod
-	def setup_class(cls):
-	   cls.output = open('tests/complete_log.txt').read()
+		self.assertEquals(result,'4.2.45-5.4')
 		
 	def testParseStandardRhel(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
+		output = open('tests/changelog_bash.txt').read()
 		
 		# act
-		results = parser.parse(ChangeLogParserTestCase.output,'bash','4.2.45','5.el7_0.4')
+		results = parser.parse(output,'bash','4.2.45','5.el7_0.4')
 		
 		# assert
 		expected_output = """* Thu Sep 25 07:00:00 2014 Ondrej Oprala <ooprala@redhat.com> - 4.2.45-5.4
@@ -60,9 +67,10 @@ class ChangeLogParserTestCase(unittest.TestCase):
 	def testParseSeLinux(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
+		output = open('tests/changelog_selinux-policy-targeted.txt').read()
 		
 		# act
-		results = parser.parse(ChangeLogParserTestCase.output,'selinux-policy-targeted', '3.12.1', '153.el7_0.11')
+		results = parser.parse(output,'selinux-policy-targeted', '3.12.1', '153.el7_0.11')
 		
 		# assert
 		expected_output = """* Thu Sep 25 07:00:00 2014 Ondrej Oprala <ooprala@redhat.com> - 4.2.45-5.4
@@ -92,9 +100,10 @@ class ChangeLogParserTestCase(unittest.TestCase):
 	def testPackageInMiddle(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
+		output = open('tests/changelog_nss-tools.txt').read()
 		
 		# act
-		results = parser.parse(ChangeLogParserTestCase.output,'nss-tools','3.16.2', '7.el7_0')
+		results = parser.parse(output,'nss-tools','3.16.2', '7.el7_0')
 		
 		# assert
 		expected_output = """* Wed Sep 24 07:00:00 2014 Elio Maldonado <emaldona@redhat.com> - 3.16.2-7
@@ -106,9 +115,10 @@ class ChangeLogParserTestCase(unittest.TestCase):
 	def testParseCentos(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
+		output = open('tests/changelog_openssl.txt').read()
 
 		# act
-		results = parser.parse(ChangeLogParserTestCase.output,'openssl','1.0.1e','34.el7_0.4')
+		results = parser.parse(output,'openssl','1.0.1e','34.el7_0.4')
 
 		# assert
 		expected_output = """* Fri Aug  8 07:00:00 2014 Tomáš Mráz <tmraz@redhat.com> 1.0.1e-34.4
@@ -126,9 +136,10 @@ class ChangeLogParserTestCase(unittest.TestCase):
 	def testParseAnotherVersionString(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
+		output = open('tests/changelog_ca-certificates.txt').read()
 		
 		# act
-		results = parser.parse(ChangeLogParserTestCase.output,'ca-certificates','2014.1.98','70.0.el7_0')
+		results = parser.parse(output,'ca-certificates','2014.1.98','70.0.el7_0')
 		
 		# assert
 		expected_output = """* Thu Sep 11 07:00:00 2014 Kai Engert <kaie@redhat.com> - 2014.1.98-70.0
@@ -143,9 +154,10 @@ class ChangeLogParserTestCase(unittest.TestCase):
 	def testNotFound(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
+		output = open('tests/changelog_bash.txt').read()
 		
 		# act
-		result = parser.parse(ChangeLogParserTestCase.output,'bash','4.4','5.el7_0.4')
+		result = parser.parse(output,'bash','4.4','5.el7_0.4')
 		
 		# assert
 		self.assertEquals(result,'Unable to parse changelog for package bash version 4.4 release 5.el7_0.4')
