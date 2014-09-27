@@ -1,4 +1,5 @@
 *.pyc
 centos-package-cron-*
+centos_package_cron.egg-info
 dist
 MANIFEST
