@@ -1,3 +1,4 @@
 *.pyc
 centos-package-cron-*
+dist
 MANIFEST
