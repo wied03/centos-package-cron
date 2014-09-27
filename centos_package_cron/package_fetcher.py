@@ -33,11 +33,16 @@ class ChangeLogParser:
 	def get_regex_pattern(self,name,version,release):
 		ver = self.get_log_version_num(version,release)
 		escaped = re.escape(ver)
-		return r'.*^(?:\d+\:){0,1}' + name +r'.*?(^\*.*? ' + escaped + r'.*?)^\*.*'
+		escaped_package_name = re.escape(name)
+		return r'.*^(?:\d+\:){0,1}' + escaped_package_name +r'.*?(^\*.*? ' + escaped + r'.*?)^\*.*'
 	
 	def get_regex(self,name,version,release):
 		pattern = self.get_regex_pattern(name,version,release)
-		return re.compile(pattern,re.MULTILINE | re.DOTALL)
+		try:
+			return re.compile(pattern,re.MULTILINE | re.DOTALL)
+		except:
+			print "problem putting together regex from pattern %s" % (pattern)
+			raise
 	
 	def parse(self,output,name,version,release):
 		regex = self.get_regex(name,version,release)				

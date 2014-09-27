@@ -38,13 +38,16 @@ class ChangeLogParserTestCase(unittest.TestCase):
 		# assert
 		self.assertEquals(result,'4.2.45-5.4')	
 		
+	@classmethod
+	def setup_class(cls):
+	   cls.output = open('tests/complete_log.txt').read()
+		
 	def testParseStandardRhel(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
-		output = open('tests/complete_log.txt').read()
 		
 		# act
-		results = parser.parse(output,'bash','4.2.45','5.el7_0.4')
+		results = parser.parse(ChangeLogParserTestCase.output,'bash','4.2.45','5.el7_0.4')
 		
 		# assert
 		expected_output = """* Thu Sep 25 07:00:00 2014 Ondrej Oprala <ooprala@redhat.com> - 4.2.45-5.4
@@ -54,13 +57,27 @@ class ChangeLogParserTestCase(unittest.TestCase):
 """
 		self.assertEquals(results,expected_output)
 		
+	def testParseWithRegexCharInPackageName(self):
+		# arrange
+		parser = package_fetcher.ChangeLogParser()
+		
+		# act
+		results = parser.parse(ChangeLogParserTestCase.output,'libstdc++','4.8.2','16.2.el7_0')
+		
+		# assert
+		expected_output = """* Thu Sep 25 07:00:00 2014 Ondrej Oprala <ooprala@redhat.com> - 4.2.45-5.4
+- CVE-2014-7169
+  Resolves: #1146324
+
+"""		
+		assert results == expected_output		
+		
 	def testParseCentos(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
-		output = open('tests/complete_log.txt').read()
 
 		# act
-		results = parser.parse(output,'openssl','1.0.1e','34.el7_0.4')
+		results = parser.parse(ChangeLogParserTestCase.output,'openssl','1.0.1e','34.el7_0.4')
 
 		# assert
 		expected_output = """* Fri Aug  8 07:00:00 2014 Tomáš Mráz <tmraz@redhat.com> 1.0.1e-34.4
@@ -78,10 +95,9 @@ class ChangeLogParserTestCase(unittest.TestCase):
 	def testParseAnotherVersionString(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
-		output = open('tests/complete_log.txt').read()
 		
 		# act
-		results = parser.parse(output,'ca-certificates','2014.1.98','70.0.el7_0')
+		results = parser.parse(ChangeLogParserTestCase.output,'ca-certificates','2014.1.98','70.0.el7_0')
 		
 		# assert
 		expected_output = """* Thu Sep 11 07:00:00 2014 Kai Engert <kaie@redhat.com> - 2014.1.98-70.0
@@ -96,10 +112,9 @@ class ChangeLogParserTestCase(unittest.TestCase):
 	def testNotFound(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
-		output = open('tests/complete_log.txt').read()
 		
 		# act
-		result = parser.parse(output,'bash','4.4','5.el7_0.4')
+		result = parser.parse(ChangeLogParserTestCase.output,'bash','4.4','5.el7_0.4')
 		
 		# assert
 		self.assertEquals(result,'Unable to parse changelog for package bash version 4.4 release 5.el7_0.4')
