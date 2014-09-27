@@ -57,7 +57,6 @@ class PackageFetcher:
 		self.yb = yum.YumBase()
 		self.yb.setCacheDir()
 		self.executor = executor
-		self.changelog_raw = None
 	
 	def fetch_installed_packages(self):		
 		packages = self.yb.rpmdb.returnPackages()
@@ -70,7 +69,6 @@ class PackageFetcher:
 		return result
 		
 	def get_package_changelog(self,name,version,release):
-		output = self.changelog_raw if self.changelog_raw != None else self.executor.run_command(['/usr/bin/yum','changelog','updates',name])
-		self.changelog_raw = output
+		output = self.executor.run_command(['/usr/bin/yum','changelog','updates', name])
 		return self.changelog_parser.parse(output,name,version,release)
 		

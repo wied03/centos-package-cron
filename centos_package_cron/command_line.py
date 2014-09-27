@@ -17,7 +17,7 @@ def main():
 	changelogs = []
 	if len(general_updates) > 0:
 		send_email = True
-		#changelogs = map(lambda pkg: { 'name': pkg.name, 'changelog': pkg_fetcher.get_package_changelog(pkg.name,pkg.version,pkg.release)},general_updates)
+		changelogs = map(lambda pkg: { 'name': pkg.name, 'changelog': pkg_fetcher.get_package_changelog(pkg.name,pkg.version,pkg.release)},general_updates)
 	
 	if send_email == True:
 		email_content = 'The following security advisories exist for installed packages:\n\n'
@@ -27,9 +27,8 @@ def main():
 			email_content += "Advisory ID: %s Severity: %s Packages: %s\n" % (advisory.advisory_id, advisory.severity, label)
 		email_content += "\n\n"
 		for update in general_updates:
-			#changelog_entry = next(cl for cl in changelogs if cl['name'] == update.name)
-			changelog_entry = 'foo'
-			email_content += "Package %s Changelog %s" % (update.name, changelog_entry)
+			changelog_entry = next(cl for cl in changelogs if cl['name'] == update.name)			
+			email_content += "Updated package %s version %s release %s, change log:\n%s\n\n" % (update.name, update.version, update.release, changelog_entry['changelog'])
 		
 		print "Sending email with contents %s" % (email_content)
 

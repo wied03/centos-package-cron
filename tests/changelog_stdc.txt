@@ -1,0 +1,527 @@
+Loaded plugins: changelog, fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: mirror.spro.net
+ * epel: ftp.cse.buffalo.edu
+ * extras: centos.mirror.ndchost.com
+ * updates: mirror.nexcess.net
+
+Listing all changelogs
+
+==================== Updated Packages ====================
+libstdc++-4.8.2-16.2.el7_0.x86_64        updates
+* Wed Aug  6 07:00:00 2014 Jakub Jelinek <jakub@redhat.com> 4.8.2-16.2
+- backport two further OpenMP 4.0 libgomp tasking fixes (#1121077)
+- fix scheduler wrong-code with DEBUG_INSNs containing volatile ASM_OPERANDS
+  (#1127120, PR rtl-optimization/61801)
+
+* Fri Jul 18 07:00:00 2014 Jakub Jelinek <jakub@redhat.com> 4.8.2-16.1
+- backport OpenMP 4.0 support to libgomp (library only; #1121077,
+  PR libgomp/58691)
+
+* Mon Mar  3 06:00:00 2014 Jakub Jelinek <jakub@redhat.com> 4.8.2-16
+- fix up compare_exchange_* in libatomic too (PR c++/60272)
+
+* Thu Feb 20 06:00:00 2014 Jakub Jelinek <jakub@redhat.com> 4.8.2-15
+- fix exception spec instantiation ICE (#1067398, PR c++/60046)
+- fix pch on aarch64 (#1058991, PR pch/60010)
+- configure with --enable-gnu-indirect-function on architectures
+  and distros that support it and don't support it by default
+  yet (#1067245)
+- fix vector permutation handling on i?86/x86_64 (PR target/57896)
+- fix __atomic_compare_exchange_* not to store into *expected
+  on success (PR c++/60272)
+- fix -march=native on VMs where saving/restoring of YMM state
+  is not supported, yet CPU supports f16c (PR driver/60233)
+- add ref7.C testcase (PR c++/60274)
+
+* Wed Feb 19 06:00:00 2014 Jakub Jelinek <jakub@redhat.com> 4.8.2-14
+- remove libgo P.224 elliptic curve (#1066539)
+- fix -mcpu=power8 ICE (#1064242, PR target/60137)
+
+* Tue Jan 21 06:00:00 2014 Jakub Jelinek <jakub@redhat.com> 4.8.2-13
+- when removing -Wall from CXXFLAGS, if -Werror=format-security
+  is present, add -Wformat to it, so that GCC builds on F21
+
+* Mon Jan 20 06:00:00 2014 Jakub Jelinek <jakub@redhat.com> 4.8.2-12
+- update from the 4.8 branch (#1052892)
+  - PRs c++/59838, debug/54694, fortran/34547, fortran/58410,
+	middle-end/59827, middle-end/59860, target/58139, target/59142,
+	target/59695, target/59794, target/59826, target/59839
+- fix handling of initialized vars with flexible array members
+  (#1035413, PR middle-end/28865)
+
+* Wed Jan 15 06:00:00 2014 Jakub Jelinek <jakub@redhat.com> 4.8.2-11
+- update from the 4.8 branch
+  - fix s390x reload bug (#1052372, PR target/59803)
+
+* Tue Jan 14 06:00:00 2014 Jakub Jelinek <jakub@redhat.com> 4.8.2-10
+- update from the 4.8 branch (#1052892)
+  - PRs ada/55946, ada/59772, c++/56060, c++/58954, c++/59255, c++/59730,
+	fortran/57042, fortran/58998, fortran/59493, fortran/59612,
+	fortran/59654, ipa/59610, middle-end/59584, pch/59436,
+	rtl-optimization/54300, rtl-optimization/58668,
+	rtl-optimization/59137, rtl-optimization/59647,
+	rtl-optimization/59724, target/57386, target/59587, target/59625,
+	target/59652, testsuite/58630, tree-optimization/54570,
+	tree-optimization/59125, tree-optimization/59362,
+	tree-optimization/59715, tree-optimization/59745
+- default to -march=z196 instead of -march=z10 on s390/s390x (#1052890)
+
+* Fri Jan 10 06:00:00 2014 Jakub Jelinek <jakub@redhat.com> 4.8.2-9
+- define %global _performance_build 1 (#1051064)
+
+* Tue Jan  7 06:00:00 2014 Jakub Jelinek <jakub@redhat.com> 4.8.2-8
+- treat ppc64p7 as ppc64 (#1048859)
+
+* Thu Dec 12 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.2-7
+- update from the 4.8 branch
+  - PRs libgomp/59467, rtl-optimization/58295, target/56807,
+	testsuite/59442
+  - fix LRA coalescing for real (PR middle-end/59470)
+
+* Wed Dec 11 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.2-6
+- temporarily revert PR middle-end/58956 to avoid libstdc++
+  miscompilation on i?86 (PR middle-end/59470)
+
+* Mon Dec  9 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.2-5
+- update from the 4.8 branch
+  - PRs ada/59382, bootstrap/57683, c++/58162, c++/59031, c++/59032,
+	c++/59044, c++/59052, c++/59268, c++/59297, c/59280, c/59351,
+	fortran/57445, fortran/58099, fortran/58471, fortran/58771,
+	middle-end/58742, middle-end/58941, middle-end/58956,
+	middle-end/59011, middle-end/59037, middle-end/59138,
+	rtl-optimization/58726, target/50751, target/51244, target/56788,
+	target/58854, target/58864, target/59021, target/59088,
+	target/59101, target/59153, target/59163, target/59207,
+	target/59343, target/59405, tree-optimization/57517,
+	tree-optimization/58137, tree-optimization/58143,
+	tree-optimization/58653, tree-optimization/58794,
+	tree-optimization/59014, tree-optimization/59047,
+	tree-optimization/59139, tree-optimization/59164,
+	tree-optimization/59288, tree-optimization/59330,
+	tree-optimization/59334, tree-optimization/59358,
+	tree-optimization/59388
+- aarch64 gcj enablement (#1023789)
+- look for libgfortran.spec and libitm.spec in %{_lib} rather than lib
+  subdirs (#1023789)
+
+* Mon Nov 11 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.2-4
+- update from the 4.8 branch
+  - PRs plugins/52872, regression/58985, target/59034
+
+* Wed Nov  6 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.2-3
+- update from the 4.8 branch
+  - PRs c++/58282, c++/58979, fortran/58355, fortran/58989, libstdc++/58839,
+	libstdc++/58912, libstdc++/58952, lto/57084, middle-end/58789,
+	rtl-optimization/58079, rtl-optimization/58831, rtl/58542,
+	target/58690, target/58779, target/58792, target/58838,
+	tree-optimization/57488, tree-optimization/58805,
+	tree-optimization/58984
+- fix ICEs in get_bit_range (PR middle-end/58970)
+- fix ICEs in RTL loop unswitching (PR rtl-optimization/58997)
+
+* Sun Oct 20 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.2-2
+- update from the 4.8 branch
+  - PRs c++/58596, libstdc++/58800
+- power8 TImode fix (#1014053, PR target/58673)
+
+* Thu Oct 17 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.2-1
+- update from the 4.8 branch
+  - GCC 4.8.2 release
+  - PRs c++/57850, c++/58633, libstdc++/58191
+
+* Thu Oct 10 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.1-12
+- update from the 4.8 branch
+  - PRs c++/58568, fortran/55469, fortran/57697, fortran/58469,
+	libstdc++/57465, libstdc++/57641, libstdc++/58659, target/58460,
+	tree-optimization/58539
+  - fix asm goto handling (#1017704, PR middle-end/58670)
+
+* Wed Oct  2 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.1-11
+- update from the 4.8 branch
+  - PRs c++/58535, libstdc++/58437, libstdc++/58569, middle-end/56791,
+	middle-end/58463, middle-end/58564, target/58330,
+	tree-optimization/56716
+  - fix s390x z10+ chunkification (#1012870, PR target/58574)
+- disable ppc{,64} -mvsx-timode by default (#1014053, PR target/58587)
+
+* Fri Sep 20 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.1-10
+- update from the 4.8 branch
+  - PRs ada/58264, c++/58457, c++/58458, libstdc++/58358,
+	tree-optimization/58088
+- on RHEL7, configure on ppc/ppc64 with default -mcpu=power7,
+  on s390/s390x with default -march=z10 -mtune=zEC12 and
+  on i?86 default to -march=x86-64 -mtune=generic (#805157)
+- on Fedora 20+ and RHEL7 default to -fdiagnostics-color=auto
+  rather than -fdiagnostics-color=never, if GCC_COLORS isn't
+  in the environment; to turn it off by default, set GCC_COLORS=
+  in the environment
+
+* Sun Sep 15 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.1-9
+- update from the 4.8 branch
+  - PRs c++/58273, libstdc++/58415, middle-end/58377, rtl-optimization/58365,
+	target/58314, target/58361, target/58382, tree-optimization/58385
+- add arm_neon.h on aarch64 (#1007490)
+
+* Mon Sep  9 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.1-8
+- update from the 4.8 branch
+  - PRs c++/58325, libstdc++/58302, libstdc++/58341, middle-end/57656,
+	other/12081, target/57735, tree-optimization/57521,
+	tree-optimization/57685, tree-optimization/58010,
+	tree-optimization/58223, tree-optimization/58228,
+	tree-optimization/58246, tree-optimization/58277,
+	tree-optimization/58364
+
+* Thu Aug 29 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.1-7
+- update from the 4.8 branch
+  - PRs c++/58083, c++/58119, c++/58190, fortran/57798, fortran/58185,
+	middle-end/56977, middle-end/57381, middle-end/58257, target/56979,
+	target/57865, target/57927, target/58218, tree-optimization/57343,
+	tree-optimization/57396, tree-optimization/57417,
+	tree-optimization/58006, tree-optimization/58164,
+	tree-optimization/58165, tree-optimization/58209
+- fix up x86-64 -mcmodel=large -fpic TLS GD and LD model
+  (#994244, PR target/58067)
+- power8 fusion support fixes (#731884, PR target/58160)
+
+* Wed Aug 14 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.1-6
+- update from the 4.8 branch
+  - PRs c++/57825, c++/57901, c++/57981, c++/58022, fortran/57435,
+	fortran/58058, libstdc++/56627, libstdc++/57914, libstdc++/58098,
+	middle-end/58041, rtl-optimization/57459, rtl-optimization/57708,
+	rtl-optimization/57878, sanitizer/56417, target/51784, target/57516,
+	target/58067, target/58132, tree-optimization/57980
+- power8 fusion support (#731884)
+- fix up ABI alignment patch (#947197)
+- fix up SRA with volatile struct accesses (PR tree-optimization/58145)
+
+* Wed Jul 17 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.1-5
+- update from the 4.8 branch
+  - PRs target/55656, target/55657
+  - update to Go 1.1.1
+- backport power8 HTM support from trunk (#731884)
+- backport s390 zEC12 HTM support from trunk
+
+* Mon Jul 15 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.1-4
+- update from the 4.8 branch
+  - PRs c++/57437, c++/57526, c++/57532, c++/57545, c++/57550, c++/57551,
+	c++/57645, c++/57771, c++/57831, fortran/57785,
+	rtl-optimization/57829, target/56102, target/56892, target/56987,
+	target/57506, target/57631, target/57736, target/57744,
+	target/57777, target/57792, target/57844
+- backport some raw-string literal handling fixes (#981029,
+  PRs preprocessor/57757, preprocessor/57824)
+- improve convert_to_* (PR c++/56493)
+- tune for power7 on RHEL7
+
+* Fri Jun 28 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.1-3
+- update from the 4.8 branch
+  - PRs c++/53211, c++/56544, driver/57652, libstdc++/57619, libstdc++/57666,
+	libstdc++/57674, rtl-optimization/57518, target/57623, target/57655,
+	tree-optimization/57358, tree-optimization/57537
+  - fix up gcc-{ar,nm,ranlib} (#974853, PR driver/57651)
+- fix two libitm HTM handling bugs (PR libitm/57643)
+- speed up __popcount[sdt]i2 library function (PR middle-end/36041)
+- backport power8 support from trunk (#731884, PR target/57615)
+- for Fedora 20+ test -fstack-protector-strong during %check instead
+  of -fstack-protector
+
+* Wed Jun 12 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.1-2
+- update from the 4.8 branch
+  - PRs fortran/57364, fortran/57508, target/56547, target/57379, target/57568
+- backport backwards compatible alignment ABI fixes (#947197, PR target/56564)
+- fix up widening multiplication vectorization on big-endian
+  (PR tree-optimization/57537)
+
+* Mon Jun  3 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.1-1
+- update from the 4.8 branch
+  - GCC 4.8.1 release
+  - PRs c++/56930, c++/57319, fortran/57217, target/49146, target/56742
+- backport Intel Silvermont enablement and tuning from trunk
+- backport 3 small AMD improvement patches from trunk
+
+* Sun May 26 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-8
+- update from the 4.8 branch
+  - std::chrono::steady_clock ABI fixes from 4.8.0-7
+
+* Fri May 24 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-7
+- update from the 4.8 branch
+  - PRs c++/57016, c++/57317, c++/57325, c++/57388, libffi/56033,
+	libstdc++/57336, middle-end/57344, middle-end/57347, plugins/56754,
+	rtl-optimization/57341, target/56732, target/57356,
+	tree-optimization/57303, tree-optimization/57318,
+	tree-optimization/57321, tree-optimization/57330, tree-ssa/57385
+  - std::chrono::steady_clock now really steady
+
+* Fri May 17 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-6
+- update from the 4.8 branch
+  - PRs c++/56782, c++/56998, c++/57041, c++/57196, c++/57243, c++/57252,
+	c++/57253, c++/57254, c++/57274, c++/57279, middle-end/57251,
+	rtl-optimization/57281, rtl-optimization/57300, target/45359,
+	target/46396, target/57264
+- backport color diagnostics support from trunk, enable with
+  -fdiagnostics-color=auto, -fdiagnostics-color=always or
+  having non-empty GCC_COLORS variable in environment
+- backport -fstack-protector-strong support from trunk
+
+* Fri May 10 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-5
+- update from the 4.8 branch
+  - PRs bootstrap/54281, bootstrap/54659, c++/57047, c++/57068, c++/57222,
+	fortran/57142, libstdc++/57212, middle-end/56988, target/55033,
+	target/57237, tree-optimization/57200, tree-optimization/57214
+- fix up strlen pass (PR tree-optimization/57230)
+
+* Tue May  7 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-4
+- update from the 4.8 branch
+  - PRs ada/56474, c++/50261, c++/56450, c++/56859, c++/56970, c++/57064,
+	c++/57092, c++/57183, debug/57184, fortran/51825, fortran/52512,
+	fortran/53685, fortran/56786, fortran/56814, fortran/56872,
+	fortran/56968, fortran/57022, libfortran/51825, libfortran/52512,
+	libfortran/56786, libstdc++/57010, middle-end/57103,
+	rtl-optimization/56605, rtl-optimization/56847,
+	rtl-optimization/57003, rtl-optimization/57130,
+	rtl-optimization/57131, rtl-optimizations/57046, sanitizer/56990,
+	target/44578, target/55445, target/56797, target/56866, target/57018,
+	target/57091, target/57097, target/57098, target/57106, target/57108,
+	target/57150, tree-optimization/57051, tree-optimization/57066,
+	tree-optimization/57083, tree-optimization/57104,
+	tree-optimization/57149, tree-optimization/57185
+  - fix gcj with -fsection-anchors (#952673, PR libgcj/57074)
+- enable libitm on s390{,x}
+- error when linking with both -fsanitize=address and -fsanitize=thread
+  (#957778)
+
+* Fri Apr 19 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-3
+- update from the 4.8 branch
+  - PRs c++/56388, fortran/56816, fortran/56994, rtl-optimization/56992,
+	target/56890, target/56903, target/56948, tree-optimization/56962,
+	tree-optimization/56984
+- fix up LRA caused miscompilation of xulrunner on i?86
+  (#949553, PR rtl-optimization/56999)
+- reassoc fix for -Ofast -frounding-math (PR tree-optimization/57000)
+
+* Fri Apr 12 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-2
+- update from the 4.8 branch
+  - PRs c++/35722, c++/45282, c++/52014, c++/52374, c++/52748, c++/54277,
+	c++/54359, c++/54764, c++/55532, c++/55951, c++/55972, c++/56039,
+	c++/56447, c++/56582, c++/56646, c++/56692, c++/56699, c++/56722,
+	c++/56728, c++/56749, c++/56772, c++/56774, c++/56793, c++/56794,
+	c++/56821, c++/56895, c++/56913, debug/56819, fortran/54932,
+	fortran/56696, fortran/56735, fortran/56737, fortran/56782,
+	libstdc++/55977, libstdc++/55979, libstdc++/56002, libstdc++/56678,
+	libstdc++/56834, lto/56777, middle-end/56694, middle-end/56768,
+	middle-end/56883, other/55274, rtl-optimization/48182,
+	rtl-optimization/56745, sanitizer/55702, target/54805, target/55487,
+	target/56560, target/56720, target/56771, tree-optimization/48184,
+	tree-optimization/48186, tree-optimization/48762,
+	tree-optimization/56407, tree-optimization/56501,
+	tree-optimization/56817, tree-optimization/56837,
+	tree-optimization/56899, tree-optimization/56918,
+	tree-optimization/56920
+
+* Fri Mar 22 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-1
+- update from the 4.8 branch
+  - GCC 4.8.0 release
+  - PRs c++/56607, other/43620
+  - fix length in .debug_aranges in some cases
+- improve debug info for optimized away global vars (PR debug/56608)
+- don't warn about signed 1-bit enum bitfields containing values 0 and -1
+  or just -1 (PR c/56566)
+
+* Wed Mar 20 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-0.18
+- update from the 4.8 branch
+  - PRs libstdc++/56468, target/56640, tree-optimization/56635,
+	tree-optimization/56661
+- package libasan_preinit.o
+
+* Sat Mar 16 07:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-0.17
+- update from trunk and the 4.8 branch
+  - PRs ada/52123, c++/51412, c++/51494, c++/51884, c++/52183, c++/56222,
+	c++/56346, c++/56565, c++/56567, c++/56611, c++/56614, debug/56307,
+	fortran/56575, fortran/56615, libstdc++/56492, libstdc++/56609,
+	libstdc++/56613, lto/56557, middle-end/56524, middle-end/56571,
+	target/40797, target/49880, target/56470, target/56591, target/56619,
+	testsuite/54119, tree-optimization/53265, tree-optimization/56478,
+	tree-optimization/56570, tree-optimization/56608
+
+* Thu Mar  7 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-0.16
+- updated from trunk
+  - PRs bootstrap/56509, c++/54383, c++/55135, c++/56464, c++/56530,
+	c++/56534, c++/56543, debug/55364, debug/56510, libquadmath/55473,
+	lto/50293, lto/56515, middle-end/50494, middle-end/56294,
+	middle-end/56525, middle-end/56526, middle-end/56548,
+	rtl-optimization/56484, rtl-optimization/56494, target/56529,
+	tree-optimization/56270, tree-optimization/56521,
+	tree-optimization/56539, tree-optimization/56559
+  - include arm-cores.def in gcc-python-plugin on arm (#910926)
+- include vxworks-dummy.h in gcc-python-plugin where needed (PR plugins/45078)
+
+* Mon Mar  4 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-0.15
+- updated from trunk
+  - PRs c++/10291, c++/40405, c++/52688, c++/55632, c++/55813, c++/56243,
+	c++/56358, c++/56359, c++/56377, c++/56395, c++/56403, c++/56419,
+	c++/56438, c++/56481, fortran/54730, fortran/56385, fortran/56416,
+	fortran/56477, fortran/56491, libfortran/30162, libstdc++/56011,
+	libstdc++/56012, middle-end/45472, middle-end/56077,
+	middle-end/56108, middle-end/56420, middle-end/56461,
+	rtl-optimization/50339, rtl-optimization/56466, sanitizer/56393,
+	sanitizer/56454, target/48901, target/52500, target/52501,
+	target/52550, target/54639, target/54640, target/54662, target/56444,
+	target/56445, target/56455, testsuite/52641, tree-optimization/55481,
+	tree-optimization/56175, tree-optimization/56294,
+	tree-optimization/56310, tree-optimization/56415,
+	tree-optimization/56426, tree-optimization/56443,
+	tree-optimization/56448
+- fnsplit fix (PR tree-optimization/56424)
+
+* Wed Feb 20 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-0.14
+- updated from trunk
+  - PRs asan/56330, c++/51242, c++/54276, c++/56373, libquadmath/56379,
+	middle-end/55889, middle-end/56349, pch/54117,
+	rtl-optimization/56348, target/52555, target/54685, target/56214,
+	target/56347, tree-optimization/55334, tree-optimization/56321,
+	tree-optimization/56350, tree-optimization/56366,
+	tree-optimization/56381, tree-optimization/56384,
+	tree-optimization/56396, tree-optimization/56398
+- add BuildRequires: /usr/bin/pod2man to fix man pages generation
+- don't ICE on bogus inline asm in kernel (#912857, PR inline-asm/56405)
+- fix up info page building with texinfo 5.0 (PR bootstrap/56258)
+- devirtualization ICE fix (PR tree-optimization/56265)
+
+* Fri Feb 15 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-0.13
+- updated from trunk
+  - PRs bootstrap/56327, c++/52026, c++/54922, c++/55003, c++/55220,
+	c++/55223, c++/55232, c++/55582, c++/55670, c++/55680, c++/56323,
+	c++/56343, fortran/53818, fortran/56224, fortran/56318,
+	libstdc++/56111, lto/50494, target/55431, target/55941,
+	testsuite/56138
+- asan fixes (PR sanitizer/56330)
+- asan speedup - use 0x7fff8000 shadow offset instead of 1LL << 44 on
+  x86_64
+
+* Wed Feb 13 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-0.12
+- updated from trunk
+  - PRs c++/55710, c++/55879, c++/55993, c++/56135, c++/56155, c++/56285,
+	c++/56291, c/44938, fortran/46952, fortran/56204, inline-asm/56148,
+	libitm/55693, lto/56295, lto/56297, middle-end/56288,
+	sanitizer/56128, target/52122, testsuite/56082
+  - fix IRA bug that caused reload ICE on ARM (#910153, target/56184)
+  - attempt harder to fold "n" constrainted asm input operands in C++
+    with -O0 (#910421, c++/56302)
+
+* Mon Feb 11 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-0.11
+- updated from trunk
+  - PRs c++/56238, c++/56247, c++/56268, fortran/55362, libstdc++/56267,
+	libstdc++/56278, libstdc++/56282, rtl-optimization/56246,
+	rtl-optimization/56275, target/56043, tree-optimization/56264,
+	tree-optimization/56273
+- improve expansion of mem1 op= mem2 (PR rtl-optimization/56151)
+
+* Fri Feb  8 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-0.10
+- updated from trunk
+  - PRs bootstrap/56227, c++/56235, c++/56237, c++/56239, c++/56241,
+	debug/53363, fortran/54339, fortran/55789, libstdc++/56193,
+	libstdc++/56216, lto/56231, middle-end/56181,
+	rtl-optimization/56195, rtl-optimization/56225, target/50678,
+	target/54009, target/54131, tree-optimization/56250
+  - fix Ada frontend miscompilation with profiledbootstrap (#906516,
+    PR rtl-optimization/56178)
+- restore parsing of ppc inline asm dialects (#909298, PR target/56256)
+- fix up libiberty old regex (PR other/56245)
+- fix IRA -O0 -g code debug regression (PR debug/53948)
+
+* Wed Feb  6 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-0.9
+- updated from trunk
+  - PRs c++/54122, c++/56177, c++/56208, debug/54793, fortran/47517,
+	fortran/50627, fortran/54195, fortran/56008, fortran/56054,
+	libstdc++/56202, lto/56168, middle-end/56113, middle-end/56167,
+	middle-end/56217, rtl-optimization/56131, sanitizer/55617,
+	target/52123, target/54601, target/55146, target/56186,
+	tree-optimization/53185, tree-optimization/53342,
+	tree-optimization/54386, tree-optimization/55789,
+	tree-optimization/56188
+  - fix up stdarg pass (PR tree-optimization/56205, #906367)
+  - remove unused thread_local bitfield (#907882)
+- fix cselim pass on calls that might free memory (PR tree-optimization/52448)
+- fix libgfortran internal_pack (PR fortran/55978)
+- fix up .debug_loc for first function in CU, if it contains empty ranges
+  at the beginning of the function (PR debug/56154, #904252)
+- fix ppc64 indirect calls (PR target/56228, #908388)
+
+* Thu Jan 31 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-0.8
+- updated from trunk
+  - PRs c++/56162, debug/54410, debug/54508, debug/55059, fortran/54107,
+	fortran/56138, libgomp/55561, libstdc++/54314, lto/56147,
+	middle-end/53073, other/53413, other/54620, rtl-optimization/56144,
+	sanitizer/55374, target/39064, target/56121, tree-optimization/55270,
+	tree-optimization/56064, tree-optimization/56113,
+	tree-optimization/56150, tree-optimization/56157
+
+* Tue Jan 29 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-0.7
+- updated from trunk
+  - PRs c++/56095, c++/56104, c/56078, fortran/53537, fortran/55984,
+	fortran/56047, inline-asm/55934, libstdc++/56085, libstdc++/56112,
+	other/54814, other/56076, rtl-optimization/56117, target/54663,
+	target/56114, testsuite/56053, tree-optimization/55927,
+	tree-optimization/56034, tree-optimization/56035,
+	tree-optimization/56094, tree-optimization/56098,
+	tree-optimization/56125
+
+* Thu Jan 24 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-0.6
+- updated from trunk
+  - PRs c++/53609, c++/55944, c++/56067, c++/56071, fortran/56081,
+	libgomp/51376, libgomp/56073, libquadmath/56072, middle-end/56074,
+	sanitizer/55989, target/49069, target/54222, target/55686,
+	target/56028
+- update TeX related BuildRequires (#891460)
+
+* Tue Jan 22 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-0.5
+- updated from trunk
+  - PRs c++/56059, fortran/55919, rtl-optimization/56023,
+	tree-optimization/56051
+- fix up cloog dlopen patches for upgrade to cloog-0.18.0
+- fix Fortran OpenMP OOP ICE (PR fortran/56052)
+
+* Mon Jan 21 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-0.4
+- updated from trunk
+  - PRs ada/864, bootstrap/55792, bootstrap/55961, c++/52343, c++/55663,
+	c++/55753, c++/55801, c++/55878, c++/55893, c/48418, debug/49888,
+	debug/53235, debug/53671, debug/54114, debug/54402, debug/55579,
+	debug/56006, driver/55470, driver/55884, fortran/42769, fortran/45836,
+	fortran/45900, fortran/47203, fortran/52865, fortran/53876,
+	fortran/54286, fortran/54678, fortran/54990, fortran/54992,
+	fortran/55072, fortran/55341, fortran/55618, fortran/55758,
+	fortran/55763, fortran/55806, fortran/55852, fortran/55868,
+	fortran/55935, fortran/55983, libmudflap/53359, libstdc++/51007,
+	libstdc++/55043, libstdc++/55233, libstdc++/55594, libstdc++/55728,
+	libstdc++/55847, libstdc++/55861, libstdc++/55908, lto/45375,
+	middle-end/55114, middle-end/55851, middle-end/55882,
+	middle-end/55890, middle-end/56015, other/55973, other/55982,
+	rtl-optimization/52573, rtl-optimization/53827,
+	rtl-optimization/55153, rtl-optimization/55547,
+	rtl-optimization/55672, rtl-optimization/55829,
+	rtl-optimization/55833, rtl-optimization/55845,
+	rtl-optimization/56005, sanitizer/55488, sanitizer/55679,
+	sanitizer/55844, target/42661, target/43961, target/54461,
+	target/54908, target/55301, target/55433, target/55565,
+	target/55718, target/55719, target/55876, target/55897,
+	target/55940, target/55948, target/55974, target/55981,
+	target/56058, testsuite/54622, testsuite/55994,
+	tree-optimization/44061, tree-optimization/48189,
+	tree-optimization/48766, tree-optimization/52631,
+	tree-optimization/53465, tree-optimization/54120,
+	tree-optimization/54767, tree-optimization/55273,
+	tree-optimization/55569, tree-optimization/55823,
+	tree-optimization/55862, tree-optimization/55875,
+	tree-optimization/55888, tree-optimization/55920,
+	tree-optimization/55921, tree-optimization/55955,
+	tree-optimization/55964, tree-optimization/55995,
+	tree-optimization/56029, tree-optimization/55264
+- fix up multiversioning (PR c++/55742)
+- fix up ICE with target attribute (PR middle-end/56022)
+- update isl to 0.11.1 and cloog to 0.18.0
+
+* Sun Jan  6 06:00:00 2013 Jakub Jelinek <jakub@redhat.com> 4.8.0-0.3
+- new package
+
+changelog stats. 1 pkg, 1 source pkg, 54 changelogs

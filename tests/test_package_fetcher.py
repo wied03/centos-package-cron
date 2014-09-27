@@ -57,20 +57,51 @@ class ChangeLogParserTestCase(unittest.TestCase):
 """
 		self.assertEquals(results,expected_output)
 		
-	def testParseWithRegexCharInPackageName(self):
+	def testParseSeLinux(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
 		
 		# act
-		results = parser.parse(ChangeLogParserTestCase.output,'libstdc++','4.8.2','16.2.el7_0')
+		results = parser.parse(ChangeLogParserTestCase.output,'selinux-policy-targeted', '3.12.1', '153.el7_0.11')
 		
 		# assert
 		expected_output = """* Thu Sep 25 07:00:00 2014 Ondrej Oprala <ooprala@redhat.com> - 4.2.45-5.4
 - CVE-2014-7169
   Resolves: #1146324
 
+"""
+		self.assertEquals(results,expected_output)
+		
+	def testParseWithRegexCharInPackageName(self):
+		# arrange
+		parser = package_fetcher.ChangeLogParser()
+		output = open('tests/changelog_stdc.txt').read()
+		
+		# act
+		results = parser.parse(output,'libstdc++','4.8.2','16.2.el7_0')
+		
+		# assert
+		expected_output = """* Wed Aug  6 07:00:00 2014 Jakub Jelinek <jakub@redhat.com> 4.8.2-16.2
+- backport two further OpenMP 4.0 libgomp tasking fixes (#1121077)
+- fix scheduler wrong-code with DEBUG_INSNs containing volatile ASM_OPERANDS
+  (#1127120, PR rtl-optimization/61801)
+
 """		
-		assert results == expected_output		
+		assert results == expected_output	
+		
+	def testPackageInMiddle(self):
+		# arrange
+		parser = package_fetcher.ChangeLogParser()
+		
+		# act
+		results = parser.parse(ChangeLogParserTestCase.output,'nss-tools','3.16.2', '7.el7_0')
+		
+		# assert
+		expected_output = """* Wed Sep 24 07:00:00 2014 Elio Maldonado <emaldona@redhat.com> - 3.16.2-7
+- Resolves: Bug 1145433 - CVE-2014-1568
+
+"""		
+		assert results == expected_output
 		
 	def testParseCentos(self):
 		# arrange
