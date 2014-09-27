@@ -22,7 +22,6 @@ def main():
 	if send_email == True:
 		email_content = 'The following security advisories exist for installed packages:\n\n'
 		for advisory in security_advisories:
-			print("advisory id %s") % (advisory.advisory_id)		
 			relevant_update_pkg = list(filter(lambda yum_update_pkg:yum_update_pkg.name in map(lambda adv_pkg: adv_pkg['name'],advisory.packages),general_updates))[0]
 			label = "%s-%s-%s" % (relevant_update_pkg.name, relevant_update_pkg.version, relevant_update_pkg.release)
 			email_content += "Advisory ID: %s Severity: %s Packages: %s\n" % (advisory.advisory_id, advisory.severity, label)
