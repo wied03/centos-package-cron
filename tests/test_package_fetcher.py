@@ -3,7 +3,7 @@
 
 import unittest
 import sys
-sys.path.append('../lib')
+sys.path.append('../centos_package_cron')
 import package_fetcher
 from mock import Mock
 import mockable_execute

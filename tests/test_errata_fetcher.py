@@ -2,7 +2,7 @@
 
 import unittest
 import sys
-sys.path.append('../lib')
+sys.path.append('../centos_package_cron')
 import errata_fetcher
 from errata_fetcher import ErrataType
 
