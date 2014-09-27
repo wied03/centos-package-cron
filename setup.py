@@ -32,5 +32,8 @@ setuptools.setup(name='centos_package_cron',
       packages=setuptools.find_packages(),
       setup_requires="pytest",
       tests_require="mock",
-      cmdclass = {'test': PyTest}
+      cmdclass = {'test': PyTest},
+	  entry_points = {
+	        'console_scripts': ['centos-package-cron=centos_package_cron.command_line:main'],
+	  }
      )
