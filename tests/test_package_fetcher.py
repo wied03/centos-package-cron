@@ -41,7 +41,7 @@ class ChangeLogParserTestCase(unittest.TestCase):
 	def testParseStandardRhel(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
-		output = open('tests/changelog_raw_output.txt').read()
+		output = open('tests/complete_log.txt').read()
 		
 		# act
 		results = parser.parse(output,'bash','4.2.45','5.el7_0.4')
@@ -57,7 +57,7 @@ class ChangeLogParserTestCase(unittest.TestCase):
 	def testParseCentos(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
-		output = open('tests/changelog_raw_output_example2.txt').read()
+		output = open('tests/complete_log.txt').read()
 
 		# act
 		results = parser.parse(output,'openssl','1.0.1e','34.el7_0.4')
@@ -78,7 +78,7 @@ class ChangeLogParserTestCase(unittest.TestCase):
 	def testParseAnotherVersionString(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
-		output = open('tests/changelog_raw_output_example3.txt').read()
+		output = open('tests/complete_log.txt').read()
 		
 		# act
 		results = parser.parse(output,'ca-certificates','2014.1.98','70.0.el7_0')
@@ -96,7 +96,7 @@ class ChangeLogParserTestCase(unittest.TestCase):
 	def testNotFound(self):
 		# arrange
 		parser = package_fetcher.ChangeLogParser()
-		output = open('tests/changelog_raw_output.txt').read()
+		output = open('tests/complete_log.txt').read()
 		
 		# act
 		result = parser.parse(output,'bash','4.4','5.el7_0.4')
