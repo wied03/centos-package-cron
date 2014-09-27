@@ -11,11 +11,11 @@ def all_tests_suite():
     def get_suite():
         return additional_tests(
             unittest.TestLoader().loadTestsFromNames([
-		'tests.test_errata_fetcher',
-		'tests.test_mockable_execute',
-		'tests.test_os_version_fetcher.py',
-		'tests.test_package_checker.py',
-		'tests.test_package_fetcher.py'
+		'tests.errata_fetcher',
+		'tests.mockable_execute',
+		'tests.os_version_fetcher.py',
+		'tests.package_checker.py',
+		'tests.package_fetcher.py'
             ]))
     suite = get_suite()
     import centos_package_cron 
