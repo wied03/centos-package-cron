@@ -2,12 +2,11 @@
 
 import unittest
 import sys
-sys.path.append('../centos_package_cron')
-import package_checker
-import package_fetcher
-import errata_fetcher
-from errata_fetcher import ErrataType
-from errata_fetcher import ErrataSeverity
+from centos_package_cron import package_checker
+from centos_package_cron import package_fetcher
+from centos_package_cron import errata_fetcher
+from centos_package_cron.errata_fetcher import ErrataType
+from centos_package_cron.errata_fetcher import ErrataSeverity
 from mock import Mock
 
 class PackageCheckerTest(unittest.TestCase):

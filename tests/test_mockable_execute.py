@@ -2,8 +2,7 @@
 
 import unittest
 import sys
-sys.path.append('../centos_package_cron')
-import mockable_execute
+from centos_package_cron import mockable_execute
 
 class MockableExecuteTestCase(unittest.TestCase):
 	def testExecute(self):

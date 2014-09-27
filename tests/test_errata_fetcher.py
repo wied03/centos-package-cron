@@ -2,9 +2,8 @@
 
 import unittest
 import sys
-sys.path.append('../centos_package_cron')
-import errata_fetcher
-from errata_fetcher import ErrataType
+from centos_package_cron import errata_fetcher
+from centos_package_cron.errata_fetcher import ErrataType
 
 class ErrataParserTest(unittest.TestCase):
 	def testParseSingleRelease(self):
