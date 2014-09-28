@@ -12,7 +12,7 @@ Requires:   yum >= 3.4.3
 Requires:   yum-plugin-changelog >= 1.1.31
 
 %description
-Notifies about updates
+Notifies about updates similar to Apticron for Ubuntu.
 
 %build
 %{__python} setup.py build
