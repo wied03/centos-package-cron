@@ -1,3 +1,5 @@
+import operator
+
 class PackageChecker:
 	def __init__(self, errata_fetcher, package_fetcher, os_fetcher):
 		self.errata_fetcher = errata_fetcher
@@ -5,15 +7,20 @@ class PackageChecker:
 		self.os_fetcher = os_fetcher
 	
 	def match_advisory_against_installed(self,advisory_package,current_installed):
-		return any(advisory_package['name'] == inst.name and  
+		return filter(lambda inst: advisory_package['name'] == inst.name and  
 		(advisory_package['version'] > inst.version or
-		(advisory_package['version'] == inst.version and advisory_package['release'] > inst.release)) for inst in current_installed)
+		(advisory_package['version'] == inst.version and advisory_package['release'] > inst.release)),current_installed)
 	
 	def findAdvisoriesOnInstalledPackages(self):
 		os_version = self.os_fetcher.get_top_level_version()
 		advisories = self.errata_fetcher.get_errata()
 		current_installed = self.package_fetcher.fetch_installed_packages()
-		pkg_match = lambda adv_pkgs: any(self.match_advisory_against_installed(adv_pkg,current_installed) for adv_pkg in adv_pkgs)
-		top_level_match = lambda adv: os_version in adv.releases and pkg_match(adv.packages)
-		return list(filter(top_level_match,advisories))	
+		results = []
+		for advisory in advisories:
+			installed_package_match = map(lambda advisory_package: self.match_advisory_against_installed(advisory_package,current_installed),advisory.packages)
+			# Need to flatten
+			installed_package_match = reduce(operator.add, installed_package_match)
+			if len(installed_package_match) > 0 and (os_version in advisory.releases):
+				results.append({'advisory': advisory, 'installed_packages':installed_package_match})
+		return results
 	

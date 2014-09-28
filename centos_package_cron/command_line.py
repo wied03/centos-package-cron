@@ -5,6 +5,7 @@ import os_version_fetcher
 import mockable_execute
 import argparse
 import socket
+import sys
 
 __VERSION__ = '1.0'
 
@@ -15,7 +16,7 @@ def main():
 	checker = package_checker.PackageChecker(errata_fetcher.ErrataFetcher(),pkg_fetcher,os_version_fetcher.OsVersionFetcher())
 
 	send_email = False
-	security_advisories = list(filter(lambda x:x.type == errata_fetcher.ErrataType.SecurityAdvisory,checker.findAdvisoriesOnInstalledPackages()))
+	security_advisories = list(filter(lambda adv:adv['advisory'].type == errata_fetcher.ErrataType.SecurityAdvisory,checker.findAdvisoriesOnInstalledPackages()))
 	if len(security_advisories) > 0:
 		send_email = True
 	
@@ -27,10 +28,11 @@ def main():
 	
 	if send_email == True:
 		email_content = 'The following security advisories exist for installed packages:\n\n'
-		for advisory in security_advisories:
-			relevant_update_pkg = list(filter(lambda yum_update_pkg:yum_update_pkg.name in map(lambda adv_pkg: adv_pkg['name'],advisory.packages),general_updates))[0]
-			label = "%s-%s-%s" % (relevant_update_pkg.name, relevant_update_pkg.version, relevant_update_pkg.release)
-			email_content += "Advisory ID: %s Severity: %s Packages: %s\n" % (advisory.advisory_id, advisory.severity, label)
+		for advisory_and_package in security_advisories:
+			advisory = advisory_and_package['advisory']
+			associated_package_labels = map(lambda pkg: "%s-%s-%s" % (pkg.name, pkg.version, pkg.release),advisory_and_package['installed_packages'])
+			severity_label = errata_fetcher.ErrataSeverity.get_label(advisory.severity)
+			email_content += "Advisory ID: %s Severity: %s Packages: %s\n" % (advisory.advisory_id, severity_label, associated_package_labels)
 		email_content += "\n\n"
 		for update in general_updates:
 			changelog_entry = next(cl for cl in changelogs if cl['name'] == update.name)			

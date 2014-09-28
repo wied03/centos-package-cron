@@ -162,8 +162,9 @@ class PackageCheckerTest(unittest.TestCase):
 		advisory = errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}])
 		errata.get_errata = Mock(return_value=[advisory])
 		pkg = Mock()
+		xen_package = package_fetcher.Package('xen-libs','3.0.3', '135.el5_8.1', 'x86_64')
 		pkg.fetch_installed_packages = Mock(return_value=[
-		package_fetcher.Package('xen-libs','3.0.3', '135.el5_8.1', 'x86_64'),
+		xen_package,
 		package_fetcher.Package('openssl','2.0', '4.el7', 'x86_64')
 		])
 		os_fetcher = Mock()
@@ -174,8 +175,11 @@ class PackageCheckerTest(unittest.TestCase):
 		result = checker.findAdvisoriesOnInstalledPackages()
 
 		# assert
-		self.assertEquals(len(result),1)
-		self.assertEquals(result[0],advisory)		
+		assert len(result) == 1
+		first = result[0]
+		assert first['advisory'] == advisory
+		assert first['installed_packages'] == [xen_package]
+		
 	
 if __name__ == "__main__":
             unittest.main()
