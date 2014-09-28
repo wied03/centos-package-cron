@@ -29,14 +29,31 @@ def main():
 	if send_email == True:
 		email_content = 'The following security advisories exist for installed packages:\n\n'
 		for advisory_and_package in security_advisories:
-			advisory = advisory_and_package['advisory']
-			associated_package_labels = map(lambda pkg: "%s-%s-%s" % (pkg.name, pkg.version, pkg.release),advisory_and_package['installed_packages'])
+			advisory = advisory_and_package['advisory']			
+			email_content += "Advisory ID: %s\n" % (advisory.advisory_id)
 			severity_label = errata_fetcher.ErrataSeverity.get_label(advisory.severity)
-			email_content += "Advisory ID: %s Severity: %s Packages: %s\n" % (advisory.advisory_id, severity_label, associated_package_labels)
-		email_content += "\n\n"
+			email_content += "Severity: %s\n" % (severity_label)
+			associated_package_labels = map(lambda pkg: "* %s-%s-%s" % (pkg.name, pkg.version, pkg.release),advisory_and_package['installed_packages'])
+			packages_flat = "\n".join(associated_package_labels)			
+			email_content += "Packages:\n%s\n" % (packages_flat)
+			references = map(lambda ref: "* %s" % (ref), advisory.references)
+			references_flat = "\n".join(references)			
+			email_content += "References:\n%s\n\n" % (references_flat)
+			
+		email_content += "\n"
+		
+		if len(general_updates) > 0:
+			email_content += "The following packages are available for updating:\n\n"
+			
+		for update in general_updates:
+			email_content += "%s-%s-%s\n" % (update.name, update.version, update.release)
+
+		if len(general_updates) > 0:
+			email_content += "\n\nChange logs for available packate updates:\n\n"
+		
 		for update in general_updates:
 			changelog_entry = next(cl for cl in changelogs if cl['name'] == update.name)			
-			email_content += "Updated package %s version %s release %s, change log:\n%s\n\n" % (update.name, update.version, update.release, changelog_entry['changelog'])
+			email_content += "%s-%s-%s\n%s\n\n" % (update.name, update.version, update.release, changelog_entry['changelog'])
 		
 		executor.run_command(['/usr/bin/mail',
 							  '-s %s' % (args.email_subject),
