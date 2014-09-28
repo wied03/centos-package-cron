@@ -58,7 +58,7 @@ def main():
 			email_content += "%s-%s-%s\n" % (update.name, update.version, update.release)
 
 		if len(general_updates) > 0:
-			email_content += "\n\nChange logs for available packate updates:\n\n"
+			email_content += "\n\nChange logs for available package updates:\n\n"
 		
 		for update in general_updates:
 			changelog_entry = next(cl for cl in changelogs if cl['name'] == update.name)			
