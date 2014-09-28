@@ -206,6 +206,19 @@ class PackageFetcherTestCase(unittest.TestCase):
 		self.assertNotEquals(first_package.release, None)
 		self.assertNotEquals(first_package.arch, None)
 		
+	def testGet_package_updates_with_exclusions(self):
+		# arrange
+		ch_log_parser = Mock()
+		executor = Mock()
+		fetcher = package_fetcher.PackageFetcher(ch_log_parser,executor,['epel', 'extras', 'updates'])
+		
+		# act
+		result = fetcher.get_package_updates()
+		
+		# assert
+		# We should have excluded everything by now
+		assert len(result) == 0
+		
 	def testGetPackageChangeLogMock(self):
 		# arrange
 		ch_log_parser = Mock()
@@ -218,6 +231,22 @@ class PackageFetcherTestCase(unittest.TestCase):
 		result = fetcher.get_package_changelog('bash', '1.2', '33')
 		
 		# assert
+		executor.run_command.assert_called_once_with(['/usr/bin/yum', 'changelog', 'updates', 'bash'])
+		self.assertEquals(result, 'the changelog info')
+		
+	def testGetPackageChangeLogMockWithExclusions(self):
+		# arrange
+		ch_log_parser = Mock()
+		ch_log_parser.parse = Mock(return_value='the changelog info')
+		executor = Mock()
+		executor.run_command = Mock(return_value='the raw output')
+		fetcher = package_fetcher.PackageFetcher(ch_log_parser,executor,['extras','updates'])
+		
+		# act
+		result = fetcher.get_package_changelog('bash', '1.2', '33')
+		
+		# assert
+		executor.run_command.assert_called_once_with(['/usr/bin/yum', '--disablerepo=extras,updates' ,'changelog', 'updates', 'bash'])
 		self.assertEquals(result, 'the changelog info')
 		
 	def testGetPackageChangeLogRealBash(self):
@@ -229,6 +258,16 @@ class PackageFetcherTestCase(unittest.TestCase):
 
 		# assert
 		self.assertNotEquals(result, None)
+		
+	def testGetPackageChangeLogRealBashExclusionsSetup(self):
+		# arrange
+		fetcher = package_fetcher.PackageFetcher(package_fetcher.ChangeLogParser(),mockable_execute.MockableExecute(),['epel', 'extras', 'updates'])
+
+		# act
+		result = fetcher.get_package_changelog('bash', '4.2.45', '5.el7_0.4')
+
+		# assert
+		assert result == 'Unable to parse changelog for package bash version 4.2.45 release 5.el7_0.4'
 		
 	def testGetPackageChangeLogRealOpenssl(self):
 		# arrange

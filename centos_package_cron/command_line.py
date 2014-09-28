@@ -12,7 +12,11 @@ __VERSION__ = '1.0'
 def main():
 	args = parse_args()
 	executor = mockable_execute.MockableExecute()
-	pkg_fetcher = package_fetcher.PackageFetcher(package_fetcher.ChangeLogParser(),executor)
+	repos_to_exclude_list = []
+	if args.disablerepo != None:
+		repos_to_exclude_list = args.disablerepo.split(',')		
+
+	pkg_fetcher = package_fetcher.PackageFetcher(package_fetcher.ChangeLogParser(),executor, repos_to_exclude_list)
 	checker = package_checker.PackageChecker(errata_fetcher.ErrataFetcher(),pkg_fetcher,os_version_fetcher.OsVersionFetcher())
 
 	send_email = False
@@ -90,7 +94,12 @@ def parse_args():
 	default=default_subject,
 	help='Email using this subject'
 	'Could be `centos_package_cron -s "the test subject"`. '
-	"Uses system's `mail` to send emails with this subject  Will use '%s' by default." % (default_subject))
+	"Uses system's `mail` to send emails with this subject  Will use '%s' by default." % (default_subject))	
+	
+	parser.add_argument('-dr','--disablerepo',
+	type=str,
+	help='List of comma separated repos to exclude when dealing with Yum')
+	
 	return parser.parse_args()
 
 if __name__ == '__main__':

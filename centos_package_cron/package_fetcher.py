@@ -49,11 +49,14 @@ class ChangeLogParser:
 		return match.group(1)
 
 class PackageFetcher:
-	def __init__(self,changelog_parser,executor):
+	def __init__(self,changelog_parser,executor,repos_to_exclude=[]):
 		self.changelog_parser = changelog_parser
 		self.yb = yum.YumBase()
 		self.yb.setCacheDir()
 		self.executor = executor
+		self.repos_to_exclude = repos_to_exclude	
+		for repo in repos_to_exclude:
+			self.yb.repos.disableRepo(repo)
 	
 	def fetch_installed_packages(self):		
 		packages = self.yb.rpmdb.returnPackages()
@@ -66,6 +69,11 @@ class PackageFetcher:
 		return result
 		
 	def get_package_changelog(self,name,version,release):
-		output = self.executor.run_command(['/usr/bin/yum','changelog','updates', name])
+		args = ['/usr/bin/yum']
+		if len(self.repos_to_exclude) > 0:
+			repos_flat = "--disablerepo=%s" % (','.join(self.repos_to_exclude))
+			args.append(repos_flat)
+		args += ['changelog', 'updates', name]					
+		output = self.executor.run_command(args)
 		return self.changelog_parser.parse(output,name,version,release)
 		
