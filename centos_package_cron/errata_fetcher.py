@@ -28,13 +28,14 @@ class ErrataSeverity:
 		return labels[value]
 
 class ErrataItem:
-	def __init__(self,advisory_id,type,severity,architectures,releases,packages):
+	def __init__(self,advisory_id,type,severity,architectures,releases,packages,references):
 		self.advisory_id = advisory_id
 		self.type = type
 		self.severity = severity
 		self.architectures = architectures
 		self.releases = releases
 		self.packages = packages
+		self.references = references
 
 class ErrataParser:
 	def getType(self,theType):
@@ -80,7 +81,8 @@ class ErrataParser:
 			architectures = map(lambda x: x.text, node.findall('os_arch'))
 			releases = map(lambda x: x.text, node.findall('os_release'))
 			packages = map(lambda x: self.parsePackage(x.text), node.findall('packages'))
-			return ErrataItem(node.tag, the_type, severity, architectures, releases, packages)
+			references = node.attrib.get('references').split(' ')
+			return ErrataItem(node.tag, the_type, severity, architectures, releases, packages, references)
 		except:
 			print "Problem while parsing node %s" % (node)
 			raise

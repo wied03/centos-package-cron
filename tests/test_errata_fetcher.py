@@ -33,6 +33,7 @@ class ErrataParserTest(unittest.TestCase):
 		self.assertEquals(first_advisory.severity, None)
 		self.assertEquals(first_advisory.architectures, ['i386', 'x86_64'])
 		self.assertEquals(first_advisory.releases, ['4'])
+		assert first_advisory.references == ['http://rhn.redhat.com/errata/RHBA-2005-169.html', 'http://lists.centos.org/pipermail/centos-announce/2005-April/011555.html']
 		expected_packages = [
 		{'name': 'up2date-gnome',
 		'version': '4.4.5.6',

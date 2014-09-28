@@ -14,7 +14,7 @@ class PackageCheckerTest(unittest.TestCase):
 		# arrange
 		errata = Mock()
 		errata.get_errata = Mock(return_value=[		
-		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['i686','x86_64'], ['7'], [{'name': 'libcacard-tools','version':'1.5.3', 'release':'60.el7_0.5', 'arch':'x86_64'}])
+		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['i686','x86_64'], ['7'], [{'name': 'libcacard-tools','version':'1.5.3', 'release':'60.el7_0.5', 'arch':'x86_64'}],[])
 		])
 		pkg = Mock()
 		pkg.fetch_installed_packages = Mock(return_value=[
@@ -34,7 +34,7 @@ class PackageCheckerTest(unittest.TestCase):
 		# arrange		
 		errata = Mock()
 		errata.get_errata = Mock(return_value=[		
-		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}])
+		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}],[])
 		])
 		pkg = Mock()
 		pkg.fetch_installed_packages = Mock(return_value=[
@@ -55,7 +55,7 @@ class PackageCheckerTest(unittest.TestCase):
 		# arrange
 		errata = Mock()
 		errata.get_errata = Mock(return_value=[
-		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}])
+		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}],[])
 		])
 		pkg = Mock()
 		pkg.fetch_installed_packages = Mock(return_value=[
@@ -76,7 +76,7 @@ class PackageCheckerTest(unittest.TestCase):
 		# arrange
 		errata = Mock()
 		errata.get_errata = Mock(return_value=[
-		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}])
+		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}],[])
 		])
 		pkg = Mock()
 		pkg.fetch_installed_packages = Mock(return_value=[
@@ -97,7 +97,7 @@ class PackageCheckerTest(unittest.TestCase):
 		# arrange
 		errata = Mock()
 		errata.get_errata = Mock(return_value=[
-		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}])
+		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}],[])
 		])
 		pkg = Mock()
 		pkg.fetch_installed_packages = Mock(return_value=[
@@ -118,7 +118,7 @@ class PackageCheckerTest(unittest.TestCase):
 		# arrange
 		errata = Mock()
 		errata.get_errata = Mock(return_value=[
-		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}])
+		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}],[])
 		])
 		pkg = Mock()
 		pkg.fetch_installed_packages = Mock(return_value=[
@@ -139,7 +139,7 @@ class PackageCheckerTest(unittest.TestCase):
 		# arrange
 		errata = Mock()
 		errata.get_errata = Mock(return_value=[
-		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}])
+		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}],[])
 		])
 		pkg = Mock()
 		pkg.fetch_installed_packages = Mock(return_value=[
@@ -159,7 +159,7 @@ class PackageCheckerTest(unittest.TestCase):
 	def testFindAdvisoriesOnInstalledPackagesInstalledAndNeedsUpdating(self):
 		# arrange
 		errata = Mock()
-		advisory = errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}])
+		advisory = errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}],[])
 		errata.get_errata = Mock(return_value=[advisory])
 		pkg = Mock()
 		xen_package = package_fetcher.Package('xen-libs','3.0.3', '135.el5_8.1', 'x86_64')
