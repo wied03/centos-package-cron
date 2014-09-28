@@ -2,9 +2,9 @@
 
 Summary:    CentOS Package Update Tool
 Name:       centos-package-cron
-Version:    1.0
+Version:    1.0.1
 License:    Public Domain
-Release:    0.4%{?dist}
+Release:    0.1%{?dist}
 
 Source0:    *
 Requires:   python >= 2.7.5
