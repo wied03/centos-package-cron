@@ -8,7 +8,8 @@ import socket
 
 __VERSION__ = '1.0'
 
-def handle_args(sys_args):
+def main():
+	args = parse_args()
 	executor = mockable_execute.MockableExecute()
 	pkg_fetcher = package_fetcher.PackageFetcher(package_fetcher.ChangeLogParser(),executor)
 	checker = package_checker.PackageChecker(errata_fetcher.ErrataFetcher(),pkg_fetcher,os_version_fetcher.OsVersionFetcher())
@@ -36,12 +37,12 @@ def handle_args(sys_args):
 			email_content += "Updated package %s version %s release %s, change log:\n%s\n\n" % (update.name, update.version, update.release, changelog_entry['changelog'])
 		
 		executor.run_command(['/usr/bin/mail',
-							  '-s %s' % (sys_args.email_subject),
-							  '-r %s' % (sys_args.email_from),
-							  sys_args.email_to],
+							  '-s %s' % (args.email_subject),
+							  '-r %s' % (args.email_from),
+							  args.email_to],
 							 email_content)
-
-if __name__ == "__main__" :
+							
+def parse_args():
 	parser = argparse.ArgumentParser(description="Emails administrators with CentOS security updates and changelogs of non-security updates. Version %s" % __VERSION__)
 	
 	parser.add_argument('-e', '--email_to',
@@ -66,5 +67,7 @@ if __name__ == "__main__" :
 	help='Email using this subject'
 	'Could be `centos_package_cron -s "the test subject"`. '
 	"Uses system's `mail` to send emails with this subject  Will use '%s' by default." % (default_subject))
-	
-	handle_args(parser.parse_args())
+	return parser.parse_args()
+
+if __name__ == '__main__':
+    sys.exit(main())
