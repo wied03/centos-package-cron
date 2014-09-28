@@ -17,10 +17,13 @@ def main():
 
 	send_email = False
 	security_advisories = list(filter(lambda adv:adv['advisory'].type == errata_fetcher.ErrataType.SecurityAdvisory,checker.findAdvisoriesOnInstalledPackages()))
+	# Critical is 0, so should go first
+	security_advisories = sorted(security_advisories, key=lambda adv: adv['advisory'].severity)
 	if len(security_advisories) > 0:
 		send_email = True
 	
-	general_updates = pkg_fetcher.get_package_updates()
+	general_updates = sorted(pkg_fetcher.get_package_updates(), key=lambda pkg: pkg.name)
+
 	changelogs = []
 	if len(general_updates) > 0:
 		send_email = True
@@ -34,6 +37,8 @@ def main():
 			severity_label = errata_fetcher.ErrataSeverity.get_label(advisory.severity)
 			email_content += "Severity: %s\n" % (severity_label)
 			associated_package_labels = map(lambda pkg: "* %s-%s-%s" % (pkg.name, pkg.version, pkg.release),advisory_and_package['installed_packages'])
+			# Remove dupes
+			associated_package_labels = list(set(associated_package_labels))
 			packages_flat = "\n".join(associated_package_labels)			
 			email_content += "Packages:\n%s\n" % (packages_flat)
 			references = map(lambda ref: "* %s" % (ref), advisory.references)

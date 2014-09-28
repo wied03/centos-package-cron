@@ -15,7 +15,7 @@ class ErrataType:
 		return labels[value]
 	
 class ErrataSeverity:
-	Important, Moderate, Low, Critical = range(4)
+	Critical, Important, Moderate, Low = range(4)
 	
 	@staticmethod
 	def get_label(value):
