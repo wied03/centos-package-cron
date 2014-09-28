@@ -21,7 +21,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   script = <<-EOF
 ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
 yum install -y git epel-release yum-plugin-changelog
-yum install -y python-pip
+yum install -y python-pip mailx
 pip install ipython
 sudo -u vagrant -i git config --global user.email "brady@bswtechconsulting.com"
 sudo -u vagrant -i git config --global user.name "Brady Wied"
