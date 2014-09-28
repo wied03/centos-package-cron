@@ -1,0 +1,1 @@
+rpmbuild -bb --verbose -D "_topdir `pwd`" -D "_sourcedir `pwd`" -D "_builddir `pwd`" centos-package-cron.spec
