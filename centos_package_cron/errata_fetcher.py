@@ -76,6 +76,9 @@ class ErrataParser:
 		try:
 			if node.tag == 'meta':
 				return None
+			# Sometimes empty elements are in there
+			if 'type' not in node.attrib:
+				return None
 			the_type = self.getType(node.attrib['type'])
 			severity = self.getSeverity(node.attrib.get('severity'))
 			architectures = map(lambda x: x.text, node.findall('os_arch'))
