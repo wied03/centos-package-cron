@@ -93,6 +93,35 @@ class PackageCheckerTest(unittest.TestCase):
 		# assert
 		self.assertEquals(result, [])
 		
+	def testFindAvisoriesOnInstalledPackagesVersionComparisonWith2Digits(self):
+		# arrange
+		errata = Mock()
+		errata_packages = [
+		 {'arch': 'x86_64',
+		  'name': 'glibc',
+		  'release': '55.el7_0.1',
+		  'version': '2.17'},
+		 {'arch': 'x86_64',
+		  'name': 'glibc',
+		  'release': '118.el5_10.3',
+		  'version': '2.5'}]		
+		errata.get_errata = Mock(return_value=[
+		errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], errata_packages,[])
+		])
+		pkg = Mock()
+		pkg.fetch_installed_packages = Mock(return_value=[
+		package_fetcher.Package('glibc','2.17', '55.el7_0.1', 'x86_64'),
+		])
+		os_fetcher = Mock()
+		os_fetcher.get_top_level_version = Mock(return_value='7')
+		checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
+		
+		# act
+		result = checker.findAdvisoriesOnInstalledPackages()
+		
+		# assert
+		assert result == []
+		
 	def testFindAvisoriesOnInstalledPackagesBothOldAndNewInstalled(self):
 		# arrange
 		errata = Mock()
