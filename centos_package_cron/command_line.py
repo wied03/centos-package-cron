@@ -14,9 +14,12 @@ def main():
 	executor = mockable_execute.MockableExecute()
 	repos_to_exclude_list = []
 	if args.disablerepo != None:
-		repos_to_exclude_list = args.disablerepo.split(',')		
+		repos_to_exclude_list = args.disablerepo.split(',')
+	repos_to_include_list = []
+	if args.enablerepo != None:
+		repos_to_include_list = args.enablerepo.split(',')	
 
-	pkg_fetcher = package_fetcher.PackageFetcher(package_fetcher.ChangeLogParser(),executor, repos_to_exclude_list)
+	pkg_fetcher = package_fetcher.PackageFetcher(package_fetcher.ChangeLogParser(),executor, repos_to_exclude_list, repos_to_include_list)
 	checker = package_checker.PackageChecker(errata_fetcher.ErrataFetcher(),pkg_fetcher,os_version_fetcher.OsVersionFetcher())
 
 	send_email = False
@@ -99,6 +102,10 @@ def parse_args():
 	parser.add_argument('-dr','--disablerepo',
 	type=str,
 	help='List of comma separated repos to exclude when dealing with Yum')
+	
+	parser.add_argument('-er','--enablerepo',
+	type=str,
+	help='List of comma separated repos to include when dealing with Yum')
 	
 	return parser.parse_args()
 
