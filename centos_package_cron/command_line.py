@@ -37,7 +37,10 @@ def main():
 		changelogs = map(lambda pkg: { 'name': pkg.name, 'changelog': pkg_fetcher.get_package_changelog(pkg.name,pkg.version,pkg.release)},general_updates)
 	
 	if send_email == True:
-		email_content = 'The following security advisories exist for installed packages:\n\n'
+		email_content = ''
+		if len(security_advisories) > 0:
+			email_content += 'The following security advisories exist for installed packages:\n\n'
+			
 		for advisory_and_package in security_advisories:
 			advisory = advisory_and_package['advisory']			
 			email_content += "Advisory ID: %s\n" % (advisory.advisory_id)
