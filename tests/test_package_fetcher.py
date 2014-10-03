@@ -184,6 +184,7 @@ class PackageFetcherTestCase(unittest.TestCase):
 		print "1st package release is %s" % (first_package.release)
 		assert first_package.release != None
 		self.assertEquals(first_package.arch, 'x86_64')
+		assert first_package.repository != None
 		
 	def testFetch_package_updates(self):
 		# arrange
@@ -205,6 +206,7 @@ class PackageFetcherTestCase(unittest.TestCase):
 		print "1st package release is %s" % (first_package.release)
 		self.assertNotEquals(first_package.release, None)
 		self.assertNotEquals(first_package.arch, None)
+		assert first_package.repository != None
 		
 	def testGet_package_updates_with_exclusions_specific(self):
 		# arrange

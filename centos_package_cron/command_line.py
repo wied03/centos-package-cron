@@ -58,7 +58,7 @@ def main():
 			email_content += "The following packages are available for updating:\n\n"
 			
 		for update in general_updates:
-			email_content += "%s-%s-%s\n" % (update.name, update.version, update.release)
+			email_content += "%s-%s-%s from %s\n" % (update.name, update.version, update.release, update.repository)
 
 		if len(general_updates) > 0:
 			email_content += "\n\nChange logs for available package updates:\n\n"
