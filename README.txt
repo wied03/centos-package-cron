@@ -1,1 +1,0 @@
-Attempts to offer Apticron from Ubuntu style package update emails and also bring security notifications to CentOS via Meier's script
