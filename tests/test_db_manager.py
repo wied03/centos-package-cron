@@ -15,8 +15,13 @@ class DbManagerTest(unittest.TestCase):
     
     def setUp(self):
         self.test_db_filename = 'test_db.sqlite'
-        self.remove()     
-        self.db_manager = DbManager(db_session_fetcher(self.test_db_filename))        
+        self.remove()
+        self.session_fetcher = db_session_fetcher(self.test_db_filename)
+        self.session = self.session_fetcher.__enter__()
+        self.db_manager = DbManager(self.session)
+        
+    def tearDown(self):
+        self.session_fetcher.__exit__(None,None,None)
     
     def test_is_package_alert_necessary_no_existing_notices(self):
         # arrange
@@ -64,6 +69,48 @@ class DbManagerTest(unittest.TestCase):
 
         # assert
         assert result == True
+        
+    def test_remove_old_alerts_for_package_with_new_version(self):
+        # arrange
+        existing_notice = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
+        self.db_manager.is_package_alert_necessary(existing_notice)
+        new_notice = Package('libgcrypt', '1.5.4', '4.el7', 'x86_64', 'updates')
+        self.db_manager.is_package_alert_necessary(new_notice)
+        
+        # act
+        self.db_manager.remove_old_alerts_for_package(new_notice)
+        
+        # assert
+        results = self.session.query(Package).all()
+        
+        assert len(results) == 1
+        result = results[0]
+        assert result.name == 'libgcrypt'
+        assert result.version == '1.5.4'
+        assert result.release == '4.el7'
+        assert result.arch == 'x86_64'
+        assert result.repository == 'updates'        
+        
+    def test_remove_old_alerts_for_package_with_new_release(self):
+        # arrange
+        existing_notice = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
+        self.db_manager.is_package_alert_necessary(existing_notice)
+        new_notice = Package('libgcrypt', '1.5.3', '5.el7', 'x86_64', 'updates')
+        self.db_manager.is_package_alert_necessary(new_notice)
+        
+        # act
+        self.db_manager.remove_old_alerts_for_package(new_notice)
+        
+        # assert
+        results = self.session.query(Package).all()
+        
+        assert len(results) == 1
+        result = results[0]
+        assert result.name == 'libgcrypt'
+        assert result.version == '1.5.3'
+        assert result.release == '5.el7'
+        assert result.arch == 'x86_64'
+        assert result.repository == 'updates'        
 
 if __name__ == "__main__":
             unittest.main()
