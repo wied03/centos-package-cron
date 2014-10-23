@@ -3,18 +3,7 @@ import sys
 import yum
 import re
 import mockable_execute
-
-class Package:
-    def __init__(self,name,version,release,arch,repository):
-        self.name = name
-        self.version = version
-        self.release = release
-        self.arch = arch
-        self.repository = repository
-    def __str__(self):
-        return "Package %s-%s-%s" % (self.name, self.version, self.release)
-    def __repr__(self):
-        return self.__str__()
+from package import Package
         
 class ChangeLogParser:
     def get_log_version_num_with_release_suffix(self,version,release):

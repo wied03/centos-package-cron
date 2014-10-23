@@ -3,7 +3,7 @@ from sqlite3 import dbapi2 as sqlite
 from sqlalchemy.orm import sessionmaker
 from db_base import Base
 
-class db_session:
+class db_session_fetcher:
     def __init__(self, db_path='/var/lib/centos-package-cron/already_annoyed.sqlite'):
         self.db_path = db_path
         self.session = None
