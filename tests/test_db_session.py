@@ -18,11 +18,17 @@ class DbSessionTest(unittest.TestCase):
         def __repr__(self):
             return "<Dummy(id='%s', name='%s')>" % (self.id, self.name)
     
+    def remove(self):        
+        if os.path.isfile(self.test_db_filename):
+            os.remove(self.test_db_filename)
+    
     def setUp(self):
-        test_db_filename = 'test_db.sqlite'
-        if os.path.isfile(test_db_filename):
-            os.remove(test_db_filename)
-        self.db_session = db_session(test_db_filename)
+        self.test_db_filename = 'test_db.sqlite'
+        self.remove()     
+        self.db_session = db_session(self.test_db_filename)
+        
+    def tearDown(self):
+        self.remove()        
     
     def testCreatesSchemaWhenNoneExists(self):
         # arrange
@@ -34,12 +40,11 @@ class DbSessionTest(unittest.TestCase):
         
         with self.db_session as session:
            # assert
-           result = session.query(DbSessionTest.Dummy)[0]
+           query = session.query(DbSessionTest.Dummy).all()
+           assert len(query) == 1
+           result = query[0]
            assert result.id == 1
-           assert result.name == 'John Doe'
+           assert result.name == 'John Doe'    
     
-    def testDoesNotDisturbExistingData(self):
-        assert True == False
-
 if __name__ == "__main__":
             unittest.main()

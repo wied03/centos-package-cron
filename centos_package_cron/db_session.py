@@ -7,11 +7,14 @@ class db_session:
     def __init__(self, db_path='/var/lib/centos-package-cron/already_annoyed.sqlite'):
         self.db_path = db_path
         self.session = None
+        self.engine = None
         
     def __enter__(self):
-        engine = sqlalchemy.create_engine('sqlite:///%s' % (self.db_path),module=sqlite)
-        Base.metadata.create_all(engine)
-        Session = sessionmaker(bind=engine)
+        if self.engine == None:
+            self.engine = sqlalchemy.create_engine('sqlite:///%s' % (self.db_path),module=sqlite)
+            
+        Base.metadata.create_all(self.engine)
+        Session = sessionmaker(bind=self.engine)
         self.session = Session()        
         return self.session
         
