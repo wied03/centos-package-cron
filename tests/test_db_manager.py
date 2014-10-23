@@ -16,10 +16,7 @@ class DbManagerTest(unittest.TestCase):
     def setUp(self):
         self.test_db_filename = 'test_db.sqlite'
         self.remove()     
-        self.db_manager = DbManager(db_session_fetcher(self.test_db_filename))
-        
-    def tearDown(self):
-        self.remove()
+        self.db_manager = DbManager(db_session_fetcher(self.test_db_filename))        
     
     def test_is_package_alert_necessary_no_existing_notices(self):
         # arrange
