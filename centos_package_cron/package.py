@@ -1,5 +1,6 @@
 from db_base import Base
 from sqlalchemy import Column, Integer, String, Date, Numeric, ForeignKey
+from rpmUtils.miscutils import compareEVR
 
 class Package(Base):
     __tablename__ = 'notified_packages'
@@ -16,6 +17,9 @@ class Package(Base):
         self.release = release
         self.arch = arch
         self.repository = repository
+        
+    def compare_evr(self, other_package):            
+        return compareEVR( ('', self.version, self.release), ('', other_package.version, other_package.release))
         
     def __str__(self):
         return "Package %s-%s-%s" % (self.name, self.version, self.release)

@@ -21,10 +21,10 @@ class DbManagerTest(unittest.TestCase):
     def test_is_package_alert_necessary_no_existing_notices(self):
         # arrange
         package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
-        
+
         # act
         result = self.db_manager.is_package_alert_necessary(package)
-        
+
         # assert
         assert result == True
         
@@ -39,7 +39,31 @@ class DbManagerTest(unittest.TestCase):
         result = self.db_manager.is_package_alert_necessary(package)
         
         # assert
-        assert result == False        
+        assert result == False
+        
+    def test_is_package_alert_necessary_notice_in_place_but_older_version(self):
+        # arrange
+        existing_notice = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
+        self.db_manager.is_package_alert_necessary(existing_notice)
+        new_notice = Package('libgcrypt', '1.5.4', '4.el7', 'x86_64', 'updates')
+
+        # act
+        result = self.db_manager.is_package_alert_necessary(new_notice)
+
+        # assert
+        assert result == True
+
+    def test_is_package_alert_necessary_notice_in_place_but_older_release(self):
+        # arrange
+        existing_notice = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
+        self.db_manager.is_package_alert_necessary(existing_notice)
+        new_notice = Package('libgcrypt', '1.5.3', '5.el7', 'x86_64', 'updates')
+
+        # act
+        result = self.db_manager.is_package_alert_necessary(new_notice)
+
+        # assert
+        assert result == True
 
 if __name__ == "__main__":
             unittest.main()
