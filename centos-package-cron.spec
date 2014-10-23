@@ -1,4 +1,5 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print (get_python_lib())")}
+%global  db_path          %{_var}/lib/centos-package-cron/
 
 Summary:    CentOS Package Update Tool
 Name:       centos-package-cron
@@ -22,7 +23,9 @@ Notifies about updates similar to Apticron for Ubuntu.
 
 %install
 %{__python} setup.py install --skip-build --root %{buildroot}
+mkdir %{buildroot}/%{db_path}
 
 %files
 %{_bindir}/centos-package-cron
 %{python_sitelib}/centos_package_cron*
+%{db_path}
