@@ -27,10 +27,19 @@ class DbManagerTest(unittest.TestCase):
         
         # assert
         assert result == True
+        
+    def test_is_package_alert_necessary_existing_notice_already_in_place(self):
+        # arrange
+        package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
+        self.db_manager.is_package_alert_necessary(package)
         # session/bound
         package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
-        try2 = self.db_manager.is_package_alert_necessary(package)
-        assert try2 == False
+        
+        # act
+        result = self.db_manager.is_package_alert_necessary(package)
+        
+        # assert
+        assert result == False        
 
 if __name__ == "__main__":
             unittest.main()
