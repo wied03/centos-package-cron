@@ -79,8 +79,10 @@ class EmailProducer:
             
             for update in general_updates:
                 changelog_entry = next(cl for cl in changelogs if cl['name'] == update.name)
+                # Some log text is in unicode
+                log_text = unicode(changelog_entry['changelog'], 'utf-8')
                 try:
-                    email_body += "%s-%s-%s\n%s\n\n" % (update.name, update.version, update.release, changelog_entry['changelog'])
+                    email_body += "%s-%s-%s\n%s\n\n" % (update.name, update.version, update.release, log_text)
                 except:
                     print "Problem dealing with changelog entry %s" % (changelog_entry)                    
                     raise

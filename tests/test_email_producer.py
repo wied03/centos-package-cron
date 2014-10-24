@@ -94,7 +94,7 @@ stuff
         result = producer.produce_email()
         
         # assert
-        assert result == """The following packages are available for updating:
+        assert result == u"""The following packages are available for updating:
 
 libgcrypt-1.5.3-4.el7 from updates
 
@@ -105,6 +105,8 @@ Change logs for available package updates:
 libgcrypt-1.5.3-4.el7
 * Thu Aug 14 07:00:00 2014 Lukáš Nykrýn <lnykryn@redhat.com> - 9.49.17-1.1
 - fedora-readonly: fix prefix detection
+
+
 
 """
         
