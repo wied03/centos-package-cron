@@ -8,12 +8,15 @@ License:    Public Domain
 Release:    0.1%{?dist}
 
 Source0:    *
-Requires:   python >= 2.7.5
-Requires:   yum >= 3.4.3
-Requires:   yum-plugin-changelog >= 1.1.31
-Requires:   mailx
-Requires:   python-sqlalchemy >= 0.8.4
-Requires:   sqlite >= 3.7
+Requires:       python >= 2.7.5
+Requires:       yum >= 3.4.3
+Requires:       yum-plugin-changelog >= 1.1.31
+BuildRequires:  yum-plugin-changelog >= 1.1.31
+Requires:       mailx
+BuildRequires:  mailx
+Requires:       python-sqlalchemy >= 0.8.4
+BuildRequires:  python-sqlalchemy >= 0.8.4
+Requires:       sqlite >= 3.7
 
 %description
 Notifies about updates similar to Apticron for Ubuntu.
