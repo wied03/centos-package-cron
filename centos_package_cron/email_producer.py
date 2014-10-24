@@ -10,8 +10,8 @@ class EmailProducer:
     def __init__(self, repos_to_exclude_list, repos_to_include_list, skip_old_notices, pkg_fetcher=None, checker=None, annoyance_fetcher=None):
         self.executor = MockableExecute()
         self.pkg_fetcher = pkg_fetcher or PackageFetcher(ChangeLogParser(), self.executor, repos_to_exclude_list, repos_to_include_list)
-        self.checker = checker || PackageChecker(ErrataFetcher(), self.pkg_fetcher, OsVersionFetcher())
-        self.annoyance_fetcher = annoyance_fetcher || AnnoyanceFetcher()
+        self.checker = checker or PackageChecker(ErrataFetcher(), self.pkg_fetcher, OsVersionFetcher())
+        self.annoyance_fetcher = annoyance_fetcher or AnnoyanceFetcher()
         self.annoyance_check = None
         self.skip_old_notices = skip_old_notices
         
