@@ -37,20 +37,20 @@ class EmailProducer:
         
     def _add_advisories_to_email(self, security_advisories, email_body):
         if len(security_advisories) > 0:
-            email_body += 'The following security advisories exist for installed packages:\n\n'
+            email_body += u'The following security advisories exist for installed packages:\n\n'
         for advisory_and_package in security_advisories:
             advisory = advisory_and_package['advisory']         
-            email_body += "Advisory ID: %s\n" % (advisory.advisory_id)
+            email_body += u"Advisory ID: %s\n" % (advisory.advisory_id)
             severity_label = ErrataSeverity.get_label(advisory.severity)
-            email_body += "Severity: %s\n" % (severity_label)
+            email_body += u"Severity: %s\n" % (severity_label)
             associated_package_labels = map(lambda pkg: "* %s-%s-%s" % (pkg.name, pkg.version, pkg.release),advisory_and_package['installed_packages'])
             # Remove dupes
             associated_package_labels = list(set(associated_package_labels))
-            packages_flat = "\n".join(associated_package_labels)            
-            email_body += "Packages:\n%s\n" % (packages_flat)
-            references = map(lambda ref: "* %s" % (ref), advisory.references)
-            references_flat = "\n".join(references)         
-            email_body += "References:\n%s\n\n" % (references_flat)
+            packages_flat = u"\n".join(associated_package_labels)            
+            email_body += u"Packages:\n%s\n" % (packages_flat)
+            references = map(lambda ref: u"* %s" % (ref), advisory.references)
+            references_flat = u"\n".join(references)         
+            email_body += u"References:\n%s\n\n" % (references_flat)
             
         return email_body
         
@@ -65,24 +65,24 @@ class EmailProducer:
         
     def _add_general_updates_to_email(self, general_updates, email_body):
         if len(general_updates) > 0:
-            email_body += "The following packages are available for updating:\n\n"
+            email_body += u"The following packages are available for updating:\n\n"
             
         for update in general_updates:
-            email_body += "%s-%s-%s from %s\n" % (update.name, update.version, update.release, update.repository)
+            email_body += u"%s-%s-%s from %s\n" % (update.name, update.version, update.release, update.repository)
             
         return email_body        
         
     def _add_changelogs_to_email(self, general_updates, email_body):
         if len(general_updates) > 0:
             changelogs = map(lambda pkg: { 'name': pkg.name, 'changelog': self.pkg_fetcher.get_package_changelog(pkg.name,pkg.version,pkg.release)},general_updates)
-            email_body += "\n\nChange logs for available package updates:\n\n"
+            email_body += u"\n\nChange logs for available package updates:\n\n"
             
             for update in general_updates:
                 changelog_entry = next(cl for cl in changelogs if cl['name'] == update.name)
                 # Some log text is in unicode
-                log_text = unicode(changelog_entry['changelog'], 'utf-8')
+                log_text = changelog_entry['changelog'].decode('utf-8')
                 try:
-                    email_body += "%s-%s-%s\n%s\n\n" % (update.name, update.version, update.release, log_text)
+                    email_body += u"%s-%s-%s\n%s\n\n" % (update.name, update.version, update.release, log_text)
                 except:
                     print "Problem dealing with changelog entry %s" % (changelog_entry)                    
                     raise
@@ -90,8 +90,8 @@ class EmailProducer:
         return email_body
         
     def _handle_section_boundary(self, email_body):
-        if email_body != '':
-            email_body += "\n"
+        if email_body != u'':
+            email_body += u"\n"
         return email_body
         
     def produce_email(self):
