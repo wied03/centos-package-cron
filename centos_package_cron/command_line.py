@@ -1,9 +1,13 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import argparse
 import socket
 import sys
 from email_producer import EmailProducer
 from db_session_fetcher import db_session_fetcher
-from mockable_execute import *
+import smtplib
+from email.mime.text import MIMEText
 
 __VERSION__ = '1.0'
 
@@ -15,15 +19,18 @@ def main():
     repos_to_include_list = []
     if args.enablerepo != None:
         repos_to_include_list = args.enablerepo.split(',')
+        
     producer = EmailProducer(repos_to_exclude_list, repos_to_include_list, args.skipold, args.skip_sqlite_file_path)
     email_content = producer.produce_email()
+
     if email_content != '':
-        executor = MockableExecute()
-        executor.run_command(['/usr/bin/mail',
-                              '-s %s' % (args.email_subject),
-                              '-r %s' % (args.email_from),
-                              args.email_to],
-                             email_content)           
+        server = smtplib.SMTP('localhost')        
+        message = MIMEText(email_content.encode('utf-8'), 'plain', 'utf-8')
+        message['Subject'] = args.email_subject
+        message['From'] = args.email_from
+        message['To'] = args.email_to
+        server.sendmail(from_addr=args.email_from, to_addrs=[args.email_to], msg=message.as_string())
+        server.quit
                             
 def parse_args():
     parser = argparse.ArgumentParser(description="Emails administrators with CentOS security updates and changelogs of non-security updates. Version %s" % __VERSION__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
