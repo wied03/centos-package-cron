@@ -37,4 +37,10 @@ class AnnoyanceCheck:
         self.session.commit()       
 
     def remove_old_advisories(self, active_advisories):
-        raise 'write it'
+        notified_advisories = self.session.query(ErrataItem).all()
+        active_advisory_ids = map(lambda advisory: advisory.advisory_id, active_advisories)
+        old_advisories = filter(lambda notified_advisory: notified_advisory.advisory_id not in active_advisory_ids, notified_advisories)
+        for old_advisory in old_advisories:
+            self.session.delete(old_advisory)
+            
+        self.session.commit()

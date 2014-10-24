@@ -38,8 +38,6 @@ class AnnoyanceCheckTest(unittest.TestCase):
         # arrange
         package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
         self.annoyance_check.is_package_alert_necessary(package)
-        # session/bound
-        package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
         
         # act
         result = self.annoyance_check.is_package_alert_necessary(package)
@@ -128,14 +126,46 @@ class AnnoyanceCheckTest(unittest.TestCase):
         # arrange
         advisory = ErrataItem(advisory_id='CVE-123', type=ErrataType.BugFixAdvisory, severity=ErrataSeverity.Important, architectures=['x86_64'], releases=['5'], packages=[{'name': 'libcacard-tools','version':'1.5.3', 'release':'60.el7_0.5', 'arch':'x86_64'}], references=[])
         self.annoyance_check.is_advisory_alert_necessary(advisory)
-        # session/bound
-        advisory = ErrataItem(advisory_id='CVE-123', type=ErrataType.BugFixAdvisory, severity=ErrataSeverity.Important, architectures=['x86_64'], releases=['5'], packages=[{'name': 'libcacard-tools','version':'1.5.3', 'release':'60.el7_0.5', 'arch':'x86_64'}], references=[])
         
         # act
         result = self.annoyance_check.is_advisory_alert_necessary(advisory)
         
         # assert
         assert result == False
+        
+    def test_remove_old_advisories_no_active_no_stored(self):
+        # arrange
+        
+        # act
+        self.annoyance_check.remove_old_advisories(active_advisories=[])
+        
+        # assert
+        results = self.session.query(ErrataItem).all()
+        assert len(results) == 0
+
+    def test_remove_old_advisories_no_active_some_stored(self):
+        # arrange
+        advisory = ErrataItem(advisory_id='CVE-123', type=ErrataType.BugFixAdvisory, severity=ErrataSeverity.Important, architectures=['x86_64'], releases=['5'], packages=[{'name': 'libcacard-tools','version':'1.5.3', 'release':'60.el7_0.5', 'arch':'x86_64'}], references=[])
+        self.annoyance_check.is_advisory_alert_necessary(advisory)
+        
+        # act
+        self.annoyance_check.remove_old_advisories(active_advisories=[])
+        
+        # assert
+        results = self.session.query(ErrataItem).all()
+        assert len(results) == 0
+
+    def test_remove_old_advisories_some_active_stored(self):
+        # arrange
+        advisory = ErrataItem(advisory_id='CVE-123', type=ErrataType.BugFixAdvisory, severity=ErrataSeverity.Important, architectures=['x86_64'], releases=['5'], packages=[{'name': 'libcacard-tools','version':'1.5.3', 'release':'60.el7_0.5', 'arch':'x86_64'}], references=[])
+        self.annoyance_check.is_advisory_alert_necessary(advisory)        
+        
+        # act
+        self.annoyance_check.remove_old_advisories(active_advisories=[advisory])
+        
+        # assert
+        results = self.session.query(ErrataItem).all()
+        assert len(results) == 1
 
 if __name__ == "__main__":
             unittest.main()
