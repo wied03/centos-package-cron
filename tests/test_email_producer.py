@@ -78,7 +78,7 @@ libgcrypt-1.5.3-4.el7
 stuff
 
 """
-        assert self.old_general_alerts_removed == [[package]]
+        assert self.old_general_alerts_removed == [package]
         
     def test_produce_email_general_but_no_security_advisories_already_notified(self):
         # arrange
@@ -131,16 +131,65 @@ stuff
 
 """
         assert self.old_advisories_removed_for_advisory_set == [[advisory]]
-        assert self.old_general_alerts_removed == [[package]]
+        assert self.old_general_alerts_removed == [package]
         
     def test_produce_email_both_security_and_general_updates_already_notified(self):
-        raise 'write it'
+        # arrange
+        producer = self.get_producer()
+        package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
+        self.general_updates = [package]
+        self.changelogs = {('libgcrypt', '1.5.3', '4.el7'): 'stuff'}
+        advisory = ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['i686','x86_64'], ['7'], [{'name': 'libgcrypt','version':'1.5.3', 'release':'4.el7', 'arch':'x86_64'}],[])
+        installed_packages = [package]
+        self.advisories_on_installed = [{'advisory': advisory, 'installed_packages':installed_packages}]
+        self.general_update_not_necessary = self.general_updates
+        self.advisory_alerts_not_necessary = [advisory]
         
-    def test_produce_email_repo_excluded_and_included(self):
-        raise 'write it'
+        # act
+        result = producer.produce_email()
+        
+        # assert
+        assert result == ''
+        assert self.old_general_alerts_removed == []
 
     def test_produce_email_skip_old_turned_off(self):
-        raise 'write it'
+        # arrange
+        producer = self.get_producer(skip_old=False)
+        package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
+        self.general_updates = [package]
+        self.changelogs = {('libgcrypt', '1.5.3', '4.el7'): 'stuff'}
+        advisory = ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['i686','x86_64'], ['7'], [{'name': 'libgcrypt','version':'1.5.3', 'release':'4.el7', 'arch':'x86_64'}],[])
+        installed_packages = [package]
+        self.advisories_on_installed = [{'advisory': advisory, 'installed_packages':installed_packages}]
+        
+        # act
+        result = producer.produce_email()
+        
+        # assert
+        assert result == """The following security advisories exist for installed packages:
+
+Advisory ID: adv id
+Severity: Important
+Packages:
+* libgcrypt-1.5.3-4.el7
+References:
+
+
+
+The following packages are available for updating:
+
+libgcrypt-1.5.3-4.el7 from updates
+
+
+
+Change logs for available package updates:
+
+libgcrypt-1.5.3-4.el7
+stuff
+
+"""
+        assert self.old_general_alerts_removed == []
+        assert self.old_advisories_removed_for_advisory_set == []        
     
 if __name__ == "__main__":
             unittest.main()

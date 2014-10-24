@@ -7,7 +7,14 @@ from os_version_fetcher import *
 from mockable_execute import *
 
 class EmailProducer:
-    def __init__(self, repos_to_exclude_list, repos_to_include_list, skip_old_notices, pkg_fetcher=None, checker=None, annoyance_fetcher=None, db_session_fetch=None):
+    def __init__(self,
+                 repos_to_exclude_list,
+                 repos_to_include_list,
+                 skip_old_notices,
+                 pkg_fetcher=None,
+                 checker=None,
+                 annoyance_fetcher=None,
+                 db_session_fetch=None):
         self.executor = MockableExecute()
         self.pkg_fetcher = pkg_fetcher or PackageFetcher(ChangeLogParser(), self.executor, repos_to_exclude_list, repos_to_include_list)
         self.checker = checker or PackageChecker(ErrataFetcher(), self.pkg_fetcher, OsVersionFetcher())
@@ -18,7 +25,6 @@ class EmailProducer:
         
     def _get_sorted_relevant_advisories(self):
         security_advisories = filter(lambda adv:adv['advisory'].type == ErrataType.SecurityAdvisory,self.checker.findAdvisoriesOnInstalledPackages())
-        # TODO: This is not tested
         if self.skip_old_notices:
             only_advisories = map(lambda advpkg: advpkg['advisory'], security_advisories)
             self.annoyance_check.remove_old_advisories(only_advisories)
@@ -48,8 +54,13 @@ class EmailProducer:
         return email_body
         
     def _get_general_updates(self):
-        # TODO: Filter out general updates we've already notified about
-        return sorted(self.pkg_fetcher.get_package_updates(), key=lambda pkg: pkg.name)
+        general_updates = self.pkg_fetcher.get_package_updates()
+        if self.skip_old_notices:
+            general_updates = filter(lambda pkg: self.annoyance_check.is_package_alert_necessary(pkg), general_updates)
+            for update in general_updates:
+                self.annoyance_check.remove_old_alerts_for_package(update)    
+
+        return sorted(general_updates, key=lambda pkg: pkg.name)
         
     def _add_general_updates_to_email(self, general_updates, email_body):
         if len(general_updates) > 0:
