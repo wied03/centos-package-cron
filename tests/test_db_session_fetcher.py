@@ -8,6 +8,7 @@ from centos_package_cron.db_session_fetcher import db_session_fetcher
 from centos_package_cron.db_base import Base
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Date, Numeric, ForeignKey
+from subprocess import call
 
 class DbSessionFetcherTest(unittest.TestCase):
     class Dummy(Base):
@@ -46,6 +47,26 @@ class DbSessionFetcherTest(unittest.TestCase):
            assert result.id == 1
            assert result.name == 'John Doe'
            
+           
+    def test_do_not_wipe_out_existing_db(self):
+        # arrange
+        row = DbSessionFetcherTest.Dummy(name='John Doe')
+        with self.db_session_fetcher as session:
+            # act
+            session.add(row)
+            session.commit()
+            
+        # act
+        fetcher = db_session_fetcher(self.test_db_filename)
+        row = DbSessionFetcherTest.Dummy(name='John Doe')
+        with fetcher as session:
+            session.add(row)
+            session.commit()
+            
+            # assert
+            query = session.query(DbSessionFetcherTest.Dummy).all()
+            assert len(query) == 2
+        
     def test_handles_directory_not_found(self):
         # arrange
         root_required_db_fetcher = db_session_fetcher('/var/directory_not_here/we_cant_access_this')
@@ -56,9 +77,9 @@ class DbSessionFetcherTest(unittest.TestCase):
                 # assert
                 fail('Expected exception here')
         except Exception as e:
-            assert e.message == 'Unable to find a parent directory for DB /var/directory_not_here/we_cant_access_this, did you install properly?'    
+            assert e.message == 'Unable to find a parent directory for DB /var/directory_not_here/we_cant_access_this, did you install properly?'        
            
-    def test_handles_inability_to_create_file_ok(self):
+    def test_handles_inability_to_create_file_in_directory(self):
         # arrange
         root_required_db_fetcher = db_session_fetcher('/var/we_cant_access_this')        
         
@@ -68,7 +89,26 @@ class DbSessionFetcherTest(unittest.TestCase):
                 # assert
                 fail('Expected exception here')
         except Exception as e:
-            assert e.message == 'Unable to write to DB file /var/we_cant_access_this, do you need to run as root?'
+            assert e.message == 'Unable to write to directory for DB file /var/we_cant_access_this, do you need to run as root?'
+            
+    def test_handles_inability_to_edit_file_in_directory(self):
+        # arrange
+        try:
+            call(['sudo', 'mkdir', '/var/we_cant_access_this'])
+            call(['sudo', 'chown', 'vagrant', '/var/we_cant_access_this'])
+            call(['sudo', 'touch', '/var/we_cant_access_this/db'])            
+
+            root_required_db_fetcher = db_session_fetcher('/var/we_cant_access_this/db')        
+        
+            # act
+            try:
+                with root_required_db_fetcher as session:
+                    # assert
+                    fail('Expected exception here')
+            except Exception as e:
+                assert e.message == 'Unable to write to DB file /var/we_cant_access_this/db, do you need to run as root?'
+        finally:
+            call(['sudo', 'rm', '-rf', '/var/we_cant_access_this'])
     
 if __name__ == "__main__":
             unittest.main()
