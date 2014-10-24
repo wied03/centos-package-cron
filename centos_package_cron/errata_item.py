@@ -1,3 +1,7 @@
+from datetime import datetime
+from db_base import Base
+from sqlalchemy import Column, Integer, String, DateTime, Numeric, ForeignKey
+
 class ErrataType:
     BugFixAdvisory,SecurityAdvisory,ProductEnhancementAdvisory = range(3)
     
@@ -23,7 +27,11 @@ class ErrataSeverity:
         }
         return labels[value]
 
-class ErrataItem:
+class ErrataItem(Base):
+    __tablename__ = 'notified_advisories'
+    id = Column(Integer, primary_key=True)
+    advisory_id = Column(String)
+    
     def __init__(self,advisory_id,type,severity,architectures,releases,packages,references):
         self.advisory_id = advisory_id
         self.type = type

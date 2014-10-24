@@ -1,9 +1,19 @@
 from package import Package
+from errata_item import ErrataItem
 from sqlalchemy import or_
 
 class AnnoyanceCheck:
     def __init__(self, session):
         self.session = session
+    
+    def is_advisory_alert_necessary(self, advisory):
+        existing = self.session.query(ErrataItem).filter(ErrataItem.advisory_id == advisory.advisory_id).all()          
+        if len(existing) == 0:
+            self.session.add(advisory)
+            self.session.commit()
+            return True
+        else:
+            return False
     
     def is_package_alert_necessary(self, package):        
         existing = self.session.query(Package).filter(Package.name == package.name).all()            
@@ -24,4 +34,7 @@ class AnnoyanceCheck:
         for old_ver in old_versions:
             self.session.delete(old_ver)
             
-        self.session.commit()
+        self.session.commit()       
+
+    def remove_old_advisories(self, active_advisories):
+        raise 'write it'

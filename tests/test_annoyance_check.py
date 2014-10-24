@@ -7,6 +7,7 @@ import os.path
 from centos_package_cron.annoyance_check import AnnoyanceCheck
 from centos_package_cron.db_session_fetcher import db_session_fetcher
 from centos_package_cron.package import Package
+from centos_package_cron.errata_item import *
 
 class AnnoyanceCheckTest(unittest.TestCase):
     def remove(self):        
@@ -111,7 +112,30 @@ class AnnoyanceCheckTest(unittest.TestCase):
         assert result.version == '1.5.3'
         assert result.release == '5.el7'
         assert result.arch == 'x86_64'
-        assert result.repository == 'updates'        
+        assert result.repository == 'updates'
+        
+    def test_is_advisory_alert_necessary_no_existing_notices(self):
+        # arrange
+        advisory = ErrataItem(advisory_id='CVE-123', type=ErrataType.BugFixAdvisory, severity=ErrataSeverity.Important, architectures=['x86_64'], releases=['5'], packages=[{'name': 'libcacard-tools','version':'1.5.3', 'release':'60.el7_0.5', 'arch':'x86_64'}], references=[])
+        
+        # act
+        result = self.annoyance_check.is_advisory_alert_necessary(advisory)
+        
+        # assert
+        assert result == True
+        
+    def test_is_advisory_alert_necessary_already_there(self):
+        # arrange
+        advisory = ErrataItem(advisory_id='CVE-123', type=ErrataType.BugFixAdvisory, severity=ErrataSeverity.Important, architectures=['x86_64'], releases=['5'], packages=[{'name': 'libcacard-tools','version':'1.5.3', 'release':'60.el7_0.5', 'arch':'x86_64'}], references=[])
+        self.annoyance_check.is_advisory_alert_necessary(advisory)
+        # session/bound
+        advisory = ErrataItem(advisory_id='CVE-123', type=ErrataType.BugFixAdvisory, severity=ErrataSeverity.Important, architectures=['x86_64'], releases=['5'], packages=[{'name': 'libcacard-tools','version':'1.5.3', 'release':'60.el7_0.5', 'arch':'x86_64'}], references=[])
+        
+        # act
+        result = self.annoyance_check.is_advisory_alert_necessary(advisory)
+        
+        # assert
+        assert result == False
 
 if __name__ == "__main__":
             unittest.main()
