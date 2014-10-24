@@ -20,9 +20,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   script = <<-EOF
 ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
-yum install -y git epel-release yum-plugin-changelog
-yum install -y python-pip mailx
+yum install -y git epel-release yum-utils
+yum install -y python-pip
 pip install ipython
+sudo yum-builddep -y /vagrant/centos-package-cron.spec
 sudo -u vagrant -i git config --global user.email "brady@bswtechconsulting.com"
 sudo -u vagrant -i git config --global user.name "Brady Wied"
 ssh_config="Host github.com

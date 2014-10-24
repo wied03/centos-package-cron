@@ -6,3 +6,4 @@ MANIFEST
 .vagrant
 *.egg
 build/
+test_db.sqlite
