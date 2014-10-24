@@ -1,7 +1,7 @@
 from package import Package
 from sqlalchemy import or_
 
-class DbManager:
+class AnnoyanceCheck:
     def __init__(self, session):
         self.session = session
     
