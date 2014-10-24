@@ -31,6 +31,7 @@ class ErrataItem(Base):
     __tablename__ = 'notified_advisories'
     id = Column(Integer, primary_key=True)
     advisory_id = Column(String)
+    timestamp = Column(DateTime)
     
     def __init__(self,advisory_id,type,severity,architectures,releases,packages,references):
         self.advisory_id = advisory_id
@@ -40,3 +41,4 @@ class ErrataItem(Base):
         self.releases = releases
         self.packages = packages
         self.references = references
+        self.timestamp = datetime.today()
