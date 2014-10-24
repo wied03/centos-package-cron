@@ -2,6 +2,7 @@ import argparse
 import socket
 import sys
 from email_producer import EmailProducer
+from db_session_fetcher import db_session_fetcher
 
 __VERSION__ = '1.0'
 
@@ -13,7 +14,7 @@ def main():
     repos_to_include_list = []
     if args.enablerepo != None:
         repos_to_include_list = args.enablerepo.split(',')
-    producer = EmailProducer(repos_to_exclude_list, repos_to_include_list, args.skipold)
+    producer = EmailProducer(repos_to_exclude_list, repos_to_include_list, args.skipold, args.skip_sqlite_file_path)
     email_content = producer.produce_email()
     if email_content != '':
         executor.run_command(['/usr/bin/mail',
@@ -23,30 +24,22 @@ def main():
                              email_content)           
                             
 def parse_args():
-    parser = argparse.ArgumentParser(description="Emails administrators with CentOS security updates and changelogs of non-security updates. Version %s" % __VERSION__)
+    parser = argparse.ArgumentParser(description="Emails administrators with CentOS security updates and changelogs of non-security updates. Version %s" % __VERSION__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     
     parser.add_argument('-e', '--email_to',
     type=str,
     required=True,
-    help='Email following user with the output.'
-    'Could be `centos_package_cron -e johndoe@mail.com`. '
-    "Uses system's `mail` to send emails.")
-    
-    default_from = "CentOS Update Check on %s <noreply@centos.org>" %(socket.gethostname())
+    help='Email following user with the output')    
+
     parser.add_argument('-f', '--email_from',
     type=str,
-    default=default_from,
-    help='Email from this user'
-    'Could be `centos_package_cron -f johndoe@mail.com`. '
-    "Uses system's `mail` to send emails  Will use '%s' by default." % (default_from))
-    
-    default_subject= "CentOS Update Check on %s" %(socket.gethostname())
+    default="CentOS Update Check on %s <noreply@centos.org>" %(socket.gethostname()),
+    help='Send the email from this user.')    
+
     parser.add_argument('-s', '--email_subject',
     type=str,
-    default=default_subject,
-    help='Email using this subject'
-    'Could be `centos_package_cron -s "the test subject"`. '
-    "Uses system's `mail` to send emails with this subject  Will use '%s' by default." % (default_subject)) 
+    default="CentOS Update Check on %s" %(socket.gethostname()),
+    help='Send the email using this subject') 
     
     parser.add_argument('-dr','--disablerepo',
     type=str,
@@ -60,6 +53,11 @@ def parse_args():
     type=bool,
     default=True,
     help='Only annoys the person with 1 email for a given advisory/package update notice.')
+    
+    parser.add_argument('-db','--skip-sqlite-file-path',
+    type=str,
+    default=db_session_fetcher.DEFAULT_DB_PATH,
+    help='The location of the Sqlite DB used to track which notifications you have already received.')
     
     return parser.parse_args()
 

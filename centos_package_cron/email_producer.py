@@ -11,6 +11,7 @@ class EmailProducer:
                  repos_to_exclude_list,
                  repos_to_include_list,
                  skip_old_notices,
+                 db_file_path,
                  pkg_fetcher=None,
                  checker=None,
                  annoyance_fetcher=None,
@@ -19,7 +20,7 @@ class EmailProducer:
         self.pkg_fetcher = pkg_fetcher or PackageFetcher(ChangeLogParser(), self.executor, repos_to_exclude_list, repos_to_include_list)
         self.checker = checker or PackageChecker(ErrataFetcher(), self.pkg_fetcher, OsVersionFetcher())
         self.annoyance_fetcher = annoyance_fetcher or AnnoyanceFetcher()
-        self.db_session_fetch = db_session_fetch or db_session_fetcher
+        self.db_session_fetch = db_session_fetch or db_session_fetcher(db_path=db_file_path)
         self.annoyance_check = None
         self.skip_old_notices = skip_old_notices        
         
@@ -89,7 +90,7 @@ class EmailProducer:
         
     def produce_email(self):
         email_body = ''
-        with self.db_session_fetch() as session:            
+        with self.db_session_fetch as session:            
             self.annoyance_check = self.annoyance_fetcher.fetch(session)
             advisories = self._get_sorted_relevant_advisories()            
             email_body = self._add_advisories_to_email(advisories, email_body)

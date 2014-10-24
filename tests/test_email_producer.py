@@ -40,6 +40,7 @@ class EmailProducerTest(unittest.TestCase):
         return EmailProducer(repo_exclude,
                              repo_include,
                              skip_old,
+                             'doesnt matter',
                              self.pkg_fetcher_mock,
                              self.pkg_checker_mock,
                              self.annoy_fetcher_mock,
