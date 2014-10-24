@@ -20,7 +20,7 @@ class EmailProducerTest(unittest.TestCase):
         self.annoyance_check_mock = Mock()
         self.annoy_fetcher_mock = Mock()
         self.annoy_fetcher_mock.fetch = Mock(return_value=self.annoyance_check_mock)
-        self.db_session_mock = db_session_fetcher_mock
+        self.db_session_mock = db_session_fetcher_mock()
         self.advisories_on_installed = []
         self.pkg_checker_mock.findAdvisoriesOnInstalledPackages = lambda: self.advisories_on_installed
         self.advisory_alerts_not_necessary = []        
@@ -80,6 +80,30 @@ stuff
 
 """
         assert self.old_general_alerts_removed == [package]
+        
+    def test_produce_email_unicode_in_changelog(self):
+        # arrange
+        producer = self.get_producer()
+        package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
+        self.general_updates = [package]
+        self.changelogs = {('libgcrypt', '1.5.3', '4.el7'): 'unicode changelog characters \xc3'}
+        
+        # act
+        result = producer.produce_email()
+        
+        # assert
+        assert result == """The following packages are available for updating:
+
+libgcrypt-1.5.3-4.el7 from updates
+
+
+
+Change logs for available package updates:
+
+libgcrypt-1.5.3-4.el7
+unicode changelog characters \xc3
+
+"""
         
     def test_produce_email_general_but_no_security_advisories_already_notified(self):
         # arrange
