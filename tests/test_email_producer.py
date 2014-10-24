@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 import sys
 import os
@@ -86,7 +87,8 @@ stuff
         producer = self.get_producer()
         package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
         self.general_updates = [package]
-        self.changelogs = {('libgcrypt', '1.5.3', '4.el7'): 'unicode changelog characters \xc3'}
+        offending_changelog = '* Thu Aug 14 07:00:00 2014 Luk\xc3\xa1\xc5\xa1 Nykr\xc3\xbdn <lnykryn@redhat.com> - 9.49.17-1.1\n- fedora-readonly: fix prefix detection\n\n'
+        self.changelogs = {('libgcrypt', '1.5.3', '4.el7'): offending_changelog}
         
         # act
         result = producer.produce_email()
@@ -101,7 +103,8 @@ libgcrypt-1.5.3-4.el7 from updates
 Change logs for available package updates:
 
 libgcrypt-1.5.3-4.el7
-unicode changelog characters \xc3
+* Thu Aug 14 07:00:00 2014 Lukáš Nykrýn <lnykryn@redhat.com> - 9.49.17-1.1
+- fedora-readonly: fix prefix detection
 
 """
         

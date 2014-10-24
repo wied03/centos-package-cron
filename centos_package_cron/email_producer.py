@@ -78,8 +78,12 @@ class EmailProducer:
             email_body += "\n\nChange logs for available package updates:\n\n"
             
             for update in general_updates:
-                changelog_entry = next(cl for cl in changelogs if cl['name'] == update.name)            
-                email_body += "%s-%s-%s\n%s\n\n" % (update.name, update.version, update.release, changelog_entry['changelog'])
+                changelog_entry = next(cl for cl in changelogs if cl['name'] == update.name)
+                try:
+                    email_body += "%s-%s-%s\n%s\n\n" % (update.name, update.version, update.release, changelog_entry['changelog'])
+                except:
+                    print "Problem dealing with changelog entry %s" % (changelog_entry)                    
+                    raise
         
         return email_body
         
@@ -89,7 +93,7 @@ class EmailProducer:
         return email_body
         
     def produce_email(self):
-        email_body = ''
+        email_body = u''
         with self.db_session_fetch as session:            
             self.annoyance_check = self.annoyance_fetcher.fetch(session)
             advisories = self._get_sorted_relevant_advisories()            
