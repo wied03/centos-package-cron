@@ -22,7 +22,7 @@ class EmailProducer:
         self.annoyance_fetcher = annoyance_fetcher or AnnoyanceFetcher()
         self.db_session_fetch = db_session_fetch or db_session_fetcher(db_path=db_file_path)
         self.annoyance_check = None
-        self.skip_old_notices = skip_old_notices        
+        self.skip_old_notices = skip_old_notices
         
     def _get_sorted_relevant_advisories(self):
         security_advisories = filter(lambda adv:adv['advisory'].type == ErrataType.SecurityAdvisory,self.checker.findAdvisoriesOnInstalledPackages())
