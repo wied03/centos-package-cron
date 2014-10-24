@@ -7,13 +7,14 @@ from os_version_fetcher import *
 from mockable_execute import *
 
 class EmailProducer:
-    def __init__(self, repos_to_exclude_list, repos_to_include_list, skip_old_notices, pkg_fetcher=None, checker=None, annoyance_fetcher=None):
+    def __init__(self, repos_to_exclude_list, repos_to_include_list, skip_old_notices, pkg_fetcher=None, checker=None, annoyance_fetcher=None, db_session_fetch=None):
         self.executor = MockableExecute()
         self.pkg_fetcher = pkg_fetcher or PackageFetcher(ChangeLogParser(), self.executor, repos_to_exclude_list, repos_to_include_list)
         self.checker = checker or PackageChecker(ErrataFetcher(), self.pkg_fetcher, OsVersionFetcher())
         self.annoyance_fetcher = annoyance_fetcher or AnnoyanceFetcher()
+        self.db_session_fetch = db_session_fetch or db_session_fetcher
         self.annoyance_check = None
-        self.skip_old_notices = skip_old_notices
+        self.skip_old_notices = skip_old_notices        
         
     def _get_sorted_relevant_advisories(self):
         security_advisories = filter(lambda adv:adv['advisory'].type == ErrataType.SecurityAdvisory,self.checker.findAdvisoriesOnInstalledPackages())
@@ -21,7 +22,7 @@ class EmailProducer:
         if self.skip_old_notices:
             only_advisories = map(lambda advpkg: advpkg['advisory'], security_advisories)
             self.annoyance_check.remove_old_advisories(only_advisories)
-            security_advisories = filter(lambda advpkg: annoyance_check.is_advisory_alert_necessary(advpkg['advisory']))
+            security_advisories = filter(lambda advpkg: annoyance_check.is_advisory_alert_necessary(advpkg['advisory']), security_advisories)
             
         security_advisories = sorted(security_advisories, key=lambda adv: adv['advisory'].severity)
         
@@ -72,11 +73,12 @@ class EmailProducer:
         
     def _handle_section_boundary(self, email_body):
         if email_body != '':
-            return email_body + "\n"
+            email_body += "\n"
+        return email_body
         
     def produce_email(self):
         email_body = ''
-        with db_session_fetcher() as session:            
+        with self.db_session_fetch() as session:            
             self.annoyance_check = self.annoyance_fetcher.fetch(session)
             advisories = self._get_sorted_relevant_advisories()            
             email_body = self._add_advisories_to_email(advisories, email_body)
