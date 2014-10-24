@@ -1,5 +1,6 @@
+from datetime import datetime
 from db_base import Base
-from sqlalchemy import Column, Integer, String, Date, Numeric, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, Numeric, ForeignKey
 from rpmUtils.miscutils import compareEVR
 
 class Package(Base):
@@ -10,6 +11,7 @@ class Package(Base):
     release = Column(String)
     arch = Column(String)
     repository = Column(String)
+    timestamp = Column(DateTime)
     
     def __init__(self,name,version,release,arch,repository):
         self.name = name
@@ -17,6 +19,7 @@ class Package(Base):
         self.release = release
         self.arch = arch
         self.repository = repository
+        self.timestamp = datetime.today()
         
     def compare_evr(self, other_package):            
         return compareEVR( ('', self.version, self.release), ('', other_package.version, other_package.release))

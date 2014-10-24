@@ -89,7 +89,8 @@ class AnnoyanceCheckTest(unittest.TestCase):
         assert result.version == '1.5.4'
         assert result.release == '4.el7'
         assert result.arch == 'x86_64'
-        assert result.repository == 'updates'        
+        assert result.repository == 'updates'
+        assert result.timestamp != None
         
     def test_remove_old_alerts_for_package_with_new_release(self):
         # arrange
