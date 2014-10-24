@@ -9,7 +9,7 @@ from db_session_fetcher import db_session_fetcher
 import smtplib
 from email.mime.text import MIMEText
 
-__VERSION__ = '1.0'
+__VERSION__ = '1.0.3.1'
 
 def main():
     args = parse_args()    
