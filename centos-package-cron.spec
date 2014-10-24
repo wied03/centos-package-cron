@@ -23,7 +23,7 @@ Notifies about updates similar to Apticron for Ubuntu.
 
 %install
 %{__python} setup.py install --skip-build --root %{buildroot}
-mkdir %{buildroot}/%{db_path}
+mkdir -p %{buildroot}/%{db_path}
 
 %files
 %{_bindir}/centos-package-cron
