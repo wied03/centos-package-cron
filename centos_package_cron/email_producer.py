@@ -22,7 +22,7 @@ class EmailProducer:
         if self.skip_old_notices:
             only_advisories = map(lambda advpkg: advpkg['advisory'], security_advisories)
             self.annoyance_check.remove_old_advisories(only_advisories)
-            security_advisories = filter(lambda advpkg: annoyance_check.is_advisory_alert_necessary(advpkg['advisory']), security_advisories)
+            security_advisories = filter(lambda advpkg: self.annoyance_check.is_advisory_alert_necessary(advpkg['advisory']), security_advisories)
             
         security_advisories = sorted(security_advisories, key=lambda adv: adv['advisory'].severity)
         

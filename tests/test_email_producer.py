@@ -77,13 +77,57 @@ stuff
 """
         
     def test_produce_email_general_but_no_security_advisories_already_notified(self):
-        raise 'write it'
+        # arrange
+        producer = self.get_producer()
+        self.general_updates = [Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')]
+        self.changelogs = {('libgcrypt', '1.5.3', '4.el7'): 'stuff'}
+        self.general_update_not_necessary = self.general_updates
+        
+        # act
+        result = producer.produce_email()
+        
+        # assert
+        assert result == ''
         
     def test_produce_email_general_but_no_security_advisories_old_package_notification_to_prune(self):
         raise 'write it'
 
     def test_produce_email_both_security_and_general_updates(self):
-        raise 'write it'
+        # arrange
+        producer = self.get_producer()
+        package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
+        self.general_updates = [package]
+        self.changelogs = {('libgcrypt', '1.5.3', '4.el7'): 'stuff'}
+        advisory = ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['i686','x86_64'], ['7'], [{'name': 'libgcrypt','version':'1.5.3', 'release':'4.el7', 'arch':'x86_64'}],[])
+        installed_packages = [package]
+        self.advisories_on_installed = [{'advisory': advisory, 'installed_packages':installed_packages}]
+        
+        # act
+        result = producer.produce_email()
+        
+        # assert
+        assert result == """The following security advisories exist for installed packages:
+
+Advisory ID: adv id
+Severity: Important
+Packages:
+* libgcrypt-1.5.3-4.el7
+References:
+
+
+
+The following packages are available for updating:
+
+libgcrypt-1.5.3-4.el7 from updates
+
+
+
+Change logs for available package updates:
+
+libgcrypt-1.5.3-4.el7
+stuff
+
+"""
         
     def test_produce_email_both_security_and_general_updates_old_security_notifications_to_prune(self):
         raise 'write it'
