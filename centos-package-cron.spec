@@ -12,7 +12,8 @@ Requires:       python >= 2.7.5
 Requires:       yum >= 3.4.3
 Requires:       yum-plugin-changelog >= 1.1.31
 BuildRequires:  yum-plugin-changelog >= 1.1.31
-Requires:       mailx
+Requires:       MTA
+BuildRequires:  MTA
 BuildRequires:  mailx
 Requires:       python-sqlalchemy >= 0.8.4
 BuildRequires:  python-sqlalchemy >= 0.8.4
