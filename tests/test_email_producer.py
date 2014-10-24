@@ -2,6 +2,8 @@ import unittest
 import sys
 import os
 from centos_package_cron.email_producer import *
+from centos_package_cron.package import *
+from centos_package_cron.errata_item import *
 from mock import Mock
 
 class db_session_fetcher_mock:        
@@ -21,10 +23,16 @@ class EmailProducerTest(unittest.TestCase):
         self.db_session_mock = db_session_fetcher_mock
         self.advisories_on_installed = []
         self.pkg_checker_mock.findAdvisoriesOnInstalledPackages = lambda: self.advisories_on_installed
-        self.advisory_alerts_necessary = []
-        self.annoyance_check_mock.is_advisory_alert_necessary = lambda advisory: advisory in self.advisory_alerts_necessary
+        self.advisory_alerts_not_necessary = []        
+        self.annoyance_check_mock.is_advisory_alert_necessary = lambda advisory: advisory not in self.advisory_alerts_not_necessary
+        self.general_update_not_necessary = []
+        self.annoyance_check_mock.is_package_alert_necessary = lambda package: package not in self.general_update_not_necessary
+        self.old_advisories_removed_for = []
+        self.old_alerts_removed_for_package = []        
         self.general_updates = []
         self.pkg_fetcher_mock.get_package_updates = lambda: self.general_updates
+        self.changelogs = {}
+        self.pkg_fetcher_mock.get_package_changelog = lambda name,vers,release: self.changelogs[(name,vers,release)]
         
     def get_producer(self,repo_exclude=[], repo_include=[], skip_old=True):
         return EmailProducer(repo_exclude,
@@ -46,11 +54,43 @@ class EmailProducerTest(unittest.TestCase):
         assert result == ''
 
     def test_produce_email_general_but_no_security_advisories(self):
+        # arrange
+        producer = self.get_producer()
+        self.general_updates = [Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')]
+        self.changelogs = {('libgcrypt', '1.5.3', '4.el7'): 'stuff'}
+        
+        # act
+        result = producer.produce_email()
+        
+        # assert
+        assert result == """The following packages are available for updating:
+
+libgcrypt-1.5.3-4.el7 from updates
+
+
+
+Change logs for available package updates:
+
+libgcrypt-1.5.3-4.el7
+stuff
+
+"""
+        
+    def test_produce_email_general_but_no_security_advisories_already_notified(self):
+        raise 'write it'
+        
+    def test_produce_email_general_but_no_security_advisories_old_package_notification_to_prune(self):
         raise 'write it'
 
     def test_produce_email_both_security_and_general_updates(self):
         raise 'write it'
-
+        
+    def test_produce_email_both_security_and_general_updates_old_security_notifications_to_prune(self):
+        raise 'write it'
+        
+    def test_produce_email_both_security_and_general_updates_already_notified(self):
+        raise 'write it'
+        
     def test_produce_email_repo_excluded_and_included(self):
         raise 'write it'
 
