@@ -27,8 +27,10 @@ class EmailProducerTest(unittest.TestCase):
         self.annoyance_check_mock.is_advisory_alert_necessary = lambda advisory: advisory not in self.advisory_alerts_not_necessary
         self.general_update_not_necessary = []
         self.annoyance_check_mock.is_package_alert_necessary = lambda package: package not in self.general_update_not_necessary
-        self.old_advisories_removed_for = []
-        self.old_alerts_removed_for_package = []        
+        self.old_advisories_removed_for_advisory_set = []
+        self.annoyance_check_mock.remove_old_advisories = lambda active_ad: self.old_advisories_removed_for_advisory_set.append(active_ad)
+        self.old_general_alerts_removed = []
+        self.annoyance_check_mock.remove_old_alerts_for_package = lambda package: self.old_general_alerts_removed.append(package)
         self.general_updates = []
         self.pkg_fetcher_mock.get_package_updates = lambda: self.general_updates
         self.changelogs = {}
@@ -56,7 +58,8 @@ class EmailProducerTest(unittest.TestCase):
     def test_produce_email_general_but_no_security_advisories(self):
         # arrange
         producer = self.get_producer()
-        self.general_updates = [Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')]
+        package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
+        self.general_updates = [package]
         self.changelogs = {('libgcrypt', '1.5.3', '4.el7'): 'stuff'}
         
         # act
@@ -75,6 +78,7 @@ libgcrypt-1.5.3-4.el7
 stuff
 
 """
+        assert self.old_general_alerts_removed == [[package]]
         
     def test_produce_email_general_but_no_security_advisories_already_notified(self):
         # arrange
@@ -88,9 +92,7 @@ stuff
         
         # assert
         assert result == ''
-        
-    def test_produce_email_general_but_no_security_advisories_old_package_notification_to_prune(self):
-        raise 'write it'
+        assert self.old_general_alerts_removed == []   
 
     def test_produce_email_both_security_and_general_updates(self):
         # arrange
@@ -128,9 +130,8 @@ libgcrypt-1.5.3-4.el7
 stuff
 
 """
-        
-    def test_produce_email_both_security_and_general_updates_old_security_notifications_to_prune(self):
-        raise 'write it'
+        assert self.old_advisories_removed_for_advisory_set == [[advisory]]
+        assert self.old_general_alerts_removed == [[package]]
         
     def test_produce_email_both_security_and_general_updates_already_notified(self):
         raise 'write it'
