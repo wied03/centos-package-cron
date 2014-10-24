@@ -3,6 +3,7 @@ import socket
 import sys
 from email_producer import EmailProducer
 from db_session_fetcher import db_session_fetcher
+from mockable_execute import *
 
 __VERSION__ = '1.0'
 
