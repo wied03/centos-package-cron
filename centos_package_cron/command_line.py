@@ -17,6 +17,7 @@ def main():
     producer = EmailProducer(repos_to_exclude_list, repos_to_include_list, args.skipold, args.skip_sqlite_file_path)
     email_content = producer.produce_email()
     if email_content != '':
+        executor = MockableExecute()
         executor.run_command(['/usr/bin/mail',
                               '-s %s' % (args.email_subject),
                               '-r %s' % (args.email_from),
