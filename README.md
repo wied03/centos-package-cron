@@ -30,6 +30,3 @@ sudo yum install centos-package-cron-1.0.2-0.1.el7.centos.x86_64.rpm
 centos-package-cron --email_to sysadmin@stuff.com --email_from dev@somebox.com
 # See centos-package-cron -h for options
 ```
-
-## TODO
-* Add ability to not be reminded about updates more than once
