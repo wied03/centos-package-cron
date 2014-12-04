@@ -7,6 +7,7 @@ Attempts to offer Apticron (Ubuntu) style package update emails and also bring s
 * Checks for updates using Yum's Python API and changelogs for those updates using Yum's changelog plugin
 * Checks security errata from CentOS mailing list via [Steve Meier's list](http://cefs.steve-meier.de/errata.latest.xml) and picks only advisories related to packages installed on your machine
 * Emails the above information to an address of your choosing
+* By default, only reminds about a given security advisory / package update once to avoid annoying you.  You can change this using the --skipold false option (see -h)
 
 ## Installation
 
