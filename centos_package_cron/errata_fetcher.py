@@ -1,7 +1,7 @@
 from errata_item import *
 import urllib2
 from xml.etree import ElementTree as et
-from rpmUtils.miscutils import splitFilename
+from package_parser import PackageParser
 
 class ErrataParser:
     def getType(self,theType):
@@ -27,16 +27,7 @@ class ErrataParser:
             return mapping[theSeverity]
         except KeyError:
             print "Do not understand mapping for severity %s" % (theSeverity)
-            raise
-            
-    def parsePackage(self,filename):
-        (n, v, r, e, a) = splitFilename(filename)
-        return {
-        'name':n,
-        'version':v,
-        'release':r,
-        'arch':a
-        }
+            raise            
     
     def parseSingleItem(self,node):
         try:
@@ -49,7 +40,7 @@ class ErrataParser:
             severity = self.getSeverity(node.attrib.get('severity'))
             architectures = map(lambda x: x.text, node.findall('os_arch'))
             releases = map(lambda x: x.text, node.findall('os_release'))
-            packages = map(lambda x: self.parsePackage(x.text), node.findall('packages'))
+            packages = map(lambda x: PackageParser.parsePackage(x.text), node.findall('packages'))
             references = node.attrib.get('references').split(' ')
             return ErrataItem(node.tag, the_type, severity, architectures, releases, packages, references)
         except:

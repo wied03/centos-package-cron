@@ -20,7 +20,7 @@ def main():
     if args.enablerepo != None:
         repos_to_include_list = args.enablerepo.split(',')
         
-    producer = EmailProducer(repos_to_exclude_list, repos_to_include_list, args.skipold, args.skip_sqlite_file_path)
+    producer = EmailProducer(repos_to_exclude_list, repos_to_include_list, args.skipold, args.skip_sqlite_file_path,include_depends_on=args.include_depends_on)
     email_content = producer.produce_email()
 
     if email_content != '':
@@ -67,6 +67,11 @@ def parse_args():
     type=str,
     default=db_session_fetcher.DEFAULT_DB_PATH,
     help='The location of the Sqlite DB used to track which notifications you have already received.')
+    
+    parser.add_argument('-do','--include-depends-on',
+    type=bool,
+    default=True,
+    help='When a package update is listed, show what packages on your system depend on that package')
     
     return parser.parse_args()
 
