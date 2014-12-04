@@ -76,9 +76,11 @@ class EmailProducer:
             email_body += u"\n"
             for update in general_updates:
                 depends_on = self.pkg_fetcher.get_what_depends_on(update.name)
-                email_body += u"These packages depend on %s:\n" % (update.name)
-                for depend in depends_on:
-                    email_body += u"* %s\n" % (depend.name)
+                if len(depends_on) > 0:
+                    email_body += u"These packages depend on %s:\n" % (update.name)
+                    for depend in depends_on:
+                        email_body += u"* %s\n" % (depend.name)                    
+                    email_body += u"\n"
             
         return email_body        
         
