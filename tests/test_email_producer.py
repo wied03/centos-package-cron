@@ -36,8 +36,10 @@ class EmailProducerTest(unittest.TestCase):
         self.pkg_fetcher_mock.get_package_updates = lambda: self.general_updates
         self.changelogs = {}
         self.pkg_fetcher_mock.get_package_changelog = lambda name,vers,release: self.changelogs[(name,vers,release)]
+        self.depends_on = {}
+        self.pkg_fetcher_mock.get_what_depends_on = lambda name: self.depends_on[name]
         
-    def get_producer(self,repo_exclude=[], repo_include=[], skip_old=True):
+    def get_producer(self,repo_exclude=[], repo_include=[], skip_old=True,include_depends_on=False):
         return EmailProducer(repo_exclude,
                              repo_include,
                              skip_old,
@@ -45,7 +47,8 @@ class EmailProducerTest(unittest.TestCase):
                              self.pkg_fetcher_mock,
                              self.pkg_checker_mock,
                              self.annoy_fetcher_mock,
-                             self.db_session_mock)        
+                             self.db_session_mock,
+                             include_depends_on)        
     
     def test_produce_email_no_updates(self):
         # arrange
@@ -71,6 +74,36 @@ class EmailProducerTest(unittest.TestCase):
         assert result == """The following packages are available for updating:
 
 libgcrypt-1.5.3-4.el7 from updates
+
+
+
+Change logs for available package updates:
+
+libgcrypt-1.5.3-4.el7
+stuff
+
+"""
+        assert self.old_general_alerts_removed == [package]
+        
+    def test_produce_email_general_but_no_security_advisories_depends_on_enabled(self):
+        # arrange
+        producer = self.get_producer(include_depends_on=True)
+        package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
+        self.general_updates = [package]
+        self.changelogs = {('libgcrypt', '1.5.3', '4.el7'): 'stuff'}
+        self.depends_on['libgcrypt'] = [Package('openssl', '1.2', '4.el7','x86_64', ''), Package('gnutls', '1.3', '4.el7','x86_64', '')]
+        
+        # act
+        result = producer.produce_email()
+        
+        # assert
+        assert result == """The following packages are available for updating:
+
+libgcrypt-1.5.3-4.el7 from updates
+
+These packages depend on libgcrypt:
+* openssl
+* gnutls
 
 
 

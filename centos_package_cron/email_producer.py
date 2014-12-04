@@ -15,7 +15,8 @@ class EmailProducer:
                  pkg_fetcher=None,
                  checker=None,
                  annoyance_fetcher=None,
-                 db_session_fetch=None):
+                 db_session_fetch=None,
+                 include_depends_on=None):
         self.executor = MockableExecute()
         self.pkg_fetcher = pkg_fetcher or PackageFetcher(ChangeLogParser(), self.executor, repos_to_exclude_list, repos_to_include_list)
         self.checker = checker or PackageChecker(ErrataFetcher(), self.pkg_fetcher, OsVersionFetcher())
@@ -23,6 +24,7 @@ class EmailProducer:
         self.db_session_fetch = db_session_fetch or db_session_fetcher(db_path=db_file_path)
         self.annoyance_check = None
         self.skip_old_notices = skip_old_notices
+        self.include_depends_on = include_depends_on
         
     def _get_sorted_relevant_advisories(self):
         security_advisories = filter(lambda adv:adv['advisory'].type == ErrataType.SecurityAdvisory,self.checker.findAdvisoriesOnInstalledPackages())
@@ -69,6 +71,14 @@ class EmailProducer:
             
         for update in general_updates:
             email_body += u"%s-%s-%s from %s\n" % (update.name, update.version, update.release, update.repository)
+            
+        if self.include_depends_on:
+            email_body += u"\n"
+            for update in general_updates:
+                depends_on = self.pkg_fetcher.get_what_depends_on(update.name)
+                email_body += u"These packages depend on %s:\n" % (update.name)
+                for depend in depends_on:
+                    email_body += u"* %s\n" % (depend.name)
             
         return email_body        
         
