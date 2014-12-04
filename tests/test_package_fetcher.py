@@ -256,7 +256,29 @@ class PackageFetcherTestCase(unittest.TestCase):
         result = fetcher.get_package_updates()
         
         # assert
-        assert len(result) > 0
+        assert len(result) > 0    
+        
+    def testGetWhatDependsOn(self):
+        # arrange
+        fetcher = package_fetcher.PackageFetcher(package_fetcher.ChangeLogParser(),mockable_execute.MockableExecute())
+        
+        # act
+        result = fetcher.get_what_depends_on('nss')
+        
+        # assert
+        assert len(result) >= 2, "Actual size is %d" % (len(result))
+        names = map(lambda p:p.name, result)
+        assert names == ['NetworkManager-tui', 'nss-sysinit', 'NetworkManager-glib', 'rpm-libs', 'NetworkManager', 'mailx', 'nss-tools', 'libcurl', 'nss', 'rpm', 'rpm-build-libs', 'rpm-python', 'openldap']
+        
+    def testGetWhatDependsOnNone(self):
+        # arrange
+        fetcher = package_fetcher.PackageFetcher(package_fetcher.ChangeLogParser(),mockable_execute.MockableExecute())
+        
+        # act
+        result = fetcher.get_what_depends_on('postgresql93-devel')
+        
+        # assert
+        assert result == []
         
     def testGetPackageChangeLogMock(self):
         # arrange
