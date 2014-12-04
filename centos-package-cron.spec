@@ -3,7 +3,7 @@
 
 Summary:    CentOS Package Update Tool
 Name:       centos-package-cron
-Version:    1.0.2
+Version:    1.0.4
 License:    Public Domain
 Release:    0.1%{?dist}
 
