@@ -4,6 +4,7 @@ import yum
 import re
 import mockable_execute
 from package import Package
+from package_parser import PackageParser
         
 class ChangeLogParser:
     def get_log_version_num_with_release_suffix(self,version,release):
@@ -60,6 +61,22 @@ class PackageFetcher:
         raw_updates = self.yb.update()
         result = map(lambda x: Package(x.name,x.version,x.release, x.arch, x.repoid), raw_updates)
         return result
+        
+    def get_what_depends_on(self,name):
+        command = ['rpm', '-q', '--provides', name]
+        output = self.executor.run_command(command)        
+        command = ['sed', r'''s/^/"/;s/\([^[:space:]]\) *$/\1"/;/=/{h;s/ =.*$/"/;G}''']
+        output = self.executor.run_command(command, command_input=output)
+        command = ['xargs', 'rpm', '-q', '--whatrequires']
+        output = self.executor.run_command(command, command_input=output)
+        command = ['grep', '-v', '-E', r'''^no package''']
+        packages = self.executor.run_command(command, command_input=output)
+        packages = packages.split("\n")
+        packages = sorted(packages)
+        packages = list(set(packages))
+        packages = list(filter(lambda v: v != "",packages))
+        packages = map(lambda pkgStr: PackageParser.parsePackage(pkgStr), packages)
+        return map(lambda pkgHsh: Package(pkgHsh['name'], pkgHsh['version'], pkgHsh['release'], pkgHsh['arch'], repository=""), packages)
         
     def get_package_changelog(self,name,version,release):
         args = ['/usr/bin/yum']
