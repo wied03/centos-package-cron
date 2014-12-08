@@ -73,7 +73,8 @@ class EmailProducer:
             email_body += u"%s-%s-%s from %s\n" % (update.name, update.version, update.release, update.repository)
             
         if self.include_depends_on:
-            email_body += u"\n"
+            if len(general_updates) > 0:
+                email_body += u"\n"
             for update in general_updates:
                 depends_on = self.pkg_fetcher.get_what_depends_on(update.name)
                 if len(depends_on) > 0:
