@@ -59,6 +59,16 @@ class EmailProducerTest(unittest.TestCase):
         
         # assert
         assert result == ''
+        
+    def test_produce_email_no_updates_dependsonenabled(self):
+        # arrange
+        producer = self.get_producer(include_depends_on=True)
+        
+        # act
+        result = producer.produce_email()
+        
+        # assert
+        assert result == ''
 
     def test_produce_email_general_but_no_security_advisories(self):
         # arrange
