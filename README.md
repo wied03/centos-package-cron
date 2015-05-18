@@ -16,6 +16,8 @@ Attempts to offer Apticron (Ubuntu) style package update emails and also bring s
 ```shell
 sudo yum install mailx yum-plugin-changelog
 ./setup.py install
+# For the SQLite DB that avoids reminding you of updates that were already sent (see above)
+mkdir /var/lib/centos-package-cron
 ```
 
 ### Using RPM
