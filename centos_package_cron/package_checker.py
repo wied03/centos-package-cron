@@ -1,4 +1,5 @@
 import operator
+import re
 from rpmUtils.miscutils import compareEVR
 
 class PackageChecker:
@@ -8,7 +9,15 @@ class PackageChecker:
         self.os_fetcher = os_fetcher
     
     def _advisoryPackageMeantForCurrentOs(self, advisory_package):
-        raise 'not done'
+        os_version = self.os_fetcher.get_mid_level_version()
+        # underscores used in filenames
+        os_version = os_version.replace('.', '_')
+        
+        # Convention does not use el6_0
+        if re.match(r'\d+_0', os_version):            
+            os_version = self.os_fetcher.get_top_level_version()
+        regex = r'.*el'+os_version+'.*'
+        return re.match(regex, advisory_package['release']) != None
     
     def _compareAdvisoryAgainstInst(self,advisory_package,installed_package):
         return compareEVR( ('', advisory_package['version'], advisory_package['release']), ('', installed_package.version, installed_package.release))

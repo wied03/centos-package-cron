@@ -10,32 +10,17 @@ from centos_package_cron.errata_fetcher import ErrataSeverity
 from mock import Mock
 from centos_package_cron.package import Package
 
-class PackageCheckerTest(unittest.TestCase):
-    def testAdvisoryPackageMeantForCurrentOsCentOs4(self):
-        # arrange
-        os_fetcher = Mock()
-        os_fetcher.get_mid_level_version = Mock(return_value='4.0')
-        errata = Mock()
-        pkg = Mock()
-        checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
-        advisory_packages = [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el4.2', 'arch':'x86_64'},
-                             {'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}]
-        
-        # act
-        result = map(lambda a: checker._advisoryPackageMeantForCurrentOs(a), advisory_packages)
-        
-        # assert
-        assert result == [True, False]
-        
+class PackageCheckerTest(unittest.TestCase):        
     def testAdvisoryPackageMeantForCurrentOsCentOs5(self):
         # arrange
         os_fetcher = Mock()
         os_fetcher.get_mid_level_version = Mock(return_value='5.0')
+        os_fetcher.get_top_level_version = Mock(return_value='5')
         errata = Mock()
         pkg = Mock()
         checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
         advisory_packages = [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el4.2', 'arch':'x86_64'},
-                             {'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}]
+                             {'name': 'xen-libs','version':'3.0.3', 'release':'135.el5.2', 'arch':'x86_64'}]
         
         # act
         result = map(lambda a: checker._advisoryPackageMeantForCurrentOs(a), advisory_packages)
@@ -47,6 +32,7 @@ class PackageCheckerTest(unittest.TestCase):
         # arrange
         os_fetcher = Mock()
         os_fetcher.get_mid_level_version = Mock(return_value='6.0')
+        os_fetcher.get_top_level_version = Mock(return_value='6')
         errata = Mock()
         pkg = Mock()
         checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
@@ -79,6 +65,7 @@ class PackageCheckerTest(unittest.TestCase):
         # arrange
         os_fetcher = Mock()
         os_fetcher.get_mid_level_version = Mock(return_value='7.0')
+        os_fetcher.get_top_level_version = Mock(return_value='7')
         errata = Mock()
         pkg = Mock()
         checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
