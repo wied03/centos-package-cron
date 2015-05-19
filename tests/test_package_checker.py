@@ -93,6 +93,7 @@ class PackageCheckerTest(unittest.TestCase):
         ])
         os_fetcher = Mock()
         os_fetcher.get_top_level_version = Mock(return_value='7')
+        os_fetcher.get_mid_level_version = Mock(return_value='7.0')
         checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
         
         # act
@@ -114,6 +115,7 @@ class PackageCheckerTest(unittest.TestCase):
         ])
         os_fetcher = Mock()
         os_fetcher.get_top_level_version = Mock(return_value='7')
+        os_fetcher.get_mid_level_version = Mock(return_value='7.0')
         checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
         
         # act
@@ -126,15 +128,16 @@ class PackageCheckerTest(unittest.TestCase):
         # arrange
         errata = Mock()
         errata.get_errata = Mock(return_value=[
-        errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}],[])
+        errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el7.2', 'arch':'x86_64'}],[])
         ])
         pkg = Mock()
         pkg.fetch_installed_packages = Mock(return_value=[
-        Package('xen-libs','3.0.3', '135.el5_8.2', 'x86_64', 'updates'),
+        Package('xen-libs','3.0.3', '135.el7.2', 'x86_64', 'updates'),
         Package('openssl','2.0', '4.el7', 'x86_64', 'updates')
         ])
         os_fetcher = Mock()
         os_fetcher.get_top_level_version = Mock(return_value='7')
+        os_fetcher.get_mid_level_version = Mock(return_value='7.0')
         checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
 
         # act
@@ -147,7 +150,7 @@ class PackageCheckerTest(unittest.TestCase):
         # arrange
         errata = Mock()
         errata.get_errata = Mock(return_value=[
-        errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}],[])
+        errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el7.2', 'arch':'x86_64'}],[])
         ])
         pkg = Mock()
         pkg.fetch_installed_packages = Mock(return_value=[
@@ -156,6 +159,7 @@ class PackageCheckerTest(unittest.TestCase):
         ])
         os_fetcher = Mock()
         os_fetcher.get_top_level_version = Mock(return_value='7')
+        os_fetcher.get_mid_level_version = Mock(return_value='7.0')
         checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
 
         # act
@@ -164,27 +168,28 @@ class PackageCheckerTest(unittest.TestCase):
         # assert
         self.assertEquals(result, [])
         
-    def testFindAvisoriesOnInstalledPackagesVersionComparisonWith2Digits(self):
+    def testFindAdvisoriesOnInstalledPackagesVersionComparisonWith2Digits(self):
         # arrange
         errata = Mock()
         errata_packages = [
          {'arch': 'x86_64',
           'name': 'glibc',
-          'release': '55.el7_0.1',
+          'release': '55.el7.1',
           'version': '2.17'},
          {'arch': 'x86_64',
           'name': 'glibc',
-          'release': '118.el5_10.3',
+          'release': '118.el7.3',
           'version': '2.5'}]        
         errata.get_errata = Mock(return_value=[
         errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], errata_packages,[])
         ])
         pkg = Mock()
         pkg.fetch_installed_packages = Mock(return_value=[
-        Package('glibc','2.17', '55.el7_0.1', 'x86_64', 'updates'),
+        Package('glibc','2.17', '55.el7.1', 'x86_64', 'updates'),
         ])
         os_fetcher = Mock()
         os_fetcher.get_top_level_version = Mock(return_value='7')
+        os_fetcher.get_mid_level_version = Mock(return_value='7.0')
         checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
         
         # act
@@ -193,20 +198,21 @@ class PackageCheckerTest(unittest.TestCase):
         # assert
         assert result == []
         
-    def testFindAvisoriesOnInstalledPackagesBothOldAndNewInstalled(self):
+    def testFindAdvisoriesOnInstalledPackagesBothOldAndNewInstalled(self):
         # arrange
         errata = Mock()
         errata.get_errata = Mock(return_value=[
-        errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}],[])
+        errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el7.2', 'arch':'x86_64'}],[])
         ])
         pkg = Mock()
         pkg.fetch_installed_packages = Mock(return_value=[
-        Package('xen-libs','3.0.3', '132.el5_8.2', 'x86_64', 'updates'),
-        Package('xen-libs','3.0.4', '135.el5_8.2', 'x86_64', 'updates'),
+        Package('xen-libs','3.0.3', '132.el7.2', 'x86_64', 'updates'),
+        Package('xen-libs','3.0.4', '135.el7.2', 'x86_64', 'updates'),
         Package('openssl','2.0', '4.el7', 'x86_64', 'updates')
         ])
         os_fetcher = Mock()
         os_fetcher.get_top_level_version = Mock(return_value='7')
+        os_fetcher.get_mid_level_version = Mock(return_value='7.0')
         checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
         
         # act
@@ -219,15 +225,16 @@ class PackageCheckerTest(unittest.TestCase):
         # arrange
         errata = Mock()
         errata.get_errata = Mock(return_value=[
-        errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}],[])
+        errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el7.2', 'arch':'x86_64'}],[])
         ])
         pkg = Mock()
         pkg.fetch_installed_packages = Mock(return_value=[
-        Package('xen-libs','3.0.2', '135.el5_8.2', 'x86_64', 'updates'),
+        Package('xen-libs','3.0.2', '135.el7.2', 'x86_64', 'updates'),
         Package('openssl','2.0', '4.el7', 'x86_64', 'updates')
         ])
         os_fetcher = Mock()
         os_fetcher.get_top_level_version = Mock(return_value='7')
+        os_fetcher.get_mid_level_version = Mock(return_value='7.0')
         checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
 
         # act
@@ -240,15 +247,16 @@ class PackageCheckerTest(unittest.TestCase):
         # arrange
         errata = Mock()
         errata.get_errata = Mock(return_value=[
-        errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}],[])
+        errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el7.2', 'arch':'x86_64'}],[])
         ])
         pkg = Mock()
         pkg.fetch_installed_packages = Mock(return_value=[
-        Package('xen-libs','3.0.3', '135.el5_8.3', 'x86_64', 'updates'),
+        Package('xen-libs','3.0.3', '135.el7.3', 'x86_64', 'updates'),
         Package('openssl','2.0', '4.el7', 'x86_64', 'updates')
         ])
         os_fetcher = Mock()
         os_fetcher.get_top_level_version = Mock(return_value='7')
+        os_fetcher.get_mid_level_version = Mock(return_value='7.0')
         checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
 
         # act
@@ -261,15 +269,16 @@ class PackageCheckerTest(unittest.TestCase):
         # arrange
         errata = Mock()
         errata.get_errata = Mock(return_value=[
-        errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}],[])
+        errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el7.2', 'arch':'x86_64'}],[])
         ])
         pkg = Mock()
         pkg.fetch_installed_packages = Mock(return_value=[
-        Package('xen-libs','3.0.3', '135.el5_8.1', 'x86_64', 'updates'),
-        Package('openssl','2.0', '4.el7', 'x86_64', 'updates')
+        Package('xen-libs','3.0.3', '135.el7.1', 'x86_64', 'updates'),
+        Package('openssl','2.0', '4.el6', 'x86_64', 'updates')
         ])
         os_fetcher = Mock()
         os_fetcher.get_top_level_version = Mock(return_value='6')
+        os_fetcher.get_mid_level_version = Mock(return_value='6.0')
         checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
 
         # act
@@ -303,16 +312,17 @@ class PackageCheckerTest(unittest.TestCase):
     def testFindAdvisoriesOnInstalledPackagesInstalledAndNeedsUpdating(self):
         # arrange
         errata = Mock()
-        advisory = errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}],[])
+        advisory = errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el7.2', 'arch':'x86_64'}],[])
         errata.get_errata = Mock(return_value=[advisory])
         pkg = Mock()
-        xen_package = Package('xen-libs','3.0.3', '135.el5_8.1', 'x86_64', 'updates')
+        xen_package = Package('xen-libs','3.0.3', '135.el7.1', 'x86_64', 'updates')
         pkg.fetch_installed_packages = Mock(return_value=[
         xen_package,
         Package('openssl','2.0', '4.el7', 'x86_64', 'updates')
         ])
         os_fetcher = Mock()
         os_fetcher.get_top_level_version = Mock(return_value='7')
+        os_fetcher.get_mid_level_version = Mock(return_value='7.0')
         checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
 
         # act
