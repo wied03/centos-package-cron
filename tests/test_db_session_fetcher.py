@@ -95,7 +95,7 @@ class DbSessionFetcherTest(unittest.TestCase):
         # arrange
         try:
             call(['sudo', 'mkdir', '/var/we_cant_access_this'])
-            call(['sudo', 'chown', 'vagrant', '/var/we_cant_access_this'])
+            call(['sudo', 'chown', 'nonrootuser', '/var/we_cant_access_this'])
             call(['sudo', 'touch', '/var/we_cant_access_this/db'])            
 
             root_required_db_fetcher = db_session_fetcher('/var/we_cant_access_this/db')        
