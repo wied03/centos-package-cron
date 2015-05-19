@@ -12,11 +12,14 @@ class PackageChecker:
         os_version = self.os_fetcher.get_mid_level_version()
         # underscores used in filenames
         os_version = os_version.replace('.', '_')
+        regex = r'.*el'+os_version+'.*'
         
         # Convention does not use el6_0
-        if re.match(r'\d+_0', os_version):            
+        if re.match(r'\d+_0', os_version):
             os_version = self.os_fetcher.get_top_level_version()
-        regex = r'.*el'+os_version+'.*'
+            # Do not want to match el6_5 if we are el6
+            regex = r'.*el'+os_version+'(?!_).*'     
+        
         return re.match(regex, advisory_package['release']) != None
     
     def _compareAdvisoryAgainstInst(self,advisory_package,installed_package):
