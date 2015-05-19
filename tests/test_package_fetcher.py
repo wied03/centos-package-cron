@@ -174,7 +174,7 @@ class PackageFetcherTestCase(unittest.TestCase):
         result = fetcher.fetch_installed_packages()
         
         # assert
-        assert len(result) >= 271, "Actual size is %d" % (len(result))
+        assert len(result) >= 183, "Actual size is %d" % (len(result))
         first_package = result[0]
         assert isinstance(first_package, package_fetcher.Package)
         print "1st package name is %s" % (first_package.name)
@@ -269,7 +269,7 @@ class PackageFetcherTestCase(unittest.TestCase):
         assert len(result) >= 2, "Actual size is %d" % (len(result))
         names = map(lambda p:p.name, result)
         # list includes
-        anything_missing = list(set(['NetworkManager-tui', 'nss-sysinit', 'NetworkManager-glib', 'rpm-libs', 'NetworkManager', 'mailx', 'nss-tools', 'libcurl', 'nss', 'rpm', 'rpm-build-libs', 'rpm-python', 'openldap']) - set(names))
+        anything_missing = list(set(['rpm-libs']) - set(names))
         assert anything_missing == []
         
     def testGetWhatDependsOnNone(self):
