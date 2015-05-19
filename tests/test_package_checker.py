@@ -288,19 +288,27 @@ class PackageCheckerTest(unittest.TestCase):
         self.assertEquals(result, [])
         
     def testFindAdvisoriesOnInstalledPackagesInstalledAndNeedsUpdatingButWrongCentOsVersionOnPackage(self):
+        # https://github.com/wied03/centos-package-cron/issues/5
         # arrange
         errata = Mock()
+        adv_packages = [{'name': 'bash','version':'3.2', 'release':'33.el5.1', 'arch':'i386'},
+                        {'name': 'bash','version':'3.2', 'release':'33.el5.1', 'arch':'src'},
+                    {'name': 'bash','version':'3.2', 'release':'33.el5.1', 'arch':'x86_64'},
+                    {'name': 'bash','version':'4.1.2', 'release':'15.el6_5.1', 'arch':'i686'},
+                    {'name': 'bash','version':'4.1.2', 'release':'15.el6_5.1', 'arch':'src'},
+                    {'name': 'bash','version':'4.1.2', 'release':'15.el6_5.1', 'arch':'x86_64'},
+                    {'name': 'bash','version':'4.2.45', 'release':'5.el7_0.2', 'arch':'src'},
+                    {'name': 'bash','version':'4.2.45', 'release':'5.el7_0.2', 'arch':'x86_64'}]
         errata.get_errata = Mock(return_value=[
-        errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}],[])
+        errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['5', '6', '7'], adv_packages,[])
         ])
         pkg = Mock()
         pkg.fetch_installed_packages = Mock(return_value=[
-        Package('xen-libs','3.0.3', '135.el5_8.1', 'x86_64', 'updates'),
-        Package('openssl','2.0', '4.el7', 'x86_64', 'updates')
+        Package('bash','4.1.2', '29.el6', 'x86_64', 'updates')
         ])
         os_fetcher = Mock()
-        os_fetcher.get_top_level_version = Mock(return_value='7')
-        os_fetcher.get_mid_level_version = Mock(return_value='7.0')
+        os_fetcher.get_top_level_version = Mock(return_value='6')
+        os_fetcher.get_mid_level_version = Mock(return_value='6.6')
         checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
         
         # act
