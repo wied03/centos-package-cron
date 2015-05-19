@@ -11,6 +11,51 @@ from mock import Mock
 from centos_package_cron.package import Package
 
 class PackageCheckerTest(unittest.TestCase):
+    def testAdvisoryPackageMeantForCurrentOsCentOs4(self):
+        # arrange
+        os_fetcher = Mock()
+        os_fetcher.get_mid_level_version = Mock(return_value='4.0')
+        
+        # act
+        
+        # assert
+        
+    def testAdvisoryPackageMeantForCurrentOsCentOs5(self):
+        # arrange
+        os_fetcher = Mock()
+        os_fetcher.get_mid_level_version = Mock(return_value='5.0')
+        
+        # act
+        
+        # assert
+        
+    def testAdvisoryPackageMeantForCurrentOsCentOs6(self):
+        # arrange
+        os_fetcher = Mock()
+        os_fetcher.get_mid_level_version = Mock(return_value='6.0')
+        
+        # act
+        
+        # assert
+
+    def testAdvisoryPackageMeantForCurrentOsCentOs65(self):
+        # arrange
+        os_fetcher = Mock()
+        os_fetcher.get_mid_level_version = Mock(return_value='6.5')
+        
+        # act
+        
+        # assert
+        
+    def testAdvisoryPackageMeantForCurrentOsCentOs7(self):
+        # arrange
+        os_fetcher = Mock()
+        os_fetcher.get_mid_level_version = Mock(return_value='7.0')
+        
+        # act
+        
+        # assert                                
+    
     def testSameVersionOfAnotherPackageInstalled(self):
         # arrange
         errata = Mock()

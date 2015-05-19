@@ -7,6 +7,9 @@ class PackageChecker:
         self.package_fetcher = package_fetcher
         self.os_fetcher = os_fetcher
     
+    def _advisoryPackageMeantForCurrentOs(self, advisory_package):
+        raise 'not done'
+    
     def _compareAdvisoryAgainstInst(self,advisory_package,installed_package):
         return compareEVR( ('', advisory_package['version'], advisory_package['release']), ('', installed_package.version, installed_package.release))
     
