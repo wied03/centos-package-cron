@@ -72,13 +72,14 @@ class PackageCheckerTest(unittest.TestCase):
         pkg = Mock()
         checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
         advisory_packages = [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el6.2', 'arch':'x86_64'},
-                             {'name': 'xen-libs','version':'3.0.3', 'release':'135.el7.2', 'arch':'x86_64'}]
+                             {'name': 'xen-libs','version':'3.0.3', 'release':'135.el7.2', 'arch':'x86_64'},
+                             {'name': 'xen-libs','version':'3.0.3', 'release':'135.el7_0.2', 'arch':'x86_64'}]
         
         # act
         result = map(lambda a: checker._advisoryPackageMeantForCurrentOs(a), advisory_packages)
         
         # assert
-        assert result == [False, True]
+        assert result == [False, True, True]
     
     def testSameVersionOfAnotherPackageInstalled(self):
         # arrange
