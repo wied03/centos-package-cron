@@ -212,7 +212,7 @@ class PackageFetcherTestCase(unittest.TestCase):
         # arrange
         ch_log_parser = Mock()
         executor = Mock()
-        fetcher = package_fetcher.PackageFetcher(ch_log_parser,executor,['epel', 'extras', 'updates'])
+        fetcher = package_fetcher.PackageFetcher(ch_log_parser,executor,['epel', 'extras', 'updates', 'base'])
         
         # act
         result = fetcher.get_package_updates()
@@ -268,7 +268,9 @@ class PackageFetcherTestCase(unittest.TestCase):
         # assert
         assert len(result) >= 2, "Actual size is %d" % (len(result))
         names = map(lambda p:p.name, result)
-        assert names == ['NetworkManager-tui', 'nss-sysinit', 'NetworkManager-glib', 'rpm-libs', 'NetworkManager', 'mailx', 'nss-tools', 'libcurl', 'nss', 'rpm', 'rpm-build-libs', 'rpm-python', 'openldap']
+        # list includes
+        anything_missing = list(set(['NetworkManager-tui', 'nss-sysinit', 'NetworkManager-glib', 'rpm-libs', 'NetworkManager', 'mailx', 'nss-tools', 'libcurl', 'nss', 'rpm', 'rpm-build-libs', 'rpm-python', 'openldap']) - set(names))
+        assert anything_missing == []
         
     def testGetWhatDependsOnNone(self):
         # arrange
