@@ -277,6 +277,28 @@ class PackageCheckerTest(unittest.TestCase):
         # assert
         self.assertEquals(result, [])
         
+    def testFindAdvisoriesOnInstalledPackagesInstalledAndNeedsUpdatingButWrongCentOsVersionOnPackage(self):
+        # arrange
+        errata = Mock()
+        errata.get_errata = Mock(return_value=[
+        errata_fetcher.ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['x86_64'], ['7'], [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el5_8.2', 'arch':'x86_64'}],[])
+        ])
+        pkg = Mock()
+        pkg.fetch_installed_packages = Mock(return_value=[
+        Package('xen-libs','3.0.3', '135.el5_8.1', 'x86_64', 'updates'),
+        Package('openssl','2.0', '4.el7', 'x86_64', 'updates')
+        ])
+        os_fetcher = Mock()
+        os_fetcher.get_top_level_version = Mock(return_value='7')
+        os_fetcher.get_mid_level_version = Mock(return_value='7.0')
+        checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
+        
+        # act
+        result = checker.findAdvisoriesOnInstalledPackages()
+        
+        # assert
+        self.assertEquals(result, [])
+        
     def testFindAdvisoriesOnInstalledPackagesInstalledAndNeedsUpdating(self):
         # arrange
         errata = Mock()
