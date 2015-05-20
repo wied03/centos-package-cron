@@ -12,33 +12,45 @@ from email.mime.text import MIMEText
 __VERSION__ = '1.0'
 
 def main():
-    args = parse_args()    
+    args = parse_args() 
+    if args.output not in ['email', 'stdout']:
+        print "%s is not valid for the -o/--output parameter. Must be email or stdout" % (args.output)
+        raise
+        
     repos_to_exclude_list = []
     if args.disablerepo != None:
         repos_to_exclude_list = args.disablerepo.split(',')
     repos_to_include_list = []
     if args.enablerepo != None:
         repos_to_include_list = args.enablerepo.split(',')
-        
+
     producer = ReportProducer(repos_to_exclude_list, repos_to_include_list, args.skipold, args.skip_sqlite_file_path,include_depends_on=args.include_depends_on)
     report_content = producer.get_report_content()
 
     if report_content != '':
-        server = smtplib.SMTP('localhost')        
-        message = MIMEText(report_content.encode('utf-8'), 'plain', 'utf-8')
-        message['Subject'] = args.email_subject
-        message['From'] = args.email_from
-        message['To'] = args.email_to
-        server.sendmail(from_addr=args.email_from, to_addrs=[args.email_to], msg=message.as_string())
-        server.quit
+        if args.output == 'stdout':
+            print report_content
+        else:
+            server = smtplib.SMTP('localhost')     
+            message = MIMEText(report_content.encode('utf-8'), 'plain', 'utf-8')
+            message['Subject'] = args.email_subject
+            message['From'] = args.email_from
+            message['To'] = args.email_to
+            server.sendmail(from_addr=args.email_from, to_addrs=[args.email_to], msg=message.as_string())
+            server.quit
                             
 def parse_args():
     parser = argparse.ArgumentParser(description="Emails administrators with CentOS security updates and changelogs of non-security updates. Version %s" % __VERSION__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     
     parser.add_argument('-e', '--email_to',
     type=str,
-    required=True,
-    help='Email following user with the output')    
+    default='root',
+    help='Email following user with the output')
+    
+    parser.add_argument('-o', '--output',
+    type=str,
+    default='email',
+    help='How should report be sent, email or stdout are valid values')
 
     parser.add_argument('-f', '--email_from',
     type=str,
