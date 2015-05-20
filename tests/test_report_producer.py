@@ -2,7 +2,7 @@
 import unittest
 import sys
 import os
-from centos_package_cron.email_producer import *
+from centos_package_cron.report_producer import *
 from centos_package_cron.package import *
 from centos_package_cron.errata_item import *
 from mock import Mock
@@ -14,7 +14,7 @@ class db_session_fetcher_mock:
     def __exit__(self, type, value, traceback):
         howdy = 'howdy'                
 
-class EmailProducerTest(unittest.TestCase):
+class ReportProducerTest(unittest.TestCase):
     def setUp(self):
         self.pkg_fetcher_mock = Mock()
         self.pkg_checker_mock = Mock()
@@ -40,7 +40,7 @@ class EmailProducerTest(unittest.TestCase):
         self.pkg_fetcher_mock.get_what_depends_on = lambda name: self.depends_on[name]
         
     def get_producer(self,repo_exclude=[], repo_include=[], skip_old=True,include_depends_on=False):
-        return EmailProducer(repo_exclude,
+        return ReportProducer(repo_exclude,
                              repo_include,
                              skip_old,
                              'doesnt matter',
@@ -50,27 +50,27 @@ class EmailProducerTest(unittest.TestCase):
                              self.db_session_mock,
                              include_depends_on)        
     
-    def test_produce_email_no_updates(self):
+    def test_get_report_content_no_updates(self):
         # arrange
         producer = self.get_producer()
         
         # act
-        result = producer.produce_email()
+        result = producer.get_report_content()
         
         # assert
         assert result == ''
         
-    def test_produce_email_no_updates_dependsonenabled(self):
+    def test_get_report_content_no_updates_dependsonenabled(self):
         # arrange
         producer = self.get_producer(include_depends_on=True)
         
         # act
-        result = producer.produce_email()
+        result = producer.get_report_content()
         
         # assert
         assert result == ''
 
-    def test_produce_email_general_but_no_security_advisories(self):
+    def test_get_report_content_general_but_no_security_advisories(self):
         # arrange
         producer = self.get_producer()
         package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
@@ -78,7 +78,7 @@ class EmailProducerTest(unittest.TestCase):
         self.changelogs = {('libgcrypt', '1.5.3', '4.el7'): 'stuff'}
         
         # act
-        result = producer.produce_email()
+        result = producer.get_report_content()
         
         # assert
         assert result == """The following packages are available for updating:
@@ -95,7 +95,7 @@ stuff
 """
         assert self.old_general_alerts_removed == [package]
         
-    def test_produce_email_general_but_no_security_advisories_depends_on_enabled(self):
+    def test_get_report_content_general_but_no_security_advisories_depends_on_enabled(self):
         # arrange
         producer = self.get_producer(include_depends_on=True)
         package1 = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
@@ -106,7 +106,7 @@ stuff
         self.depends_on['foo'] = [Package('bah', '1.2', '4.el7','x86_64', '')]
         
         # act
-        result = producer.produce_email()
+        result = producer.get_report_content()
         
         # assert
         assert result == """The following packages are available for updating:
@@ -135,7 +135,7 @@ stuff
 """
         assert self.old_general_alerts_removed == [package1, package2]
         
-    def test_produce_email_unicode_in_changelog(self):
+    def test_get_report_content_unicode_in_changelog(self):
         # arrange
         producer = self.get_producer()
         package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
@@ -144,7 +144,7 @@ stuff
         self.changelogs = {('libgcrypt', '1.5.3', '4.el7'): offending_changelog}
         
         # act
-        result = producer.produce_email()
+        result = producer.get_report_content()
         
         # assert
         assert result == u"""The following packages are available for updating:
@@ -163,7 +163,7 @@ libgcrypt-1.5.3-4.el7
 
 """
         
-    def test_produce_email_general_but_no_security_advisories_already_notified(self):
+    def test_get_report_content_general_but_no_security_advisories_already_notified(self):
         # arrange
         producer = self.get_producer()
         self.general_updates = [Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')]
@@ -171,13 +171,13 @@ libgcrypt-1.5.3-4.el7
         self.general_update_not_necessary = self.general_updates
         
         # act
-        result = producer.produce_email()
+        result = producer.get_report_content()
         
         # assert
         assert result == ''
         assert self.old_general_alerts_removed == []   
 
-    def test_produce_email_both_security_and_general_updates(self):
+    def test_get_report_content_both_security_and_general_updates(self):
         # arrange
         producer = self.get_producer()
         package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
@@ -188,7 +188,7 @@ libgcrypt-1.5.3-4.el7
         self.advisories_on_installed = [{'advisory': advisory, 'installed_packages':installed_packages}]
         
         # act
-        result = producer.produce_email()
+        result = producer.get_report_content()
         
         # assert
         assert result == """The following security advisories exist for installed packages:
@@ -216,7 +216,7 @@ stuff
         assert self.old_advisories_removed_for_advisory_set == [[advisory]]
         assert self.old_general_alerts_removed == [package]
         
-    def test_produce_email_both_security_and_general_updates_already_notified(self):
+    def test_get_report_content_both_security_and_general_updates_already_notified(self):
         # arrange
         producer = self.get_producer()
         package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
@@ -229,13 +229,13 @@ stuff
         self.advisory_alerts_not_necessary = [advisory]
         
         # act
-        result = producer.produce_email()
+        result = producer.get_report_content()
         
         # assert
         assert result == ''
         assert self.old_general_alerts_removed == []
 
-    def test_produce_email_skip_old_turned_off(self):
+    def test_get_report_content_skip_old_turned_off(self):
         # arrange
         producer = self.get_producer(skip_old=False)
         package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
@@ -246,7 +246,7 @@ stuff
         self.advisories_on_installed = [{'advisory': advisory, 'installed_packages':installed_packages}]
         
         # act
-        result = producer.produce_email()
+        result = producer.get_report_content()
         
         # assert
         assert result == """The following security advisories exist for installed packages:

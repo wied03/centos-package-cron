@@ -22,3 +22,13 @@ class TestOsVersionFetcher(unittest.TestCase):
 
         # assert
         self.assertEquals(result, '7')
+        
+    def testget_mid_level_version(self):
+        # arrange
+        checker = OsVersionFetcher()
+        
+        # act
+        result = checker.get_mid_level_version()
+        
+        # assert
+        self.assertEquals(result, '7.0')
