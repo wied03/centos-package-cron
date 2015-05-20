@@ -9,6 +9,10 @@ Attempts to offer Apticron (Ubuntu) style package update emails and also bring s
 * Emails the above information to an address of your choosing
 * By default, only reminds about a given security advisory / package update once to avoid annoying you.  You can change this using the --skipold false option (see -h)
 
+## Requirements
+
+* Tested mainly on CentOS 7, but coded in a way that should work on CentOS 6 or even 5. The dependencies as listed in the RPM spec might need to be tweaked to run properly on CentOS < 7. If you can help test with that, feel free to create a pull request.
+
 ## Installation
 
 ### Using Python
