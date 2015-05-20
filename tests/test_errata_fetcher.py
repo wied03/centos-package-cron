@@ -3,7 +3,7 @@
 import unittest
 import sys
 from centos_package_cron import errata_fetcher
-from centos_package_cron.errata_fetcher import ErrataType
+from centos_package_cron.errata_fetcher import *
 
 class ErrataParserTest(unittest.TestCase):
     def testParseEmptyElement(self):
@@ -32,6 +32,7 @@ class ErrataParserTest(unittest.TestCase):
         assert first_advisory.advisory_id == 'CEBA-2005--169'
         self.assertEquals(first_advisory.type, ErrataType.BugFixAdvisory)
         self.assertEquals(first_advisory.severity, None)
+        self.assertEquals(ErrataSeverity.get_label(first_advisory.severity), '(No severity supplied)')
         self.assertEquals(first_advisory.architectures, ['i386', 'x86_64'])
         self.assertEquals(first_advisory.releases, ['4'])
         assert first_advisory.references == ['http://rhn.redhat.com/errata/RHBA-2005-169.html', 'http://lists.centos.org/pipermail/centos-announce/2005-April/011555.html']

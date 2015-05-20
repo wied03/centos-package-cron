@@ -23,7 +23,8 @@ class ErrataSeverity:
         ErrataSeverity.Important: 'Important',
         ErrataSeverity.Moderate: 'Moderate',
         ErrataSeverity.Low: 'Low',
-        ErrataSeverity.Critical: 'Critical'
+        ErrataSeverity.Critical: 'Critical',
+        None: '(No severity supplied)'
         }
         return labels[value]
 
