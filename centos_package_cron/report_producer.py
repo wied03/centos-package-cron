@@ -6,7 +6,7 @@ from errata_fetcher import *
 from os_version_fetcher import *
 from mockable_execute import *
 
-class EmailProducer:
+class ReportProducer:
     def __init__(self,
                  repos_to_exclude_list,
                  repos_to_include_list,

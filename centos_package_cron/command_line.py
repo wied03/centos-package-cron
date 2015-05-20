@@ -4,7 +4,7 @@
 import argparse
 import socket
 import sys
-from email_producer import EmailProducer
+from report_producer import ReportProducer
 from db_session_fetcher import db_session_fetcher
 import smtplib
 from email.mime.text import MIMEText
@@ -20,7 +20,7 @@ def main():
     if args.enablerepo != None:
         repos_to_include_list = args.enablerepo.split(',')
         
-    producer = EmailProducer(repos_to_exclude_list, repos_to_include_list, args.skipold, args.skip_sqlite_file_path,include_depends_on=args.include_depends_on)
+    producer = ReportProducer(repos_to_exclude_list, repos_to_include_list, args.skipold, args.skip_sqlite_file_path,include_depends_on=args.include_depends_on)
     email_content = producer.produce_email()
 
     if email_content != '':

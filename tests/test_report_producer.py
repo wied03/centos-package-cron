@@ -2,7 +2,7 @@
 import unittest
 import sys
 import os
-from centos_package_cron.email_producer import *
+from centos_package_cron.report_producer import *
 from centos_package_cron.package import *
 from centos_package_cron.errata_item import *
 from mock import Mock
@@ -14,7 +14,7 @@ class db_session_fetcher_mock:
     def __exit__(self, type, value, traceback):
         howdy = 'howdy'                
 
-class EmailProducerTest(unittest.TestCase):
+class ReportProducerTest(unittest.TestCase):
     def setUp(self):
         self.pkg_fetcher_mock = Mock()
         self.pkg_checker_mock = Mock()
@@ -40,7 +40,7 @@ class EmailProducerTest(unittest.TestCase):
         self.pkg_fetcher_mock.get_what_depends_on = lambda name: self.depends_on[name]
         
     def get_producer(self,repo_exclude=[], repo_include=[], skip_old=True,include_depends_on=False):
-        return EmailProducer(repo_exclude,
+        return ReportProducer(repo_exclude,
                              repo_include,
                              skip_old,
                              'doesnt matter',
