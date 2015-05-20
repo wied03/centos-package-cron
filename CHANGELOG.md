@@ -1,3 +1,9 @@
+# 1.0.5
+* CentOS 6 compatibility fixes
+* Errata severity fix
+* Ability to send report to stdout
+* Email, when used as output type, goes to root by default
+
 # 1.0.4
 * Adds "what depends on each package" to the updates
 
