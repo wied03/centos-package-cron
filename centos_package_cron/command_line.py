@@ -21,11 +21,11 @@ def main():
         repos_to_include_list = args.enablerepo.split(',')
         
     producer = ReportProducer(repos_to_exclude_list, repos_to_include_list, args.skipold, args.skip_sqlite_file_path,include_depends_on=args.include_depends_on)
-    email_content = producer.produce_email()
+    report_content = producer.get_report_content()
 
-    if email_content != '':
+    if report_content != '':
         server = smtplib.SMTP('localhost')        
-        message = MIMEText(email_content.encode('utf-8'), 'plain', 'utf-8')
+        message = MIMEText(report_content.encode('utf-8'), 'plain', 'utf-8')
         message['Subject'] = args.email_subject
         message['From'] = args.email_from
         message['To'] = args.email_to

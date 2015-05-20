@@ -107,7 +107,7 @@ class ReportProducer:
             email_body += u"\n"
         return email_body
         
-    def produce_email(self):
+    def get_report_content(self):
         email_body = u''
         with self.db_session_fetch as session:            
             self.annoyance_check = self.annoyance_fetcher.fetch(session)
