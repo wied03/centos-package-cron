@@ -24,7 +24,7 @@ class ErrataParserTest(unittest.TestCase):
         """
         # act
         result = parser.parse(xml)
-        
+
         # assert
         self.assertEqual(len(result),1)
         first_advisory = result[0]
@@ -44,10 +44,10 @@ class ErrataParserTest(unittest.TestCase):
         {'name': 'up2date',
         'version': '4.4.5.6',
         'release': '2.centos4',
-        'arch':'x86_64'}        
+        'arch':'x86_64'}
         ]
         self.assertEquals(first_advisory.packages, expected_packages)
-    
+
     def testParseSingleRelease(self):
         # arrange
         parser = errata_fetcher.ErrataParser()
@@ -62,10 +62,10 @@ class ErrataParserTest(unittest.TestCase):
           </CEBA-2005--169>
         </opt>
         """
-        
+
         # act
         result = parser.parse(xml)
-        
+
         # assert
         self.assertEqual(len(result),1)
         first_advisory = result[0]
@@ -84,10 +84,10 @@ class ErrataParserTest(unittest.TestCase):
         {'name': 'up2date',
         'version': '4.4.5.6',
         'release': '2.centos4',
-        'arch':'x86_64'}        
+        'arch':'x86_64'}
         ]
         self.assertEquals(first_advisory.packages, expected_packages)
-        
+
     def testParseIgnoresMeta(self):
         # arrange
         parser = errata_fetcher.ErrataParser()
@@ -108,15 +108,15 @@ class ErrataParserTest(unittest.TestCase):
           </meta>
         </opt>
         """
-        
+
         # act
         result = parser.parse(xml)
-        
+
         # assert
         self.assertEqual(len(result),1)
         first_advisory = result[0]
         assert isinstance(first_advisory, errata_fetcher.ErrataItem)
-        
+
     def testParseSeverityAvailable(self):
         # arrange
         parser = errata_fetcher.ErrataParser()
@@ -131,10 +131,10 @@ class ErrataParserTest(unittest.TestCase):
           </CEBA-2005--169>
         </opt>
         """
-        
+
         # act
         result = parser.parse(xml)
-        
+
         # assert
         self.assertEqual(len(result),1)
         first_advisory = result[0]
@@ -152,38 +152,38 @@ class ErrataParserTest(unittest.TestCase):
         {'name': 'up2date',
         'version': '4.4.5.6',
         'release': '2.centos4',
-        'arch':'x86_64'}        
+        'arch':'x86_64'}
         ]
         self.assertEquals(first_advisory.packages, expected_packages)
-        
+
     def testParseAllErrataTypes(self):
         # arrange
         possible_values = ['Bug Fix Advisory','Security Advisory','Product Enhancement Advisory']
         parser = errata_fetcher.ErrataParser()
-        
+
         # act + assert
         for string in possible_values:
-            self.assertNotEquals(parser.getType(string), None)      
-        
+            self.assertNotEquals(parser.getType(string), None)
+
     def testParseAllErrataSeverities(self):
         # arrange
         possible_values = ['Important', 'Moderate', 'Low', 'Critical']
         parser = errata_fetcher.ErrataParser()
-        
+
         # act + assert
         for string in possible_values:
             self.assertNotEquals(parser.getSeverity(string), None)
-            
+
 class ErrataFetcherTest(unittest.TestCase):
     def testFetch(self):
         # arrange
         fetcher = errata_fetcher.ErrataFetcher()
-        
+
         # act
         result = fetcher.get_errata()
-        
+
         # assert
-        self.assertGreater(len(result),0)
-    
+        assert len(result) > 0
+
 if __name__ == "__main__":
             unittest.main()

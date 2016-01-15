@@ -1,4 +1,28 @@
+sudo: required
 language: python
-python:
-  - "2.7"
-script: 'python setup.py test'
+# Adding this to try and get Docker working
+dist: trusty
+
+services:
+  - docker
+
+matrix:
+  fast_finish: true
+
+  include:
+    - env: DIMAGE="centos_cron_66"
+    - env: DIMAGE="centos_cron_7"
+
+before_install:
+  - docker build -t wied03/$DIMAGE docker/$DIMAGE
+  - mkdir -p .eggs
+  - chmod a+rwx .eggs
+  - mkdir -p centos_package_cron.egg-info
+  - chmod a+rwx centos_package_cron.egg-info
+  - chmod a+rwx centos_package_cron
+  - mkdir -p tests/__pycache__
+  - chmod -R a+rwx tests
+  - chmod a+rwx .
+
+script:
+  - "docker run -e \"DIMAGE=$DIMAGE\" -v `pwd`:/code -w /code -u nonrootuser -t wied03/$DIMAGE ./setup.py test"
