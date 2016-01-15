@@ -22,6 +22,7 @@ before_install:
   - chmod a+rwx centos_package_cron
   - mkdir -p tests/__pycache__
   - chmod -R a+rwx tests
+  - chmod a+rwx .
 
 script:
   - "docker run -e \"DIMAGE=$DIMAGE\" -v `pwd`:/code -w /code -u nonrootuser -t wied03/$DIMAGE ./setup.py test"
