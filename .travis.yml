@@ -9,4 +9,4 @@ matrix:
     - OS_TEST=7
     - OS_TEST=66
 
-script: ./test_centos_$OS_TEST.sh
+script: "./test_centos_$OS_TEST.sh"
