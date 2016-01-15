@@ -5,8 +5,11 @@ services:
   - docker
 
 matrix:
-  env:
-    - OS_TEST=7
-    - OS_TEST=66
+  fast_finish: true
 
-script: "./test_centos_$OS_TEST.sh"
+  include:
+    - env: OS_TEST=7
+    - env: OS_TEST=66
+
+script:
+  - "./test_centos_$OS_TEST.sh"
