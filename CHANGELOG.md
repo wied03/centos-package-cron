@@ -1,3 +1,6 @@
+# 1.0.6
+* Use HTTPS when retrieving errata
+
 # 1.0.5
 * CentOS 6 compatibility fixes
 * Errata severity fix
