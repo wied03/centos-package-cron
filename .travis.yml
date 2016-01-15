@@ -17,4 +17,4 @@ before_install:
   - docker build -t wied03/$DIMAGE docker/$DIMAGE
 
 script:
-  - "docker run -v `pwd`:/code -w /code -u nonrootuser -t wied03/$DIMAGE ./setup.py test"
+  - "docker run -v `pwd`:/code -w /code -t wied03/$DIMAGE ./setup.py test"
