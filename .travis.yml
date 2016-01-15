@@ -15,6 +15,13 @@ matrix:
 
 before_install:
   - docker build -t wied03/$DIMAGE docker/$DIMAGE
+  - mkdir -p .eggs
+  - chmod a+rwx .eggs
+  - mkdir -p centos_package_cron.egg-info
+  - chmod a+rwx centos_package_cron.egg-info
+  - chmod a+rwx centos_package_cron
+  - mkdir -p tests/__pycache__
+  - chmod -R a+rwx tests
 
 script:
-  - "docker run -v `pwd`:/code -w /code -t wied03/$DIMAGE ./setup.py test"
+  - "docker run -e \"DIMAGE=$DIMAGE\" -v `pwd`:/code -w /code -u nonrootuser -t wied03/$DIMAGE ./setup.py test"
