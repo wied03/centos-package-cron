@@ -1,6 +1,7 @@
 sudo: required
 language: python
-group: edge
+# Adding this to try and get Docker working
+dist: trusty
 
 services:
   - docker
