@@ -14,7 +14,7 @@ Attempts to offer Apticron (Ubuntu) style package update emails and also bring s
 
 ## Requirements
 
-* Tested mainly on CentOS 7, but coded in a way that should work on CentOS 6 or even 5. The dependencies as listed in the RPM spec might need to be tweaked to run properly on CentOS < 7. If you can help test with that, feel free to create a pull request.
+* Tested on CentOS 7 and 6.6, but coded in a way that should work even CentOS 5. The dependencies as listed in the RPM spec might need to be tweaked to run properly on CentOS < 7. If you can help test with that, feel free to create a pull request.
 
 ## Installation
 
