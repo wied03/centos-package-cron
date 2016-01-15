@@ -10,4 +10,4 @@ then
 fi
 echo "Running using $COMMAND"
 # Using host networking for performance
-docker run --rm -v `pwd`:/code -w /code --net=host -u nonrootuser -t wied03/centos_cron_66 $COMMAND
+docker run -e "DIMAGE=centos_cron_66" --rm -v `pwd`:/code -w /code --net=host -u nonrootuser -t wied03/centos_cron_66 $COMMAND
