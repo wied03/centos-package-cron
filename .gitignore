@@ -4,6 +4,7 @@ centos_package_cron.egg-info
 dist
 MANIFEST
 .vagrant
-*.egg
+*.egg*
+.cache
 build/
 test_db.sqlite

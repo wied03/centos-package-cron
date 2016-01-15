@@ -5,15 +5,15 @@ from package_parser import PackageParser
 
 class ErrataParser:
     def getType(self,theType):
-        mapping = {'Bug Fix Advisory': ErrataType.BugFixAdvisory, 
-        'Security Advisory':ErrataType.SecurityAdvisory, 
+        mapping = {'Bug Fix Advisory': ErrataType.BugFixAdvisory,
+        'Security Advisory':ErrataType.SecurityAdvisory,
         'Product Enhancement Advisory':ErrataType.ProductEnhancementAdvisory}
         try:
             return mapping[theType]
         except KeyError:
             print "Do not understand mapping for type %s" % (theType)
             raise
-            
+
     def getSeverity(self, theSeverity):
         if theSeverity == None:
             return None
@@ -27,8 +27,8 @@ class ErrataParser:
             return mapping[theSeverity]
         except KeyError:
             print "Do not understand mapping for severity %s" % (theSeverity)
-            raise            
-    
+            raise
+
     def parseSingleItem(self,node):
         try:
             if node.tag == 'meta':
@@ -46,7 +46,7 @@ class ErrataParser:
         except:
             print "Problem while parsing node %s" % (node)
             raise
-    
+
     def parse(self,xml_str):
         dom = et.fromstring(xml_str)
         assert dom.tag == 'opt', "Expecting doc root to be opt but was %s" % (doc.localName)
@@ -56,8 +56,8 @@ class ErrataParser:
 
 class ErrataFetcher:
     def get_errata(self):
-        response = urllib2.urlopen('http://cefs.steve-meier.de/errata.latest.xml')
+        response = urllib2.urlopen('https://cefs.steve-meier.de/errata.latest.xml')
         xml = response.read()
         parser = ErrataParser()
         return parser.parse(xml)
-    
+

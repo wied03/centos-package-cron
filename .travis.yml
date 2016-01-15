@@ -1,4 +1,12 @@
+sudo: required
 language: python
-python:
-  - "2.7"
-script: 'python setup.py test'
+
+services:
+  - docker
+
+matrix:
+  env:
+    - OS_TEST=7
+    - OS_TEST=66
+
+script: ./test_centos_$OS_TEST.sh
