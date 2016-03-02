@@ -28,7 +28,7 @@ mkdir /var/lib/centos-package-cron
 
 ```shell
 rpmbuild -bb --verbose -D "_topdir `pwd`" -D "_sourcedir `pwd`" -D "_builddir `pwd`" centos-package-cron.spec
-sudo yum install centos-package-cron-1.0.2-0.1.el7.centos.x86_64.rpm
+sudo yum install centos-package-cron-1.0.6-0.1.el7.centos.x86_64.rpm
 ```
 
 ## Usage
