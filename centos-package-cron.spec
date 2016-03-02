@@ -5,15 +5,15 @@ Summary:    CentOS Package Update Tool
 Name:       centos-package-cron
 Version:    1.0.6
 License:    Public Domain
-Release:    0.1%{?dist}
+Release:    0.2%{?dist}
 
 Source0:    *
-Requires:       python >= 2.7.5
-Requires:       yum >= 3.4.3
+Requires:       python >= 2.6
+Requires:       yum >= 3.2
 Requires:       yum-plugin-changelog >= 1.1.31
 Requires:       MTA
-Requires:       python-sqlalchemy >= 0.8.4
-Requires:       sqlite >= 3.7
+Requires:       python-sqlalchemy >= 0.5.5
+Requires:       sqlite >= 3.6
 
 %description
 Notifies about updates similar to Apticron for Ubuntu.
