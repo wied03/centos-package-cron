@@ -17,9 +17,16 @@ fi
 
 sudo yum-builddep -y --disablerepo=updates $SPEC_FILE
 rpmbuild -ba --verbose -D "_topdir /tmp/rpm" -D "_sourcedir `pwd`" -D "_builddir /tmp/rpm" $SPEC_FILE
-sudo yum -y --disablerepo=updates install /tmp/rpm/RPMS/x86_64/*.rpm
+if [ "$RPM_ONLY" ]
+then
+  mkdir /code/built_rpms
+  cp -v -R /tmp/rpm/RPMS /code/built_rpms
+  cp -v -R /tmp/rpm/SRPMS /code/built_rpms
+else
+  sudo yum -y --disablerepo=updates install /tmp/rpm/RPMS/x86_64/*.rpm
 
-# Now should be installed, let's try running
-sudo mkdir -p /var/lib/centos-package-cron
-sudo chown nonrootuser /var/lib/centos-package-cron
-centos-package-cron --output stdout
+  # Now should be installed, let's try running
+  sudo mkdir -p /var/lib/centos-package-cron
+  sudo chown nonrootuser /var/lib/centos-package-cron
+  centos-package-cron --output stdout
+fi

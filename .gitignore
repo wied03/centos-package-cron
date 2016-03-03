@@ -1,4 +1,5 @@
 *.pyc
+built_rpms
 centos-package-cron-*
 centos_package_cron.egg-info
 dist
