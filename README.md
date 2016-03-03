@@ -29,7 +29,11 @@ mkdir /var/lib/centos-package-cron
 
 ### Using RPM
 
+You can download the source RPM (or binary RPM from the [releases page](https://github.com/wied03/centos-package-cron/releases).
+
 **CentOS package submission pending**
+
+OR if you want to build the RPM yourself:
 
 If you use Docker, you can checkout this repository and build an RPM this way:
 
