@@ -9,10 +9,10 @@ Release:    0.2%{?dist}
 URL:        https://github.com/wied03/centos-package-cron
 
 Source:         centos_package_cron_src.tgz
-BuildRequires:  python-setuptools >= 0.9.8
+BuildRequires:  python-setuptools >= 0.6.10
 Requires:       python >= 2.6
 Requires:       yum >= 3.2
-Requires:       yum-plugin-changelog >= 1.1.31
+Requires:       yum-plugin-changelog >= 1.1.30
 Requires:       MTA
 Requires:       python-sqlalchemy >= 0.5.5
 Requires:       sqlite >= 3.6
@@ -21,7 +21,7 @@ Requires:       sqlite >= 3.6
 Notifies about updates similar to Apticron for Ubuntu.
 
 %prep
-%autosetup -n %{name}
+%setup -q -n %{name}
 
 %build
 %{__python} setup.py build
