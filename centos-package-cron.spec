@@ -23,6 +23,7 @@ Requires:         sqlite >= 3.6
 Notifies about updates similar to Apticron for Ubuntu.
 
 %prep
+# Would use autosetup but CentOS6 rpmbuild does not understand it
 %setup -q -n %{name}
 
 %build
