@@ -9,7 +9,7 @@ cp -v /code/$1 .
 cp -v /code/centos-package-cron.spec .
 SPEC_FILE=centos-package-cron.spec
 
-if [ "$CENTOS" != "centos6" ]
+if [ "$CENTOS" == "centos7" ]
 then
   # rpmlint on centos6 complains a lot
   rpmlint $SPEC_FILE

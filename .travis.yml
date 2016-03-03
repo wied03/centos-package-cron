@@ -10,7 +10,8 @@ matrix:
   fast_finish: true
 
   include:
-    - env: CENTOS="centos6"
+    - env: CENTOS="centos66"
+    - env: CENTOS="centos67"
     - env: CENTOS="centos7"
 
 # Docker related permissions issues on Travis
