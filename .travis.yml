@@ -10,11 +10,12 @@ matrix:
   fast_finish: true
 
   include:
-    - env: DIMAGE="centos_cron_66"
-    - env: DIMAGE="centos_cron_7"
+    - env: CENTOS="centos66"
+    - env: CENTOS="centos67"
+    - env: CENTOS="centos7"
 
+# Docker related permissions issues on Travis
 before_install:
-  - docker build -t wied03/$DIMAGE docker/$DIMAGE
   - mkdir -p .eggs
   - chmod a+rwx .eggs
   - mkdir -p centos_package_cron.egg-info
@@ -25,4 +26,5 @@ before_install:
   - chmod a+rwx .
 
 script:
-  - "docker run -e \"DIMAGE=$DIMAGE\" -v `pwd`:/code -w /code -u nonrootuser -t wied03/$DIMAGE ./setup.py test"
+  - ./unit_tests.sh
+  - ./integration_test.sh
