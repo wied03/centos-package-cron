@@ -175,7 +175,7 @@ class PackageFetcherTestCase(unittest.TestCase):
         result = fetcher.fetch_installed_packages()
 
         # assert
-        expected_min_number = 154 if os.environ['DIMAGE'] == 'centos_cron_66' else 183
+        expected_min_number = 154 if os.environ['OS'] == 'centos6' else 183
         assert len(result) >= expected_min_number, "Actual size is %d" % (len(result))
         first_package = result[0]
         assert isinstance(first_package, package_fetcher.Package)
