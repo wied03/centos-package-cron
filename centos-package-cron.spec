@@ -4,8 +4,9 @@
 Summary:    CentOS Package Update Tool
 Name:       centos-package-cron
 Version:    1.0.6
-License:    Public Domain
+License:    BSD 2 clause
 Release:    0.2%{?dist}
+URL:        https://github.com/wied03/centos-package-cron
 
 Source:         centos_package_cron_src.tgz
 BuildRequires:  python-setuptools >= 0.9.8
@@ -18,6 +19,9 @@ Requires:       sqlite >= 3.6
 
 %description
 Notifies about updates similar to Apticron for Ubuntu.
+
+%prep
+%autosetup -n %{name}
 
 %build
 %{__python} setup.py build
