@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ "$CENTOS" == "centos67" ]
+then
+  # Don't have 6.7 compatible tests right now
+  exit 0
+fi
+
 set -e
 docker build -t wied03/${CENTOS}_unit docker/$CENTOS/unit
 
