@@ -8,4 +8,4 @@ MANIFEST
 .cache
 build/
 test_db.sqlite
-centos_package_cron.zip
+centos_package_cron_src.tgz

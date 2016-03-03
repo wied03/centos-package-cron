@@ -7,7 +7,7 @@ Version:    1.0.6
 License:    Public Domain
 Release:    0.2%{?dist}
 
-Source0:    *
+Source:         centos_package_cron_src.tgz
 BuildRequires:  python-setuptools >= 0.9.8
 Requires:       python >= 2.6
 Requires:       yum >= 3.2
