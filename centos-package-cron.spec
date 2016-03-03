@@ -8,6 +8,7 @@ License:    Public Domain
 Release:    0.2%{?dist}
 
 Source0:    *
+BuildRequires:  python-setuptools >= 0.9.8
 Requires:       python >= 2.6
 Requires:       yum >= 3.2
 Requires:       yum-plugin-changelog >= 1.1.31

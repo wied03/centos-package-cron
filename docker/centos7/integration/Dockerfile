@@ -12,3 +12,4 @@ rm -f /lib/systemd/system/basic.target.wants/*;\
 rm -f /lib/systemd/system/anaconda.target.wants/*;
 RUN useradd -m nonrootuser -G wheel
 RUN echo "nonrootuser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+RUN yum -y --disablerepo=updates install unzip rpm-build yum-utils sudo rpmlint
