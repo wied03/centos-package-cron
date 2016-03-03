@@ -26,4 +26,4 @@ before_install:
 
 script:
   - ./unit_tests.sh
-  - ./integraiton_test.sh
+  - ./integration_test.sh
