@@ -29,7 +29,7 @@ mkdir /var/lib/centos-package-cron
 
 ### Using RPM
 
-*CentOS package submission pending*
+**CentOS package submission pending**
 
 If you use Docker, you can checkout this repository and build an RPM this way:
 
