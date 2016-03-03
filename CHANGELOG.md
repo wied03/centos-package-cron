@@ -1,3 +1,7 @@
+# 1.0.7
+* Improve rpmspec (test on CentOS 6.6, 6.7, and 7 with Travis)
+* Update version string in application
+
 # 1.0.6
 * Use HTTPS when retrieving errata
 

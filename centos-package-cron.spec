@@ -3,9 +3,9 @@
 
 Summary:    CentOS Package Update Tool
 Name:       centos-package-cron
-Version:    1.0.6
+Version:    1.0.7
 License:    BSD 2 clause
-Release:    0.2%{?dist}
+Release:    0.1%{?dist}
 URL:        https://github.com/wied03/centos-package-cron
 
 Source:         centos_package_cron_src.tgz
