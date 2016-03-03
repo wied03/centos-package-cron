@@ -9,13 +9,15 @@ Release:    0.2%{?dist}
 URL:        https://github.com/wied03/centos-package-cron
 
 Source:         centos_package_cron_src.tgz
-BuildRequires:  python-setuptools >= 0.6.10
-Requires:       python >= 2.6
-Requires:       yum >= 3.2
-Requires:       yum-plugin-changelog >= 1.1.30
-Requires:       MTA
-Requires:       python-sqlalchemy >= 0.5.5
-Requires:       sqlite >= 3.6
+BuildRequires:    python-setuptools >= 0.6.10
+Requires:         python >= 2.6
+Requires:         yum >= 3.2
+Requires:         yum-plugin-changelog >= 1.1.30
+Requires:         MTA
+Requires:         python-sqlalchemy >= 0.5.5
+Requires:         sqlite >= 3.6
+# Python 2.7 has this built in but CentOS6 is using Python 2.6, so need a separate package
+%{?el6:Requires:  python-argparse >= 1.2.1}
 
 %description
 Notifies about updates similar to Apticron for Ubuntu.
