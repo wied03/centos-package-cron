@@ -29,8 +29,21 @@ mkdir /var/lib/centos-package-cron
 
 ### Using RPM
 
+**CentOS package submission pending**
+
+If you use Docker, you can checkout this repository and build an RPM this way:
+
 ```shell
-rpmbuild -bb --verbose -D "_topdir `pwd`" -D "_sourcedir `pwd`" -D "_builddir `pwd`" centos-package-cron.spec
+# use centos6 if that applies
+CENTOS=centos7 ./build_package.sh
+```
+
+If you'd rather not use Docker, then do something like this:
+```shell
+sudo yum install rpm-build yum-utils
+sudo yum-builddep -y --disablerepo=updates centos-package-cron.spec
+# Download a tar gzip of the source to /some/path/containing/source/centos_package_cron_src.tgz
+rpmbuild -bb --verbose -D "_topdir `pwd`" -D "_sourcedir /some/path/containing/source" -D "_builddir `pwd`" centos-package-cron.spec
 sudo yum install centos-package-cron-1.0.6-0.1.el7.centos.x86_64.rpm
 ```
 

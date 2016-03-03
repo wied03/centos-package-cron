@@ -1,4 +1,5 @@
 *.pyc
+built_rpms
 centos-package-cron-*
 centos_package_cron.egg-info
 dist
@@ -8,3 +9,4 @@ MANIFEST
 .cache
 build/
 test_db.sqlite
+centos_package_cron_src.tgz

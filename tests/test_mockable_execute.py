@@ -14,7 +14,7 @@ class MockableExecuteTestCase(unittest.TestCase):
         result = executor.run_command(['cat','/etc/centos-release'])
 
         # assert
-        expected_string = 'CentOS release 6.6 (Final)\n' if os.environ['DIMAGE'] == 'centos_cron_66' else 'CentOS Linux release 7.0.1406 (Core) \n'
+        expected_string = 'CentOS release 6.6 (Final)\n' if os.environ['CENTOS'] == 'centos6' else 'CentOS Linux release 7.0.1406 (Core) \n'
         self.assertEquals(result, expected_string)
 
 if __name__ == "__main__":
