@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
-docker build -t wied03/$OS_unit docker/$OS/unit
+docker build -t wied03/${CENTOS}_unit docker/$CENTOS/unit
 
 # allow additional test args
-docker run -e \"OS=$OS\" -v `pwd`:/code -w /code -u nonrootuser -t wied03/$OS_unit ./setup.py test $*
+docker run -e "CENTOS=${CENTOS}" -v `pwd`:/code -w /code -u nonrootuser -t wied03/${CENTOS}_unit ./setup.py test $*

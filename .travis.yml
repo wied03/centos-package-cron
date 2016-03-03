@@ -10,8 +10,8 @@ matrix:
   fast_finish: true
 
   include:
-    - env: OS="centos6"
-    - env: OS="centos7"
+    - env: CENTOS="centos6"
+    - env: CENTOS="centos7"
 
 # Docker related permissions issues on Travis
 before_install:
