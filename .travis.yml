@@ -1,5 +1,5 @@
 sudo: required
-language: python
+language: ruby
 # Adding this to try and get Docker working
 dist: trusty
 
@@ -26,5 +26,4 @@ before_install:
   - chmod a+rwx .
 
 script:
-  - ./unit_tests.sh
-  - ./integration_test.sh
+  - rake
