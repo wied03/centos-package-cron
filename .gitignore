@@ -10,3 +10,4 @@ MANIFEST
 build/
 test_db.sqlite
 centos_package_cron_src.tgz
+centos-package-cron.spec
