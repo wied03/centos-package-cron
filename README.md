@@ -38,13 +38,16 @@ OR if you want to build the RPM yourself:
 If you use Docker, you can checkout this repository and build an RPM this way:
 
 ```shell
+# install ruby & Rake
 # use centos6 if that applies
-CENTOS=centos7 ./build_package.sh
+CENTOS=centos7 rake build
+# source and binary RPMs will be deposited in built_rpms directory
 ```
 
-If you'd rather not use Docker, then do something like this:
+If you'd rather not use Docker or Ruby/Rake, then do something like this:
 ```shell
 sudo yum install rpm-build yum-utils
+# copy centos-package-cron.spec.in to centos-package-cron.spec and put the proper version numbers in those placeholders
 sudo yum-builddep -y --disablerepo=updates centos-package-cron.spec
 # Download a tar gzip of the source to /some/path/containing/source/centos_package_cron_src.tgz
 rpmbuild -bb --verbose -D "_topdir `pwd`" -D "_sourcedir /some/path/containing/source" -D "_builddir `pwd`" centos-package-cron.spec
