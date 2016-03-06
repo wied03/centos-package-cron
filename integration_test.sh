@@ -8,4 +8,6 @@ rm -f $ZIP_FILE
 # clean build
 git archive -o $ZIP_FILE --prefix centos-package-cron/ HEAD
 
-docker run -e "CENTOS=${CENTOS}" --rm=true -v `pwd`:/code -w /code -u nonrootuser -t wied03/${CENTOS}_int /code/install_and_run.sh $ZIP_FILE
+docker run -e "CENTOS=${CENTOS}" --rm=true -v `pwd`:/code -w /code -u nonrootuser -t wied03/${CENTOS}_int /code/build_it.sh $ZIP_FILE
+
+docker run -e "CENTOS=${CENTOS}" --rm=true -v `pwd`:/code -w /code -u nonrootuser -t wied03/${CENTOS}_int /code/install_and_run_it.sh $ZIP_FILE

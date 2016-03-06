@@ -8,8 +8,9 @@ License:    BSD 2 clause
 Release:    0.1%{?dist}
 URL:        https://github.com/wied03/centos-package-cron
 
-Source:         centos_package_cron_src.tgz
+Source:           centos_package_cron_src.tgz
 BuildRequires:    python-setuptools >= 0.6.10
+Requires:         python-setuptools >= 0.6.10
 Requires:         python >= 2.6
 Requires:         yum >= 3.2
 Requires:         yum-plugin-changelog >= 1.1.30
