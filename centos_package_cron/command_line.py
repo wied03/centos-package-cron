@@ -8,8 +8,9 @@ from report_producer import ReportProducer
 from db_session_fetcher import db_session_fetcher
 import smtplib
 from email.mime.text import MIMEText
+import pkg_resources
 
-__VERSION__ = '1.0.7'
+__VERSION__ = pkg_resources.require("centos_package_cron")[0].version
 
 def main():
     args = parse_args()
