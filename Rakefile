@@ -6,6 +6,8 @@ centos_var = ENV['CENTOS']
 
 file 'centos-package-cron.spec' do
   cp 'centos-package-cron.spec.in', 'centos-package-cron.spec'
+  # initial installation
+  sh 'setup.py -V'
   complete_version = `./setup.py -V`.strip
   dist = /.*\.(\d+)/.match(complete_version)[1]
   version = /(.*)\.\d+/.match(complete_version)[1]
