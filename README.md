@@ -12,6 +12,16 @@ Attempts to offer Apticron (Ubuntu) style package update emails and also bring s
 * Emails (or dumps to STDOUT) the above information to an address of your choosing
 * By default, only reminds about a given security advisory / package update once to avoid annoying you.  You can change this using the --skipold false option (see -h)
 
+## Why does this exist?
+
+`yum --security` is an ideal solution, but it does not work on CentOS since the `updateinfo.xml` file in the CentOS repository does not include RHEL style security updates (see discussion [here](https://www.centos.org/forums/viewtopic.php?t=30967)). The options, which all depend on something like Steve's XML file (as of March 2016) that I know of are:
+
+1. Use Spacewalk (see Steve site)
+2. Generate `updateinfo.xml` with security information (see [VM farms post](http://blog.vmfarms.com/2013/12/inject-little-security-in-to-your.html))
+3. This tool
+
+Some of these are good options but if you don't want Spacewalk and want more Apticron/apt type features like the DB/remember piece, this might be a good option for you.
+
 ## Requirements
 
 * Tested on CentOS 7, 6.6, and 6.7, but coded in a way that should work even CentOS 5. The dependencies as listed in the RPM spec might need to be tweaked to run properly on CentOS < 6.6. If you can help test with that, feel free to create a pull request.
