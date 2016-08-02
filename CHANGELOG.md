@@ -1,3 +1,6 @@
+# 1.0.8 (in development)
+* Fix issue with encoding (#9)
+
 # 1.0.7
 * Improve rpmspec (test on CentOS 6.6, 6.7, and 7 with Travis)
 * Update version string in application
