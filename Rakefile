@@ -42,7 +42,7 @@ task :build => ['centos-package-cron.spec', :integration_image] do
 end
 
 task :unit_image do
-  if version_var == 'centos67'
+  if build_var == 'centos67'
     # no 6.7 tests right now
     next
   end
@@ -52,7 +52,7 @@ end
 
 desc 'Runs Python unit tests'
 task :unit => :unit_image do
-  if version_var == 'centos67'
+  if build_var == 'centos67'
     # no 6.7 tests right now
     next
   end
