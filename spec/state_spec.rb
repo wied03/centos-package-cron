@@ -7,9 +7,11 @@ describe 'centos-package-cron state' do
       expect(result.exit_status).to eq 0
     end
 
-    describe command('centos-package-cron --output stdout') do
-      its(:exit_status) { should eq 0 }
-      its(:stdout) { is_expected.to_not match /The following security advisories exist.*/m }
+    let(:centos_cmd) { command('centos-package-cron --output stdout') }
+
+    it 'returns proper output' do
+      expect(centos_cmd.exit_status).to eq 0
+      expect(centos_cmd.stdout).to_not match /The following security advisories exist.*/m
     end
   end
 end

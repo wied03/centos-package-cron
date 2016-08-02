@@ -30,6 +30,8 @@ RSpec.configure do |config|
 
   config.before(:each) do
     # cleanup just in case
-    command('rm -rf /var/lib/centos-package-cron/*.sqlite')
+    output = command('rm -rfv /var/lib/centos-package-cron/*.sqlite').stdout
+    puts "**** DB cleanup results: #{output.strip} ****"
   end
 end
+

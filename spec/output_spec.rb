@@ -1,12 +1,16 @@
 require 'spec_helper'
 
 describe 'centos-package-cron output' do
-  describe command('centos-package-cron --output stdout') do
-    its(:exit_status) { should eq 0 }
-    its(:stdout) { is_expected.to match /The following security advisories exist.*/m }
+  context 'stdout' do
+    let(:centos_cmd) { command('centos-package-cron --output stdout') }
+
+    it 'returns proper output' do
+      expect(centos_cmd.exit_status).to eq 0
+      expect(centos_cmd.stdout).to match /The following security advisories exist.*/m
+    end
   end
 
-  describe 'file output' do
+  context 'file output' do
     let(:filename) { 'some_file.txt' }
 
     around do |example|
