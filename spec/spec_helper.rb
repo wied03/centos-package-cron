@@ -29,7 +29,6 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    puts 'Wiping clean database'
     # cleanup just in case
     command('rm -rf /var/lib/centos-package-cron/*.sqlite')
   end

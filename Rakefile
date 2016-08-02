@@ -1,7 +1,7 @@
 require 'rspec/core/rake_task'
 
 desc 'Run serverspec integration tests'
-RSpec::Core::RakeTask.new(:integration)
+RSpec::Core::RakeTask.new(:integration => :build)
 
 task :default => [:clean, :unit, :integration]
 
