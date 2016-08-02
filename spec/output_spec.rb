@@ -7,9 +7,19 @@ describe 'centos-package-cron output' do
   end
 
   describe 'file output' do
+    let(:filename) { 'some_file.txt' }
+
+    around do |example|
+      FileUtils.rm_rf filename
+      example.run
+      FileUtils.rm_rf filename
+    end
+
     before do
-      result = command('centos-package-cron --output stdout > some_file.txt')
+      result = command("centos-package-cron --output stdout > #{filename}")
       expect(result.exit_status).to eq 0
+      expect(result.stdout).to be_empty
+      expect(result.stderr).to be_empty
     end
 
     describe file('/code/some_file.txt') do

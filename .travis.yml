@@ -26,4 +26,4 @@ before_install:
   - chmod a+rwx .
 
 script:
-  - rake
+  - rake --trace
