@@ -27,7 +27,7 @@ def main():
     if args.enablerepo != None:
         repos_to_include_list = args.enablerepo.split(',')
 
-    skipold = !args.forceold
+    skipold = not args.forceold
     producer = ReportProducer(repos_to_exclude_list, repos_to_include_list, skipold, args.skip_sqlite_file_path,include_depends_on=args.include_depends_on)
     report_content = producer.get_report_content()
 
