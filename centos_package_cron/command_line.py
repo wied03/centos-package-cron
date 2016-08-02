@@ -4,6 +4,8 @@
 import argparse
 import socket
 import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 from report_producer import ReportProducer
 from db_session_fetcher import db_session_fetcher
 import smtplib
