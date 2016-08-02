@@ -9,7 +9,7 @@ task :clean do
   rm_rf 'centos-package-cron.spec'
 end
 
-build_var = ENV['CENTOS'] || 'centos7'
+build_var = ENV['CENTOS'] || 'centos7_stdout'
 version_var = build_var.include?('centos7') ? 'centos7' : 'centos6'
 image_src_integration = "docker/#{build_var}/integration"
 image_src_unit = "docker/#{build_var}/unit"
