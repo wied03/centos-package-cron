@@ -40,10 +40,17 @@ describe 'centos-package-cron output' do
         expect(centos_cmd.stderr).to match /.*Connection refused.*/m
       end
     else
-      fit 'runs correctly' do
+
+      before do
+        expect(command('sudo /usr/libexec/postfix/aliasesdb; sudo /usr/libexec/postfix/chroot-update; sudo /usr/sbin/postfix start').exit_status).to eq 0
+      end
+
+      it 'emails correctly' do
         expect(centos_cmd.exit_status).to eq 0
-        expect(centos_cmd.stdout).to eq 'no output'
-        expect(file('/var/mail/spool/root'))
+        expect(centos_cmd.stdout).to_not match /The following security advisories exist.*/m
+        # wait for email delivery
+        sleep 2
+        expect(command('sudo cat /var/mail/spool/root').stdout).to match /.*Subject: CentOS Update Check.*/m
       end
     end
   end

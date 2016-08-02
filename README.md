@@ -71,6 +71,8 @@ centos-package-cron --email_to sysadmin@stuff.com --email_from dev@somebox.com
 # See centos-package-cron -h for options
 ```
 
+NOTE: You must have an MTA (e.g. postfix) configured listening on localhost if you use the email output option.
+
 ## License
 Copyright (c) 2016, BSW Technology Consulting LLC
 All rights reserved.

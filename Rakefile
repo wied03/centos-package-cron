@@ -1,5 +1,13 @@
 require 'rspec/core/rake_task'
 
+build_var = ENV['CENTOS'] || 'centos7_stdout'
+ENV['NO_EMAIL'] = 1 unless build_var.include?('email')
+version_var = build_var.include?('centos7') ? 'centos7' : 'centos6'
+image_src_integration = "docker/#{build_var}/integration"
+image_src_unit = "docker/#{build_var}/unit"
+ENV['IMAGE_INTEGRATION'] = image_tag_integration = "wied03/#{build_var}_int"
+image_tag_unit = "wied03/#{build_var}_unit"
+
 desc 'Run serverspec integration tests'
 RSpec::Core::RakeTask.new(:integration => :build)
 
@@ -8,13 +16,6 @@ task :default => [:clean, :unit, :integration]
 task :clean do
   rm_rf 'centos-package-cron.spec'
 end
-
-build_var = ENV['CENTOS'] || 'centos7_stdout'
-version_var = build_var.include?('centos7') ? 'centos7' : 'centos6'
-image_src_integration = "docker/#{build_var}/integration"
-image_src_unit = "docker/#{build_var}/unit"
-ENV['IMAGE_INTEGRATION'] = image_tag_integration = "wied03/#{build_var}_int"
-image_tag_unit = "wied03/#{build_var}_unit"
 
 file 'centos-package-cron.spec' do
   cp 'centos-package-cron.spec.in', 'centos-package-cron.spec'
