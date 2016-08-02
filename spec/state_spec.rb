@@ -16,8 +16,8 @@ describe 'centos-package-cron state' do
       end
     end
 
-    context 'skip-old false' do
-      let(:centos_cmd) { command('centos-package-cron --output stdout --skipold true') }
+    context 'force old' do
+      let(:centos_cmd) { command('centos-package-cron --output stdout --forceold') }
 
       it 'returns proper output' do
         expect(centos_cmd.exit_status).to eq 0

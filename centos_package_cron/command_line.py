@@ -27,7 +27,8 @@ def main():
     if args.enablerepo != None:
         repos_to_include_list = args.enablerepo.split(',')
 
-    producer = ReportProducer(repos_to_exclude_list, repos_to_include_list, args.skipold, args.skip_sqlite_file_path,include_depends_on=args.include_depends_on)
+    skipold = !args.forceold
+    producer = ReportProducer(repos_to_exclude_list, repos_to_include_list, skipold, args.skip_sqlite_file_path,include_depends_on=args.include_depends_on)
     report_content = producer.get_report_content()
 
     if report_content != '':
@@ -73,10 +74,10 @@ def parse_args():
     type=str,
     help='List of comma separated repos to include when dealing with Yum')
 
-    parser.add_argument('-so','--skipold',
+    parser.add_argument('-fo','--forceold',
     type=bool,
-    default=True,
-    help='Only annoys the person with 1 email for a given advisory/package update notice.')
+    default=False,
+    help='Instead of the default behavior to only complain once for a given advisory/package update notice, repeats them with each run.')
 
     parser.add_argument('-db','--skip-sqlite-file-path',
     type=str,
