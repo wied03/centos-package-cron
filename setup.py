@@ -24,7 +24,7 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 setuptools.setup(name='centos_package_cron',
-      version='1.0.7.2',
+      version='1.0.8.1',
       description='CentOS Package Update Utilities',
       author='Brady Wied',
       author_email='support@bswtechconsulting.com',
