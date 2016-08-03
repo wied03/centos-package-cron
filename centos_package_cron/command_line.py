@@ -75,7 +75,8 @@ def parse_args():
     help='List of comma separated repos to include when dealing with Yum')
 
     parser.add_argument('-fo','--forceold',
-    help='Instead of the default behavior to only complain once for a given advisory/package update notice, repeats them with each run.')
+    help='Instead of the default behavior to only complain once for a given advisory/package update notice, repeats them with each run.',
+    action="store_true")
 
     parser.add_argument('-db','--skip-sqlite-file-path',
     type=str,
@@ -83,7 +84,8 @@ def parse_args():
     help='The location of the Sqlite DB used to track which notifications you have already received.')
 
     parser.add_argument('-do','--include-depends-on',
-    help='When a package update is listed, show what packages on your system depend on that package')
+    help='When a package update is listed, show what packages on your system depend on that package',
+    action="store_true")
 
     return parser.parse_args()
 
