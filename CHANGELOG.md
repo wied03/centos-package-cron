@@ -1,5 +1,6 @@
 # 1.0.8 (in development)
 * Fix issue with encoding (#9)
+* Fix issue with --skipold argument (#8). It's now inverted and named --forceold. Supplying the argument will ignore previously sent notices and send you everything.
 
 # 1.0.7
 * Improve rpmspec (test on CentOS 6.6, 6.7, and 7 with Travis)

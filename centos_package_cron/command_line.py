@@ -27,7 +27,8 @@ def main():
     if args.enablerepo != None:
         repos_to_include_list = args.enablerepo.split(',')
 
-    producer = ReportProducer(repos_to_exclude_list, repos_to_include_list, args.skipold, args.skip_sqlite_file_path,include_depends_on=args.include_depends_on)
+    skipold = not args.forceold
+    producer = ReportProducer(repos_to_exclude_list, repos_to_include_list, skipold, args.skip_sqlite_file_path,include_depends_on=args.include_depends_on)
     report_content = producer.get_report_content()
 
     if report_content != '':
@@ -73,10 +74,9 @@ def parse_args():
     type=str,
     help='List of comma separated repos to include when dealing with Yum')
 
-    parser.add_argument('-so','--skipold',
-    type=bool,
-    default=True,
-    help='Only annoys the person with 1 email for a given advisory/package update notice.')
+    parser.add_argument('-fo','--forceold',
+    help='Instead of the default behavior to only complain once for a given advisory/package update notice, repeats them with each run.',
+    action="store_true")
 
     parser.add_argument('-db','--skip-sqlite-file-path',
     type=str,
@@ -84,9 +84,8 @@ def parse_args():
     help='The location of the Sqlite DB used to track which notifications you have already received.')
 
     parser.add_argument('-do','--include-depends-on',
-    type=bool,
-    default=True,
-    help='When a package update is listed, show what packages on your system depend on that package')
+    help='When a package update is listed, show what packages on your system depend on that package',
+    action="store_true")
 
     return parser.parse_args()
 
