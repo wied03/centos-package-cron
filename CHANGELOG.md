@@ -1,4 +1,4 @@
-# 1.0.8 (in development)
+# 1.0.8.1
 * Fix issue with encoding (#9)
 * Fix issue with --skipold argument (#8). It's now inverted and named --forceold. Supplying the argument will ignore previously sent notices and send you everything.
 * Email MTA has been removed from the RPM dependencies to allow easier stdout/Docker usage
