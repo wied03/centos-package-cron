@@ -48,9 +48,7 @@ describe 'centos-package-cron output' do
       it 'emails correctly' do
         expect(centos_cmd.exit_status).to eq 0
         expect(centos_cmd.stdout).to_not match /The following security advisories exist.*/m
-        # wait for email delivery
-        sleep 2
-        expect(command('sudo cat /var/mail/spool/root').stdout).to match /.*Subject: CentOS Update Check.*/m
+        expect(command('sudo cat /var/spool/mail/root').stdout).to match /.*Subject: CentOS Update Check.*/m
       end
     end
   end
