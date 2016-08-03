@@ -30,4 +30,26 @@ describe 'centos-package-cron output' do
       its(:content) { is_expected.to match /The following security advisories exist.*/m }
     end
   end
+
+  context 'email' do
+    let(:centos_cmd) { command('centos-package-cron --output email') }
+
+    if ENV['NO_EMAIL']
+      it 'fails correctly' do
+        expect(centos_cmd.exit_status).to eq 1
+        expect(centos_cmd.stderr).to match /.*Connection refused.*/m
+      end
+    else
+
+      before do
+        expect(command('sudo /usr/libexec/postfix/aliasesdb; sudo /usr/libexec/postfix/chroot-update; sudo /usr/sbin/postfix start').exit_status).to eq 0
+      end
+
+      it 'emails correctly' do
+        expect(centos_cmd.exit_status).to eq 0
+        expect(centos_cmd.stdout).to_not match /The following security advisories exist.*/m
+        expect(command('sudo cat /var/spool/mail/root').stdout).to match /.*Subject: CentOS Update Check.*/m
+      end
+    end
+  end
 end

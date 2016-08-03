@@ -33,5 +33,8 @@ RSpec.configure do |config|
     output = command('rm -rfv /var/lib/centos-package-cron/*.sqlite').stdout
     puts "**** DB cleanup results: #{output.strip} ****"
   end
+
+  config.filter_run_including focus: true
+  config.run_all_when_everything_filtered = true
 end
 
