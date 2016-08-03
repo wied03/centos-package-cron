@@ -43,20 +43,14 @@ task :build => ['centos-package-cron.spec', :integration_image] do
 end
 
 task :unit_image do
-  if build_var == 'centos67'
-    # no 6.7 tests right now
-    next
-  end
+  next if ENV['SKIP_UNIT']
 
   sh "docker build -t #{image_tag_unit} #{image_src_unit}"
 end
 
 desc 'Runs Python unit tests'
 task :unit => :unit_image do
-  if build_var == 'centos67'
-    # no 6.7 tests right now
-    next
-  end
+  next if ENV['SKIP_UNIT']
 
   sh "docker run --rm=true -e \"CENTOS=#{version_var}\" -v `pwd`:/code -w /code -u nonrootuser -t #{image_tag_unit} ./setup.py test"
 end

@@ -11,8 +11,9 @@ matrix:
 
   include:
     - env: CENTOS="centos66"
-    - env: CENTOS="centos67"
-    - env: CENTOS="centos7_email"
+    - env: CENTOS="centos67" SKIP_UNIT="true"
+    # email vs stdout only differs re: integration
+    - env: CENTOS="centos7_email" SKIP_UNIT="true"
     - env: CENTOS="centos7_stdout"
 
 # Docker related permissions issues on Travis
