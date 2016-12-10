@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import argparse
 import socket
 import sys
@@ -30,7 +31,11 @@ def main():
     report_content = producer.get_report_content()
 
     if report_content != '':
+        print('One or more packages is out of date', file=sys.stderr)
         print report_content
+        sys.exit(1)
+    else:
+        print('All packages are up to date', file=sys.stderr)
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Displays CentOS security updates and changelogs of non-security updates. Version %s" % __VERSION__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
