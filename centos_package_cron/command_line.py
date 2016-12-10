@@ -8,16 +8,14 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 from report_producer import ReportProducer
 from db_session_fetcher import db_session_fetcher
-import smtplib
-from email.mime.text import MIMEText
 import pkg_resources
 
 __VERSION__ = pkg_resources.require("centos_package_cron")[0].version
 
 def main():
     args = parse_args()
-    if args.output not in ['email', 'stdout']:
-        print "%s is not valid for the -o/--output parameter. Must be email or stdout" % (args.output)
+    if args.output not in ['stdout']:
+        print "%s is not valid for the -o/--output parameter. Must be stdout" % (args.output)
         raise
 
     repos_to_exclude_list = []
@@ -32,39 +30,15 @@ def main():
     report_content = producer.get_report_content()
 
     if report_content != '':
-        if args.output == 'stdout':
-            print report_content
-        else:
-            server = smtplib.SMTP('localhost')
-            message = MIMEText(report_content.encode('utf-8'), 'plain', 'utf-8')
-            message['Subject'] = args.email_subject
-            message['From'] = args.email_from
-            message['To'] = args.email_to
-            server.sendmail(from_addr=args.email_from, to_addrs=[args.email_to], msg=message.as_string())
-            server.quit
+        print report_content
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Emails administrators with CentOS security updates and changelogs of non-security updates. Version %s" % __VERSION__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-
-    parser.add_argument('-e', '--email_to',
-    type=str,
-    default='root',
-    help='Email following user with the output')
+    parser = argparse.ArgumentParser(description="Displays CentOS security updates and changelogs of non-security updates. Version %s" % __VERSION__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('-o', '--output',
     type=str,
-    default='email',
-    help='How should report be sent, email or stdout are valid values')
-
-    parser.add_argument('-f', '--email_from',
-    type=str,
-    default="CentOS Update Check on %s <noreply@centos.org>" %(socket.gethostname()),
-    help='Send the email from this user.')
-
-    parser.add_argument('-s', '--email_subject',
-    type=str,
-    default="CentOS Update Check on %s" %(socket.gethostname()),
-    help='Send the email using this subject')
+    default='stdout',
+    help='How should report be sent. stdout is the only valid value')
 
     parser.add_argument('-dr','--disablerepo',
     type=str,

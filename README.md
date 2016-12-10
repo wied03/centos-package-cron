@@ -9,7 +9,7 @@ Attempts to offer Apticron (Ubuntu) style package update emails and also bring s
 
 * Checks for updates using Yum's Python API and changelogs for those updates using Yum's changelog plugin
 * Checks security errata from CentOS mailing list via [Steve Meier's XML file](http://cefs.steve-meier.de/) and reports advisories related to packages installed on your machine
-* Emails (or dumps to STDOUT) the above information to an address of your choosing
+* Dumps above information to STDOUT
 * By default, only reminds about a given security advisory / package update once to avoid annoying you.  You can change this using the --skipold false option (see -h)
 
 ## Why does this exist?
@@ -31,7 +31,7 @@ Some of these are good options but if you don't want Spacewalk and want more Apt
 ### Using Python
 
 ```shell
-sudo yum install mailx yum-plugin-changelog
+sudo yum install yum-plugin-changelog
 ./setup.py install
 # For the SQLite DB that avoids reminding you of updates that were already sent (see above)
 mkdir /var/lib/centos-package-cron
@@ -67,7 +67,7 @@ sudo yum install centos-package-cron-1.0.6-0.1.el7.centos.x86_64.rpm
 ## Usage
 
 ```shell
-centos-package-cron --email_to sysadmin@stuff.com --email_from dev@somebox.com
+centos-package-cron
 # See centos-package-cron -h for options
 ```
 
