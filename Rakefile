@@ -1,6 +1,6 @@
 require 'rspec/core/rake_task'
 
-build_var = ENV['CENTOS'] || 'centos7_stdout'
+build_var = ENV['CENTOS'] || 'centos7'
 version_var = build_var.include?('centos7') ? 'centos7' : 'centos6'
 image_src_integration = "docker/#{build_var}/integration"
 image_src_unit = "docker/#{build_var}/unit"

@@ -12,7 +12,7 @@ matrix:
   include:
     - env: CENTOS="centos66"
     - env: CENTOS="centos67" SKIP_UNIT="true"
-    - env: CENTOS="centos7_stdout"
+    - env: CENTOS="centos7"
 
 # Docker related permissions issues on Travis
 before_install:
