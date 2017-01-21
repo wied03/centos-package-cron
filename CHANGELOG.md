@@ -1,3 +1,8 @@
+# 1.0.9 (under development)
+* Simpler version scheme
+* Pypi package documented (as of 1.0.8.1)
+* Add HTTP proxy support (#16)
+
 # 1.0.8.1
 * Fix issue with encoding (#9)
 * Fix issue with --skipold argument (#8). It's now inverted and named --forceold. Supplying the argument will ignore previously sent notices and send you everything.
