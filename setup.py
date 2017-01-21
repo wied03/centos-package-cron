@@ -34,6 +34,7 @@ setuptools.setup(name='centos_package_cron',
       license='BSD 2-Clause',
       packages=setuptools.find_packages(),
       setup_requires="pytest",
+      install_requires=['sqlalchemy'],
       tests_require="mock",
       cmdclass = {'test': PyTest},
 	  entry_points = {
