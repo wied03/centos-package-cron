@@ -54,3 +54,9 @@ task :unit => :unit_image do
 
   sh "docker run --rm=true -e \"CENTOS=#{version_var}\" -v `pwd`:/code -w /code -u nonrootuser -t #{image_tag_unit} ./setup.py test"
 end
+
+desc 'Pushes to pypi'
+task :push do
+  sh './setup.py register -r pypi'
+  sh './setup.py sdist upload -r pypi'
+end

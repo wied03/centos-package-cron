@@ -24,11 +24,23 @@ Some of these are good options but if you don't want Spacewalk and want more Apt
 
 ## Requirements
 
-* Tested on CentOS 7, 6.6, and 6.7, but coded in a way that should work even CentOS 5. The dependencies as listed in the RPM spec might need to be tweaked to run properly on CentOS < 6.6. If you can help test with that, feel free to create a pull request.
+Tested on CentOS 7, 6.6, and 6.7, but coded in a way that should work even CentOS 5. The dependencies as listed in the RPM spec might need to be tweaked to run properly on CentOS < 6.6. If you can help test with that, feel free to create a pull request.
 
 ## Installation
 
 ### Using Python
+
+From pypi:
+
+```shell
+# These packages are OS centric and not available on pypi
+sudo yum install mailx yum-plugin-changelog
+pip install centos_package_cron
+# For the SQLite DB that avoids reminding you of updates that were already sent (see above)
+mkdir /var/lib/centos-package-cron
+```
+
+From checked out copy:
 
 ```shell
 sudo yum install mailx yum-plugin-changelog
