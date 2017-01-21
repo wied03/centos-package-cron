@@ -23,12 +23,15 @@ class PyTest(TestCommand):
         errno = pytest.main(self.pytest_args)
         sys.exit(errno)
 
+version = '1.0.8.1'
 setuptools.setup(name='centos_package_cron',
-      version='1.0.8.1',
+      version=version,
       description='CentOS Package Update Utilities',
       author='Brady Wied',
       author_email='support@bswtechconsulting.com',
       url='https://github.com/wied03/centos-package-cron',
+      download_url='https://github.com/wied03/centos-package-cron/archive/releases/%s.tar.gz' % (version),
+      license='BSD 2-Clause',
       packages=setuptools.find_packages(),
       setup_requires="pytest",
       tests_require="mock",
