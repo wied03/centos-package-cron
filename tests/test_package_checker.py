@@ -14,7 +14,6 @@ class PackageCheckerTest(unittest.TestCase):
     def testAdvisoryPackageMeantForCurrentOsCentOs5(self):
         # arrange
         os_fetcher = Mock()
-        os_fetcher.get_mid_level_version = Mock(return_value='5.0')
         os_fetcher.get_top_level_version = Mock(return_value='5')
         errata = Mock()
         pkg = Mock()
@@ -28,28 +27,9 @@ class PackageCheckerTest(unittest.TestCase):
         # assert
         assert result == [False, True]
 
-    def testAdvisoryPackageMeantForCurrentOsCentOs6(self):
-        # arrange
-        os_fetcher = Mock()
-        os_fetcher.get_mid_level_version = Mock(return_value='6.0')
-        os_fetcher.get_top_level_version = Mock(return_value='6')
-        errata = Mock()
-        pkg = Mock()
-        checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
-        advisory_packages = [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el4.2', 'arch':'x86_64'},
-                             {'name': 'xen-libs','version':'3.0.3', 'release':'135.el6_4', 'arch':'x86_64'},
-                             {'name': 'xen-libs','version':'3.0.3', 'release':'135.el6.2', 'arch':'x86_64'}]
-
-        # act
-        result = map(lambda a: checker._advisoryPackageMeantForCurrentOs(a), advisory_packages)
-
-        # assert
-        assert result == [False, False, True]
-
     def testAdvisoryPackageMeantForCurrentOsCentOs_AllVersions(self):
         # arrange
         os_fetcher = Mock()
-        os_fetcher.get_mid_level_version = Mock(return_value='6.8')
         os_fetcher.get_top_level_version = Mock(return_value='6')
         errata = Mock()
         pkg = Mock()
@@ -64,27 +44,9 @@ class PackageCheckerTest(unittest.TestCase):
         # assert
         assert result == [False, True, True]
 
-    def testAdvisoryPackageMeantForCurrentOsCentOs65(self):
-        # arrange
-        os_fetcher = Mock()
-        os_fetcher.get_mid_level_version = Mock(return_value='6.5')
-        errata = Mock()
-        pkg = Mock()
-        checker = package_checker.PackageChecker(errata,pkg,os_fetcher)
-        advisory_packages = [{'name': 'xen-libs','version':'3.0.3', 'release':'135.el6', 'arch':'x86_64'},
-                             {'name': 'xen-libs','version':'3.0.3', 'release':'135.el6_4', 'arch':'x86_64'},
-                             {'name': 'xen-libs','version':'3.0.3', 'release':'135.el6_5.2', 'arch':'x86_64'}]
-
-        # act
-        result = map(lambda a: checker._advisoryPackageMeantForCurrentOs(a), advisory_packages)
-
-        # assert
-        assert result == [False, False, True]
-
     def testAdvisoryPackageMeantForCurrentOsCentOs7(self):
         # arrange
         os_fetcher = Mock()
-        os_fetcher.get_mid_level_version = Mock(return_value='7.0')
         os_fetcher.get_top_level_version = Mock(return_value='7')
         errata = Mock()
         pkg = Mock()
