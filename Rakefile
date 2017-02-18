@@ -51,8 +51,9 @@ end
 desc 'Runs Python unit tests'
 task :unit => :unit_image do
   next if ENV['SKIP_UNIT']
-
-  sh "docker run --rm=true -e \"CENTOS=#{version_var}\" -v `pwd`:/code -w /code -u nonrootuser -t #{image_tag_unit} ./setup.py test"
+  args = "-a \"#{ENV['TESTS_TO_RUN']}\"" if ENV['TESTS_TO_RUN']
+  args ||= ENV['UNIT_ARGS']
+  sh "docker run --rm=true -e \"CENTOS=#{version_var}\" -v `pwd`:/code -w /code -u nonrootuser -t #{image_tag_unit} ./setup.py test #{args}"
 end
 
 desc 'Pushes to pypi'
