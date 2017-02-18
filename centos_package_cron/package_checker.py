@@ -11,7 +11,6 @@ class PackageChecker:
     def _advisoryPackageMeantForCurrentOs(self, advisory_package):
         os_version = self.os_fetcher.get_top_level_version()
         regex = r'.*el'+os_version+'.*'
-        print "checking release %s against regex %s" % (advisory_package['release'], regex)
         return re.match(regex, advisory_package['release']) != None
 
     def _compareAdvisoryAgainstInst(self,advisory_package,installed_package):
