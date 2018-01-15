@@ -6,6 +6,8 @@ from errata_fetcher import *
 from os_version_fetcher import *
 from mockable_execute import *
 
+import json
+
 class ReportProducer:
     def __init__(self,
                  repos_to_exclude_list,
@@ -55,7 +57,23 @@ class ReportProducer:
             email_body += u"References:\n%s\n\n" % (references_flat)
             
         return email_body
-        
+
+    def _get_advisories_as_json(self, security_advisories):
+        records = []
+        for advisory_and_package in security_advisories:
+
+            record = {}
+
+            advisory = advisory_and_package['advisory']
+            record["advisory_id"] = advisory.advisory_id
+            record["severity"] = ErrataSeverity.get_label(advisory.severity)
+            associated_package_labels = map(lambda pkg: "%s-%s-%s" % (pkg.name, pkg.version, pkg.release), advisory_and_package['installed_packages'])
+            record["packages"] = list(set(associated_package_labels))
+
+            records.append(record)
+
+        return records
+
     def _get_general_updates(self):
         general_updates = self.pkg_fetcher.get_package_updates()
         if self.skip_old_notices:
@@ -83,8 +101,15 @@ class ReportProducer:
                         email_body += u"* %s\n" % (depend.name)                    
                     email_body += u"\n"
             
-        return email_body        
-        
+        return email_body
+
+    def _add_general_updates_as_json(self, general_updates):
+        records = []
+        for update in general_updates:
+            records.append({"name" : u"%s-%s-%s" % (update.name, update.version, update.release),"source": update.repository})
+
+        return records
+
     def _add_changelogs_to_email(self, general_updates, email_body):
         if len(general_updates) > 0:
             changelogs = map(lambda pkg: { 'name': pkg.name, 'changelog': self.pkg_fetcher.get_package_changelog(pkg.name,pkg.version,pkg.release)},general_updates)
@@ -109,15 +134,26 @@ class ReportProducer:
         
     def get_report_content(self):
         email_body = u''
-        with self.db_session_fetch as session:            
+        with self.db_session_fetch as session:
             self.annoyance_check = self.annoyance_fetcher.fetch(session)
-            advisories = self._get_sorted_relevant_advisories()            
+            advisories = self._get_sorted_relevant_advisories()
             email_body = self._add_advisories_to_email(advisories, email_body)
             email_body = self._handle_section_boundary(email_body)
             general_updates = self._get_general_updates()
             email_body = self._add_general_updates_to_email(general_updates, email_body)
             email_body = self._handle_section_boundary(email_body)
             email_body = self._add_changelogs_to_email(general_updates, email_body)
-            
+
         self.annoyance_check = None
         return email_body
+
+    def get_report_content_as_json(self):
+        output = {}
+        with self.db_session_fetch as session:
+            self.annoyance_check = self.annoyance_fetcher.fetch(session)
+            output['advisories'] = self._get_advisories_as_json(self._get_sorted_relevant_advisories())
+            output['updates'] = self._add_general_updates_as_json(self._get_general_updates())
+
+        self.annoyance_check = None
+
+        return json.dumps(output)
