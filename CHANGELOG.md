@@ -1,7 +1,8 @@
-# 1.0.9 (under development)
+# 1.0.9
 * Simpler version scheme
 * Pypi package documented (as of 1.0.8.1)
 * Add HTTP proxy support (#16)
+# Fixed issue (#18)
 
 # 1.0.8.1
 * Fix issue with encoding (#9)
