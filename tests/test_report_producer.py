@@ -275,35 +275,5 @@ stuff
         assert self.old_general_alerts_removed == []
         assert self.old_advisories_removed_for_advisory_set == []
 
-    def test_get_report_content_security_advisories_as_json(self):
-        # arrange
-        producer = self.get_producer()
-        package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
-        self.changelogs = {('libgcrypt', '1.5.3', '4.el7'): 'stuff'}
-        advisory = ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['i686','x86_64'], ['7'], [{'name': 'libgcrypt','version':'1.5.3', 'release':'4.el7', 'arch':'x86_64'}],[])
-        installed_packages = [package]
-        self.advisories_on_installed = [{'advisory': advisory, 'installed_packages':installed_packages}]
-
-        # act
-        result = producer.get_report_content_as_json()
-
-        # assert
-        assert json.loads(result)['advisories'] == [{"advisory_id": "adv id", "packages": ["libgcrypt-1.5.3-4.el7"], "severity": "Important"}]
-
-    def test_get_report_content_general_updates_as_json(self):
-        # arrange
-        producer = self.get_producer()
-        package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
-        self.general_updates = [package]
-        advisory = ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['i686','x86_64'], ['7'], [{'name': 'libgcrypt','version':'1.5.3', 'release':'4.el7', 'arch':'x86_64'}],[])
-        installed_packages = [package]
-        self.advisories_on_installed = [{'advisory': advisory, 'installed_packages':installed_packages}]
-
-        # act
-        result = producer.get_report_content_as_json()
-
-        # assert
-        assert json.loads(result)['updates'] == [{"name":"libgcrypt-1.5.3-4.el7","source":"updates"}]
-
 if __name__ == "__main__":
             unittest.main()
