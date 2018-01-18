@@ -105,33 +105,39 @@ class ReportProducer:
 
     def _add_general_updates_as_json(self, general_updates):
         records = []
+        for update in general_updates:
+            general_update_object = {
+                "name" : u"%s-%s-%s" % (update.name, update.version, update.release),
+                "source": update.repository
+            }
+            self._add_dependents_as_json(general_update_object, update)
+            self._add_changelogs_as_json(general_update_object, general_updates, update)
+            records.append(general_update_object)
+
+        return records
+
+    def _add_dependents_as_json(self, general_update_object, update):
+        if self.include_depends_on and len(self.pkg_fetcher.get_what_depends_on(update.name)) > 0:
+            general_update_object['required_by'] = [depend.name for depend in self.pkg_fetcher.get_what_depends_on(update.name)]
+
+        return general_update_object
+
+    def _add_changelogs_as_json(self, general_update_object, general_updates, update):
         try:
             changelogs = map(lambda pkg: { 'name': pkg.name, 'changelog': self.pkg_fetcher.get_package_changelog(pkg.name,pkg.version,pkg.release)},general_updates)
         except:
             changelogs = []
 
-        for update in general_updates:
+        if changelogs:
+            changelog_entry = next(cl for cl in changelogs if cl['name'] == update.name)
+            log_text = changelog_entry['changelog'].decode('utf-8')
+            try:
+                general_update_object['changelog'] = u"%s" % log_text
+            except:
+                print "Problem dealing with changelog entry %s" % (changelog_entry)
+                raise
 
-            general_update_object = {
-                "name" : u"%s-%s-%s" % (update.name, update.version, update.release),
-                "source": update.repository
-            }
-            if self.include_depends_on:
-                update_depends_on = self.pkg_fetcher.get_what_depends_on(update.name)
-                if len(update_depends_on) > 0:
-                    general_update_object['required_by'] = [depend.name for depend in update_depends_on]
-            if changelogs:
-                changelog_entry = next(cl for cl in changelogs if cl['name'] == update.name)
-                # Some log text is in unicode
-                log_text = changelog_entry['changelog'].decode('utf-8')
-                try:
-                    general_update_object['changelog'] = u"%s" % log_text
-                except:
-                    print "Problem dealing with changelog entry %s" % (changelog_entry)
-                    raise
-            records.append(general_update_object)
-
-        return records
+        return general_update_object
 
     def _add_changelogs_to_email(self, general_updates, email_body):
         if len(general_updates) > 0:
