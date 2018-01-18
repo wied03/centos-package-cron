@@ -89,7 +89,7 @@ def parse_args():
     action="store_true")
 
     parser.add_argument('-j','--json',
-    help='When flag is set, output will be in json format.',
+    help='Output the results in JSON format',
     action="store_true")
 
     return parser.parse_args()
