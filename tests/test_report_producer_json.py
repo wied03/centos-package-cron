@@ -219,5 +219,122 @@ class ReportProducerTest(unittest.TestCase):
         ]
     }
 
+    def test_get_report_content_as_json_general_but_no_security_advisories_already_notified(self):
+        # arrange
+        producer = self.get_producer()
+        package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
+        self.general_updates = [package]
+        self.changelogs = {('libgcrypt', '1.5.3', '4.el7'): 'stuff'}
+        self.general_update_not_necessary = [package]
+
+        # act
+        result = producer.get_report_content_as_json()
+
+        # assert
+        assert json.loads(result) == {'advisories': [], 'updates': []}
+        assert self.old_general_alerts_removed == []
+
+    def test_get_report_content_as_json_both_security_and_general_updates(self):
+        # arrange
+        producer = self.get_producer()
+        package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
+        self.general_updates = [package]
+        self.changelogs = {('libgcrypt', '1.5.3', '4.el7'): 'stuff'}
+        advisory = ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['i686','x86_64'], ['7'], [{'name': 'libgcrypt','version':'1.5.3', 'release':'4.el7', 'arch':'x86_64'}],[])
+        installed_packages = [package]
+        self.advisories_on_installed = [{'advisory': advisory, 'installed_packages': installed_packages}]
+
+        # act
+        result = producer.get_report_content_as_json()
+
+        # assert
+        assert json.loads(result) == {
+            'advisories':[{
+                "advisory_id": "adv id",
+                "packages": ["libgcrypt-1.5.3-4.el7"],
+                "severity": "Important"}],
+            'updates':[{
+                "name":"libgcrypt-1.5.3-4.el7",
+                "source":"updates",
+                "changelog": "stuff"
+            }]
+        }
+        assert self.old_advisories_removed_for_advisory_set == [[advisory]]
+        assert self.old_general_alerts_removed == [package]
+
+    def test_get_report_content_as_json_both_security_and_general_updates_already_notified(self):
+        # arrange
+        producer = self.get_producer()
+        package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
+        self.general_updates = [package]
+        self.changelogs = {('libgcrypt', '1.5.3', '4.el7'): 'stuff'}
+        advisory = ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['i686','x86_64'], ['7'], [{'name': 'libgcrypt','version':'1.5.3', 'release':'4.el7', 'arch':'x86_64'}],[])
+        installed_packages = [package]
+        self.advisories_on_installed = [{'advisory': advisory, 'installed_packages':installed_packages}]
+        self.general_update_not_necessary = self.general_updates
+        self.advisory_alerts_not_necessary = [advisory]
+
+        # act
+        result = producer.get_report_content_as_json()
+
+        # assert
+        assert json.loads(result) == {'advisories': [], 'updates': []}
+        assert self.old_general_alerts_removed == []
+
+    def test_get_report_content_as_json_both_security_and_some_general_updates_already_notified(self):
+        # arrange
+        producer = self.get_producer()
+        package1 = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
+        package2 = Package('foo', '1.5.3', '4.el7', 'x86_64', 'updates')
+        self.general_updates = [package1, package2]
+        self.changelogs = {('libgcrypt', '1.5.3', '4.el7'): 'stuff', ('foo', '1.5.3', '4.el7'): 'bah'}
+        advisory = ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['i686','x86_64'], ['7'], [{'name': 'libgcrypt','version':'1.5.3', 'release':'4.el7', 'arch':'x86_64'}],[])
+        installed_packages = [package1]
+        self.advisories_on_installed = [{'advisory': advisory, 'installed_packages':installed_packages}]
+        self.general_update_not_necessary = [package1]
+        self.advisory_alerts_not_necessary = [advisory]
+
+        # act
+        result = producer.get_report_content_as_json()
+
+        # assert
+        assert json.loads(result) == {'advisories': [], 'updates': [
+            {
+                "name":"foo-1.5.3-4.el7",
+                "source":"updates",
+                "changelog": "bah"
+            }
+        ]}
+        assert self.old_general_alerts_removed == [package2]
+
+    def test_get_report_content_as_json_skip_old_turned_off(self):
+        # arrange
+        producer = self.get_producer(skip_old=False)
+        package = Package('libgcrypt', '1.5.3', '4.el7', 'x86_64', 'updates')
+        self.general_updates = [package]
+        self.changelogs = {('libgcrypt', '1.5.3', '4.el7'): 'stuff'}
+        advisory = ErrataItem('adv id', ErrataType.SecurityAdvisory,ErrataSeverity.Important, ['i686','x86_64'], ['7'], [{'name': 'libgcrypt','version':'1.5.3', 'release':'4.el7', 'arch':'x86_64'}],[])
+        installed_packages = [package]
+        self.advisories_on_installed = [{'advisory': advisory, 'installed_packages':installed_packages}]
+
+        # act
+        result = producer.get_report_content_as_json()
+
+        # assert
+        assert json.loads(result) == {
+            'advisories':[{
+                "advisory_id": "adv id",
+                "packages": ["libgcrypt-1.5.3-4.el7"],
+                "severity": "Important"}],
+            'updates':[{
+                "name":"libgcrypt-1.5.3-4.el7",
+                "source":"updates",
+                "changelog": "stuff"
+            }]
+        }
+
+        assert self.old_general_alerts_removed == []
+        assert self.old_advisories_removed_for_advisory_set == []
+
 if __name__ == "__main__":
             unittest.main()
