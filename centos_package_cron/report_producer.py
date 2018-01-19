@@ -111,7 +111,7 @@ class ReportProducer:
                 "source": update.repository
             }
             self._add_dependents_as_json(general_update_object, update)
-            self._add_changelogs_as_json(general_update_object, general_updates, update)
+            self._add_changelogs_as_json(general_update_object, update)
             records.append(general_update_object)
 
         return records
@@ -122,19 +122,18 @@ class ReportProducer:
 
         return general_update_object
 
-    def _add_changelogs_as_json(self, general_update_object, general_updates, update):
+    def _add_changelogs_as_json(self, general_update_object, update):
         try:
-            changelogs = map(lambda pkg: { 'name': pkg.name, 'changelog': self.pkg_fetcher.get_package_changelog(pkg.name,pkg.version,pkg.release)},general_updates)
+            changelog = self.pkg_fetcher.get_package_changelog(update.name,update.version,update.release)
         except:
-            changelogs = []
+            changelog = None
 
-        if changelogs:
-            changelog_entry = next(cl for cl in changelogs if cl['name'] == update.name)
-            log_text = changelog_entry['changelog'].decode('utf-8')
+        if changelog:
+            log_text = changelog.decode('utf-8')
             try:
                 general_update_object['changelog'] = u"%s" % log_text
             except:
-                print "Problem dealing with changelog entry %s" % (changelog_entry)
+                print "Problem dealing with changelog entry %s" % (changelog)
                 raise
 
         return general_update_object
