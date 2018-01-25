@@ -1,7 +1,7 @@
 # Centos-Package-Cron
 
 [![Build Status](http://img.shields.io/travis/wied03/centos-package-cron/master.svg?style=flat)](http://travis-ci.org/wied03/centos-package-cron)
-[![Quality](http://img.shields.io/codeclimate/github/wied03/centos-package-cron.svg?style=flat-square)](https://codeclimate.com/github/wied03/centos-package-cron)
+[![Quality](https://api.codeclimate.com/v1/badges/ce1d686b27f9ba2f4f2a/maintainability)](https://codeclimate.com/github/wied03/centos-package-cron/maintainability)
 
 Attempts to offer Apticron (Ubuntu) style package update emails and also bring security notifications to CentOS via Meier's script
 
