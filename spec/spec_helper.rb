@@ -2,7 +2,7 @@ require 'serverspec'
 require 'docker'
 
 set :backend, :docker
-set :docker_image, ENV['IMAGE_INTEGRATION']
+set :docker_image, ENV['RUN_IMAGE_TAG']
 # testing this can take a while
 Docker.options[:read_timeout] = 120
 set :docker_container_create_options, {
@@ -18,8 +18,10 @@ set :docker_container_create_options, {
 
 RSpec.configure do |config|
   config.before(:suite) do
-    puts 'Installing RPM'
-    result = command('sudo yum -y --disablerepo=updates install /code/built_rpms/RPMS/x86_64/*.rpm')
+    puts 'Installing built RPM'
+    result = command('sudo yum -y --disablerepo=updates install /code/built_rpms/RPMS/x86_64/*.rpm; yum clean all')
+    puts result.stdout
+    puts result.stderr
     expect(result.exit_status).to eq 0
     puts 'Making DB directory non-root owned'
     result = command('sudo mkdir -p /var/lib/centos-package-cron')
