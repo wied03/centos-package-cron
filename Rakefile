@@ -11,6 +11,7 @@ task :default => [:clean, :unit, :integration]
 
 task :clean do
   rm_rf 'centos-package-cron.spec'
+  rm_rf 'built_rpms'
 end
 
 file 'centos-package-cron.spec' do
@@ -50,7 +51,7 @@ task :unit => :build_images do
   next if ENV['SKIP_UNIT']
   args = "-a \"#{ENV['TESTS_TO_RUN']}\"" if ENV['TESTS_TO_RUN']
   args ||= ENV['UNIT_ARGS']
-  sh "docker run --rm=true -e \"CENTOS=#{build_var}\" -v `pwd`:/code -w /code -u nonrootuser -t #{image_tag_unit} ./setup.py test #{args}"
+  sh "docker run --rm=true -e \"CENTOS=#{build_var}\" -v `pwd`:/code -w /code -u nonrootuser -t #{build_tag} ./setup.py test #{args}"
 end
 
 desc 'Pushes to pypi'
