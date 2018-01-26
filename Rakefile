@@ -1,12 +1,8 @@
 require 'rspec/core/rake_task'
 
-build_var = ENV['CENTOS'] || 'centos7_stdout'
-ENV['NO_EMAIL'] = '1' unless build_var.include?('email')
-version_var = build_var.include?('centos7') ? 'centos7' : 'centos6'
-image_src_integration = "docker/#{build_var}/integration"
-image_src_unit = "docker/#{build_var}/unit"
-ENV['IMAGE_INTEGRATION'] = image_tag_integration = "wied03/#{build_var}_int"
-image_tag_unit = "wied03/#{build_var}_unit"
+build_var = ENV['CENTOS'] || 'centos7'
+image_src = "docker/#{build_var}/Dockerfile.build"
+image_tag = "wied03/#{build_var}/centos_cron"
 
 desc 'Run serverspec integration tests'
 RSpec::Core::RakeTask.new(:integration => :build)
@@ -29,17 +25,21 @@ file 'centos-package-cron.spec' do
   rm 'centos-package-cron.spec.bak'
 end
 
-task :integration_image do
-  sh "docker build -t #{image_tag_integration} #{image_src_integration}"
+docker_build = lambda do |tag, src|
+  sh "docker build -t #{tag} -f #{src} #{File.dirname(src)}"
+end
+
+task :build_image do
+  docker_build[image_tag, image_src]
 end
 
 desc 'builds RPMs'
-task :build => ['centos-package-cron.spec', :integration_image] do
+task :build => ['centos-package-cron.spec', :build_image] do
   zip_file = 'centos_package_cron_src.tgz'
   rm_rf zip_file
   # clean build
   sh "git archive -o #{zip_file} --prefix centos-package-cron/ HEAD"
-  sh "docker run -e \"CENTOS=#{version_var}\" --rm=true -v `pwd`:/code -w /code -u nonrootuser -t #{image_tag_integration} /code/build_inside_container.sh #{zip_file}"
+  sh "docker run -e \"CENTOS=#{build_var}\" --rm=true -v `pwd`:/code -w /code -u nonrootuser -t #{image_tag} /code/build_inside_container.sh #{zip_file}"
 end
 
 task :unit_image do
@@ -53,7 +53,7 @@ task :unit => :unit_image do
   next if ENV['SKIP_UNIT']
   args = "-a \"#{ENV['TESTS_TO_RUN']}\"" if ENV['TESTS_TO_RUN']
   args ||= ENV['UNIT_ARGS']
-  sh "docker run --rm=true -e \"CENTOS=#{version_var}\" -v `pwd`:/code -w /code -u nonrootuser -t #{image_tag_unit} ./setup.py test #{args}"
+  sh "docker run --rm=true -e \"CENTOS=#{build_var}\" -v `pwd`:/code -w /code -u nonrootuser -t #{image_tag_unit} ./setup.py test #{args}"
 end
 
 desc 'Pushes to pypi'
