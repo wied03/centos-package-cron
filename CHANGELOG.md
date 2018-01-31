@@ -1,3 +1,6 @@
+# 1.0.10 (unreleased)
+* Add JSON output format
+
 # 1.0.9
 * Simpler version scheme
 * Pypi package documented (as of 1.0.8.1)
