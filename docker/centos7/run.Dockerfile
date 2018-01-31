@@ -11,6 +11,7 @@ rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
 rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
 rm -f /lib/systemd/system/basic.target.wants/*;\
 rm -f /lib/systemd/system/anaconda.target.wants/*; \
-yum -y --disablerepo=updates install rpm-build yum-utils sudo rpmlint postfix \
-yum clean all
+yum -y --disablerepo=updates install rpm-build yum-utils sudo rpmlint postfix; \
+yum clean all; \
+sed -i 's/inet_protocols = all/inet_protocols = ipv4/' /etc/postfix/main.cf
 CMD ["/bin/bash"]
