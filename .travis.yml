@@ -1,7 +1,5 @@
 sudo: required
 language: ruby
-# Adding this to try and get Docker working
-dist: trusty
 
 services:
   - docker
@@ -10,11 +8,7 @@ matrix:
   fast_finish: true
 
   include:
-    - env: CENTOS="centos66"
-    - env: CENTOS="centos67" SKIP_UNIT="true"
-    # email vs stdout only differs re: integration
-    - env: CENTOS="centos7_email" SKIP_UNIT="true"
-    - env: CENTOS="centos7_stdout"
+    - env: CENTOS="centos7"
 
 # Docker related permissions issues on Travis
 before_install:
