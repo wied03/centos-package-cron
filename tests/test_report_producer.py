@@ -6,6 +6,7 @@ from centos_package_cron.report_producer import *
 from centos_package_cron.package import *
 from centos_package_cron.errata_item import *
 from mock import Mock
+import json
 
 class db_session_fetcher_mock:        
     def __enter__(self):
@@ -272,7 +273,7 @@ stuff
 
 """
         assert self.old_general_alerts_removed == []
-        assert self.old_advisories_removed_for_advisory_set == []        
-    
+        assert self.old_advisories_removed_for_advisory_set == []
+
 if __name__ == "__main__":
             unittest.main()

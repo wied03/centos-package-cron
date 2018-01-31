@@ -21,15 +21,16 @@ def main():
         raise
 
     repos_to_exclude_list = []
-    if args.disablerepo != None:
+    if args.disablerepo is not None:
         repos_to_exclude_list = args.disablerepo.split(',')
     repos_to_include_list = []
-    if args.enablerepo != None:
+    if args.enablerepo is not None:
         repos_to_include_list = args.enablerepo.split(',')
 
     skipold = not args.forceold
-    producer = ReportProducer(repos_to_exclude_list, repos_to_include_list, skipold, args.skip_sqlite_file_path,include_depends_on=args.include_depends_on)
-    report_content = producer.get_report_content()
+    producer = ReportProducer(repos_to_exclude_list, repos_to_include_list, skipold, args.skip_sqlite_file_path, include_depends_on=args.include_depends_on)
+
+    report_content = producer.get_report_content_as_json() if args.json else producer.get_report_content()
 
     if report_content != '':
         if args.output == 'stdout':
@@ -85,6 +86,10 @@ def parse_args():
 
     parser.add_argument('-do','--include-depends-on',
     help='When a package update is listed, show what packages on your system depend on that package',
+    action="store_true")
+
+    parser.add_argument('-j','--json',
+    help='Output the results in JSON format',
     action="store_true")
 
     return parser.parse_args()
