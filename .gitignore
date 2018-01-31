@@ -13,4 +13,3 @@ centos_package_cron_src.tgz
 centos-package-cron.spec
 .bundle
 Gemfile.lock
-deploy.sh
