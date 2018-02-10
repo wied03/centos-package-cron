@@ -1,4 +1,4 @@
-# 1.0.10 (unreleased)
+# 1.0.10
 * Add JSON output format
 
 # 1.0.9
