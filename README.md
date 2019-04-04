@@ -1,6 +1,6 @@
 # Centos-Package-Cron
 
-[![Build Status](http://img.shields.io/travis/wied03/centos-package-cron/master.svg?style=flat)](http://travis-ci.org/wied03/centos-package-cron)
+[![Build Status](https://img.shields.io/travis/wied03/centos-package-cron/master.svg?style=flat)](https://travis-ci.org/wied03/centos-package-cron)
 [![Quality](https://api.codeclimate.com/v1/badges/ce1d686b27f9ba2f4f2a/maintainability)](https://codeclimate.com/github/wied03/centos-package-cron/maintainability)
 
 Attempts to offer Apticron (Ubuntu) style package update emails and also bring security notifications to CentOS via Meier's script
@@ -8,7 +8,7 @@ Attempts to offer Apticron (Ubuntu) style package update emails and also bring s
 ## What does it do?
 
 * Checks for updates using Yum's Python API and changelogs for those updates using Yum's changelog plugin
-* Checks security errata from CentOS mailing list via [Steve Meier's XML file](http://cefs.steve-meier.de/) and reports advisories related to packages installed on your machine
+* Checks security errata from CentOS mailing list via [Steve Meier's XML file](https://cefs.steve-meier.de/) and reports advisories related to packages installed on your machine
 * Emails (or dumps to STDOUT) the above information to an address of your choosing
 * By default, only reminds about a given security advisory / package update once to avoid annoying you.  You can change this using the --skipold false option (see -h)
 
@@ -17,7 +17,7 @@ Attempts to offer Apticron (Ubuntu) style package update emails and also bring s
 `yum --security` is an ideal solution, but it does not work on CentOS since the `updateinfo.xml` file in the CentOS repository does not include RHEL style security updates (see discussion [here](https://www.centos.org/forums/viewtopic.php?t=30967)). The options, which all depend on something like Steve's XML file (as of March 2016) that I know of are:
 
 1. Use Spacewalk (see Steve site)
-2. Generate `updateinfo.xml` with security information (see [VM farms post](http://blog.vmfarms.com/2013/12/inject-little-security-in-to-your.html))
+2. Generate `updateinfo.xml` with security information (see [VM farms post](https://web.archive.org/web/20170309083728/https://blog.vmfarms.com/2013/12/inject-little-security-in-to-your.html))
 3. This tool
 
 Some of these are good options but if you don't want Spacewalk and want more Apticron/apt type features like the DB/remember piece, this might be a good option for you.
