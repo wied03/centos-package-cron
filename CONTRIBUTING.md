@@ -7,4 +7,4 @@
 rake build push
 ```
 
-Then upload the RPMS from the `built_rpms` directory to the Github release.
+Then upload the RPMS from the `built_rpms` directory to the GitHub release.
